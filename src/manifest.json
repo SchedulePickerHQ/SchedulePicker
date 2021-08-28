@@ -1,0 +1,23 @@
+{
+    "name": "SchedulePicker",
+    "version": "0.0.0",
+    "description": "",
+    "homepage_url": "https://github.com/SchedulePicker/SchedulePicker3#readme",
+    "manifest_version": 2,
+    "permissions": ["background", "contextMenus", "storage"],
+    "options_ui": {
+        "chrome_style": true,
+        "page": "options.html"
+    },
+    "background": {
+        "persistent": false,
+        "scripts": ["background.ts"]
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content-script.ts"],
+            "run_at": "document_end"
+        }
+    ]
+}
