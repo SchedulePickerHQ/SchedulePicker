@@ -8,7 +8,7 @@
     "lint-fix": "run-p 'lint:* -- --fix'",
     "lint:css": "stylelint src/**/*.scss",
     "lint:js": "xo",
-    "test": "run-p lint:* build",
+    "test": "jest",
     "watch": "parcel watch src/manifest.json --dist-dir dist --no-cache --no-hmr",
     "format": "prettier --loglevel warn --write .",
     "prepare": "husky install"
@@ -36,6 +36,20 @@
       "stylelint-config-xo-scss"
     ]
   },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    }
+  },
   "dependencies": {
     "typescript": "^4.4.2",
     "webextension-polyfill": "^0.8.0"
@@ -43,6 +57,7 @@
   "devDependencies": {
     "@parcel/config-webextension": "^2.0.0-rc.0",
     "@parcel/transformer-sass": "^2.0.0-rc.0",
+    "@types/jest": "^27.0.1",
     "@types/webextension-polyfill": "^0.8.0",
     "husky": "^7.0.0",
     "jest": "^27.1.0",
@@ -52,6 +67,7 @@
     "prettier": "^2.3.2",
     "stylelint": "^13.13.1",
     "stylelint-config-xo": "^0.20.0",
+    "ts-jest": "^27.0.5",
     "web-ext-types": "^3.2.1",
     "xo": "^0.44.0"
   },

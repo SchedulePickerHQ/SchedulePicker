@@ -1,5 +1,5 @@
-import { createContextMenu, removeAllContextMenu } from './context-menus';
-import { ContextMenuBuilder } from './context-menu-builder';
+import { createContextMenu, removeAllContextMenu } from './contextMenus/context-menus';
+import { ContextMenuBuilder } from './contextMenus/context-menu-builder';
 
 (async () => {
     await removeAllContextMenu();

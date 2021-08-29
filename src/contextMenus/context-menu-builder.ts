@@ -10,7 +10,6 @@ export const CONTEXT_MENU_ID = {
     SPECIFIED_DAY: 'specifiedDay',
     TEMPLATE: 'template',
     MYSELF: 'myself',
-    MY_GROUP: 'myGroup',
     SETTINGS: 'settings',
 } as const;
 
