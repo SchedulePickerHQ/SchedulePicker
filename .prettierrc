@@ -3,5 +3,6 @@
     "tabWidth": 4,
     "quoteProps": "preserve",
     "printWidth": 120,
-    "bracketSpacing": true
+    "bracketSpacing": true,
+    "trailingComma": "all"
 }
