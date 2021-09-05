@@ -3,7 +3,7 @@ import { DateTime, VisibleForTesting } from '../date-time';
 
 const mockDateTime1: DateTime = {
     year: 2021,
-    month: 9,
+    month: 12,
     date: 4,
     hour: 11,
     minute: 9,
@@ -11,7 +11,7 @@ const mockDateTime1: DateTime = {
 
 const mockDateTime2: DateTime = {
     year: 2021,
-    month: 9,
+    month: 12,
     date: 4,
     hour: 11,
     minute: 8,
@@ -30,7 +30,7 @@ describe('convertToISOString', () => {
     const { convertToISOString } = VisibleForTesting;
 
     test('Convert to ISO8601 from DateTime', () => {
-        expect(convertToISOString(mockDateTime1)).toBe('2021-10-04T02:09:00.000Z');
+        expect(convertToISOString(mockDateTime1)).toBe('2021-12-04T02:09:00.000Z');
     });
 });
 
@@ -63,7 +63,7 @@ describe('createStartOfTime', () => {
     test('Create start of time', () => {
         expect(createStartOfTime(mockDateTime1)).toEqual({
             year: 2021,
-            month: 9,
+            month: 12,
             date: 4,
             hour: 0,
             minute: 0,
@@ -77,7 +77,7 @@ describe('createEndOfTime', () => {
     test('Create end of time', () => {
         expect(createEndOfTime(mockDateTime1)).toEqual({
             year: 2021,
-            month: 9,
+            month: 12,
             date: 4,
             hour: 23,
             minute: 59,
@@ -89,11 +89,19 @@ describe('parseISOString', () => {
     const { parseISOString } = VisibleForTesting;
 
     test('Convert to DateTime from ISO8601', () => {
-        expect(parseISOString('2021-10-04T02:09:00.000Z')).toEqual(mockDateTime1);
+        expect(parseISOString('2021-12-04T02:09:00.000Z')).toEqual(mockDateTime1);
     });
 
     test('Invalid date string format', () => {
-        const invalidDateString = '2021/10/04W02:09:00';
+        const invalidDateString = '2021/09/04W02:09:00';
         expect(() => parseISOString(invalidDateString)).toThrow(`Invalid date string format : "${invalidDateString}"`);
+    });
+});
+
+describe('format', () => {
+    const { formatDateTime } = VisibleForTesting;
+
+    test('YYYY-MM-DD', () => {
+        expect(formatDateTime(mockDateTime1, 'YYYY-MM-DD')).toBe('2021-12-04');
     });
 });

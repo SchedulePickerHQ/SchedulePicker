@@ -16,20 +16,33 @@ type Time = {
 
 export type DateTime = Date & Time;
 
-const convertToDayjsInstance = (dateTime: DateTime) =>
-    dayjs().year(dateTime.year).month(dateTime.month).date(dateTime.date).hour(dateTime.hour).minute(dateTime.minute);
+const convertToDayjs = (dateTime: DateTime) =>
+    dayjs()
+        .year(dateTime.year)
+        .month(dateTime.month - 1)
+        .date(dateTime.date)
+        .hour(dateTime.hour)
+        .minute(dateTime.minute);
 
-export const convertToISOString = (dateTime: DateTime) => convertToDayjsInstance(dateTime).toISOString();
+const convertToDateTime = (dayjsInstance: dayjs.Dayjs) => ({
+    year: dayjsInstance.get('year'),
+    month: dayjsInstance.get('month') + 1,
+    date: dayjsInstance.get('date'),
+    hour: dayjsInstance.get('hour'),
+    minute: dayjsInstance.get('minute'),
+});
+
+export const convertToISOString = (dateTime: DateTime) => convertToDayjs(dateTime).toISOString();
 
 export const isSameDateTime = (dateTime1: DateTime, dateTime2: DateTime) => {
-    const dayjsInstance1 = convertToDayjsInstance(dateTime1);
-    const dayjsInstance2 = convertToDayjsInstance(dateTime2);
+    const dayjsInstance1 = convertToDayjs(dateTime1);
+    const dayjsInstance2 = convertToDayjs(dateTime2);
     return dayjsInstance1.isSame(dayjsInstance2);
 };
 
 export const isAfterDateTime = (dateTime: DateTime, afterDateTime: DateTime) => {
-    const dayjsInstance1 = convertToDayjsInstance(dateTime);
-    const dayjsInstance2 = convertToDayjsInstance(afterDateTime);
+    const dayjsInstance1 = convertToDayjs(dateTime);
+    const dayjsInstance2 = convertToDayjs(afterDateTime);
     return dayjsInstance1.isAfter(dayjsInstance2);
 };
 
@@ -49,14 +62,6 @@ export const createEndOfTime = (date: Date): DateTime => ({
     minute: 59,
 });
 
-const convertToDateTime = (dayjsInstance: dayjs.Dayjs) => ({
-    year: dayjsInstance.get('year'),
-    month: dayjsInstance.get('month'),
-    date: dayjsInstance.get('date'),
-    hour: dayjsInstance.get('hour'),
-    minute: dayjsInstance.get('minute'),
-});
-
 export const parseISOString = (isoString: string): DateTime => {
     const dayjsInstance = dayjs(isoString, ['YYYY-MM-DD HH:mm', 'YYYY-MM-DDTHH:mm:ssZ[Z]'], true);
 
@@ -67,7 +72,7 @@ export const parseISOString = (isoString: string): DateTime => {
     return convertToDateTime(dayjsInstance);
 };
 
-export const formatDateTime = (dateTime: DateTime, format: string) => convertToDayjsInstance(dateTime).format(format);
+export const formatDateTime = (dateTime: DateTime, format: string) => convertToDayjs(dateTime).format(format);
 
 export const getNowDateTime = (): DateTime => {
     const dateTime = convertToDateTime(dayjs());
