@@ -67,7 +67,18 @@ export const parseISOString = (isoString: string): DateTime => {
     return convertToDateTime(dayjsInstance);
 };
 
-export const getNowDateTime = (): DateTime => convertToDateTime(dayjs());
+export const formatDateTime = (dateTime: DateTime, format: string) => convertToDayjsInstance(dateTime).format(format);
+
+export const getNowDateTime = (): DateTime => {
+    const dateTime = convertToDateTime(dayjs());
+    return {
+        year: dateTime.year,
+        month: dateTime.month,
+        date: dateTime.date,
+        hour: dateTime.hour,
+        minute: dateTime.minute,
+    };
+};
 
 export const VisibleForTesting = {
     convertToISOString,
@@ -76,4 +87,5 @@ export const VisibleForTesting = {
     createStartOfTime,
     createEndOfTime,
     parseISOString,
+    formatDateTime,
 };

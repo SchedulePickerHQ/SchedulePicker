@@ -18,7 +18,7 @@ type ScheduleEventsQuery = {
     };
 };
 
-type ScheduleEvent = {
+export type ScheduleEvent = {
     id: string;
     subject: string;
     startTime: DateTime;
