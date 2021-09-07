@@ -21,7 +21,8 @@ export class TodayAction extends AbstractAction {
                 endTime: createEndOfTime(dateTime),
             });
             const syntax = new SyntaxFactory().create('markdown');
-            await this.sendScheduleEvents(tab.id, syntax.createEvents(events));
+            const message = syntax.createTitle(dateTime) + syntax.createEvents(events);
+            await this.sendScheduleEvents(tab.id, message);
         } catch (error: unknown) {
             // TODO: 予定がないとき or 予定の取得に失敗したときのことを考える。
             console.dir(error);

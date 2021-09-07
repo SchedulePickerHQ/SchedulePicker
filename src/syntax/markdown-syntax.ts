@@ -4,7 +4,7 @@ import { AbstractSyntax } from './abstract-syntax';
 
 export class MarkdownSyntax extends AbstractSyntax {
     createTitle(dateTime: DateTime) {
-        return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]`;
+        return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]\n`;
     }
 
     createEvent(event: ScheduleEvent) {
