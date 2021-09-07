@@ -18,8 +18,9 @@ export class TodayAction extends AbstractAction {
                 startTime: createStartOfTime(dateTime),
                 endTime: createEndOfTime(dateTime),
             });
-            const syntax = new SyntaxFactory().create('html');
             console.log(events);
+            const syntax = new SyntaxFactory().create('html');
+            console.log(syntax);
         } catch (error: unknown) {
             // TODO: 予定がないとき or 予定の取得に失敗したときのことを考える。
             console.dir(error);

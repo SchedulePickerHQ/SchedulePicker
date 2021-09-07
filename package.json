@@ -29,7 +29,10 @@
   ],
   "xo": {
     "space": 4,
-    "prettier": true
+    "prettier": true,
+    "rules": {
+      "unicorn/prevent-abbreviations": "off"
+    }
   },
   "stylelint": {
     "extends": [
