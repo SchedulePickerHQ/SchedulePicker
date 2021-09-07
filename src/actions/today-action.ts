@@ -12,12 +12,19 @@ export class TodayAction extends AbstractAction {
 
         const domain = new URL(tab.url).hostname;
         const dateTime = getNowDateTime();
-        // const events = await getScheduleEvents(domain, {
-        //     startTime: createStartOfTime(dateTime),
-        //     endTime: createEndOfTime(dateTime),
-        // });
 
-        const syntax = new SyntaxFactory().create('html');
-        console.log(syntax.createTitle(dateTime));
+        try {
+            const events = await getScheduleEvents(domain, {
+                startTime: createStartOfTime(dateTime),
+                endTime: createEndOfTime(dateTime),
+            });
+            const syntax = new SyntaxFactory().create('html');
+            console.log(events);
+        } catch (error: unknown) {
+            // TODO: 予定がないとき or 予定の取得に失敗したときのことを考える。
+            console.dir(error);
+        } finally {
+            // TODO: Loading を止める
+        }
     }
 }

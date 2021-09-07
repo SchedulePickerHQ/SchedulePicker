@@ -26,13 +26,13 @@ export type ScheduleEvent = {
         dateTime: string;
         timeZone: string;
     };
-    eventType: string;
+    eventType: 'REGULAR' | 'REPEATING' | 'ALL_DAY';
     eventMenu: string;
     attendees: Array<{
         id: string;
         name: string;
     }>;
-    visibilityType: string;
+    visibilityType?: 'PUBLIC' | 'PRIVATE';
     isAllDay: boolean;
     isStartOnly: boolean;
 };
@@ -70,7 +70,10 @@ const createFetchUrl = (domain: string, parameters: ScheduleEventsParameters) =>
 };
 
 // 予定の取得 https://developer.cybozu.io/hc/ja/articles/360000440583
-export const getScheduleEvents = async (domain: string, parameters: ScheduleEventsParameters) => {
+export const getScheduleEvents = async (
+    domain: string,
+    parameters: ScheduleEventsParameters,
+): Promise<ScheduleEvent[]> => {
     const url = createFetchUrl(domain, parameters);
     const response = (await fetch(url, {
         method: 'GET',
@@ -79,8 +82,8 @@ export const getScheduleEvents = async (domain: string, parameters: ScheduleEven
         .then(async (response) => response.json())
         .catch((error) => {
             throw error;
-        })) as ScheduleEvent[];
-    return response;
+        })) as { events: ScheduleEvent[]; hasNext: boolean };
+    return response.events;
 };
 
 // Myグループの更新情報を取得する https://developer.cybozu.io/hc/ja/articles/202511470

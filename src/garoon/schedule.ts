@@ -23,13 +23,13 @@ export type ScheduleEvent = {
     subject: string;
     startTime: DateTime;
     endTime: DateTime;
-    eventType: string;
+    eventType: 'REGULAR' | 'REPEATING' | 'ALL_DAY';
     eventMenu: string;
     attendees: Array<{
         id: string;
         name: string;
     }>;
-    visibilityType: string;
+    visibilityType?: 'PUBLIC' | 'PRIVATE';
     isAllDay: boolean;
     isStartOnly: boolean;
 };
@@ -50,13 +50,17 @@ const convertToScheduleEvent = (
         endTime = createEndOfTime(queryEndTime);
     }
 
+    const isPrivateEvent = gScheduleEvent.visibilityType === 'PRIVATE';
+    const subject = isPrivateEvent ? '非公開予定' : gScheduleEvent.subject;
+    const eventMenu = isPrivateEvent ? '' : gScheduleEvent.eventMenu;
+
     return {
         id: gScheduleEvent.id,
-        subject: gScheduleEvent.subject,
+        subject,
         startTime,
         endTime,
         eventType: gScheduleEvent.eventType,
-        eventMenu: gScheduleEvent.eventMenu,
+        eventMenu,
         attendees: gScheduleEvent.attendees.map((attendance) => ({
             id: attendance.id,
             name: attendance.name,
