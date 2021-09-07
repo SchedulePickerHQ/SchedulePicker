@@ -13,14 +13,14 @@ export class MarkdownSyntax extends AbstractSyntax {
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
-            return `${timeRange} ${subject}`;
+            return `${timeRange} ${subject}\n`;
         }
 
         if (event.isAllDay) {
-            return `${eventMenu} ${subject}`;
+            return `${eventMenu} ${subject}\n`;
         }
 
-        return `${timeRange} ${eventMenu} ${subject}`;
+        return `${timeRange} ${eventMenu} ${subject}\n`;
     }
 
     createEvents(events: ScheduleEvent[]) {

@@ -24,8 +24,8 @@ export class HtmlSyntax extends AbstractSyntax {
     }
 
     createEvents(events: ScheduleEvent[]) {
-        const elStr = events.map((event) => this.createEvent(event)).join('');
-        return `<div>${elStr}<div>`;
+        const eventsStr = events.map((event) => this.createEvent(event)).join('');
+        return `${eventsStr}<div></div>`; // 挿入位置の下に文字列が入力されている時、入力されている文字列が予定の末尾にマージされてしまうので、div要素を無理矢理差し込んで改行する
     }
 
     private createTimeRange(startTime: DateTime, endTime: DateTime) {
