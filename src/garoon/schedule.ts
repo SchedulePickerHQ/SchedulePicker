@@ -23,7 +23,7 @@ export type ScheduleEvent = {
     subject: string;
     startTime: DateTime;
     endTime: DateTime;
-    eventType: 'REGULAR' | 'REPEATING' | 'ALL_DAY';
+    eventType: 'REGULAR' | 'REPEATING';
     eventMenu: string;
     attendees: Array<{
         id: string;
@@ -33,6 +33,10 @@ export type ScheduleEvent = {
     isAllDay: boolean;
     isStartOnly: boolean;
 };
+
+const isEventTypeRegularOrRepeating = (
+    eventType: 'REGULAR' | 'REPEATING' | 'ALL_DAY',
+): eventType is 'REGULAR' | 'REPEATING' => eventType === 'REGULAR' || eventType === 'REPEATING';
 
 const convertToScheduleEvent = (
     gScheduleEvent: GaroonApi.ScheduleEvent,
@@ -54,12 +58,17 @@ const convertToScheduleEvent = (
     const subject = isPrivateEvent ? '非公開予定' : gScheduleEvent.subject;
     const eventMenu = isPrivateEvent ? '' : gScheduleEvent.eventMenu;
 
+    console.assert(
+        isEventTypeRegularOrRepeating(gScheduleEvent.eventType),
+        `Error: ${gScheduleEvent.subject} event type is "ALL_DAY"`,
+    );
+
     return {
         id: gScheduleEvent.id,
         subject,
         startTime,
         endTime,
-        eventType: gScheduleEvent.eventType,
+        eventType: gScheduleEvent.eventType as 'REGULAR' | 'REPEATING',
         eventMenu,
         attendees: gScheduleEvent.attendees.map((attendance) => ({
             id: attendance.id,
@@ -90,5 +99,8 @@ export const getScheduleEvents = async (domain: string, query: ScheduleEventsQue
         targetType: query.target?.type,
         target: query.target?.id,
     });
-    return events.map((event) => convertToScheduleEvent(event, query.startTime, query.endTime)).sort(sortByTime);
+    return events
+        .filter((event) => isEventTypeRegularOrRepeating(event.eventType)) // 期間予定を除外する
+        .map((event) => convertToScheduleEvent(event, query.startTime, query.endTime))
+        .sort(sortByTime);
 };
