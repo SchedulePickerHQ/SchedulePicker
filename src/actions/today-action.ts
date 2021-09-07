@@ -2,30 +2,31 @@ import { Menus, Tabs } from 'webextension-polyfill';
 import { getScheduleEvents } from '../garoon/schedule';
 import { SyntaxFactory } from '../syntax/syntax-factory';
 import { createEndOfTime, createStartOfTime, getNowDateTime } from '../utils/date-time';
+import { LOADING_STATUS } from '../utils/loading';
 import { AbstractAction } from './abstract-action';
 
 export class TodayAction extends AbstractAction {
     async execute(info: Menus.OnClickData, tab: Tabs.Tab) {
-        if (tab.url === undefined) {
+        if (tab.id === undefined || tab.url === undefined) {
             return;
         }
 
         const domain = new URL(tab.url).hostname;
         const dateTime = getNowDateTime();
 
+        await this.sendLoadingStatus(tab.id, LOADING_STATUS.SHOW);
         try {
             const events = await getScheduleEvents(domain, {
                 startTime: createStartOfTime(dateTime),
                 endTime: createEndOfTime(dateTime),
             });
-            console.log(events);
-            const syntax = new SyntaxFactory().create('html');
-            console.log(syntax);
+            const syntax = new SyntaxFactory().create('markdown');
+            await this.sendScheduleEvents(tab.id, syntax.createEvents(events));
         } catch (error: unknown) {
             // TODO: 予定がないとき or 予定の取得に失敗したときのことを考える。
             console.dir(error);
         } finally {
-            // TODO: Loading を止める
+            await this.sendLoadingStatus(tab.id, LOADING_STATUS.HIDE);
         }
     }
 }
