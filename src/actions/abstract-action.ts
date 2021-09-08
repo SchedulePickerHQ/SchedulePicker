@@ -16,14 +16,14 @@ export interface Action {
 }
 
 export abstract class AbstractAction implements Action {
-    protected async sendLoadingStatus(tabId: number, status: LoadingStatus) {
+    protected async postLoadingStatus(tabId: number, status: LoadingStatus) {
         await browser.tabs.sendMessage(tabId, {
             id: ACTION_MESSAGE_ID.LOADING,
             message: status,
         });
     }
 
-    protected async sendScheduleEvents(tabId: number, events: string) {
+    protected async postScheduleEvents(tabId: number, events: string) {
         await browser.tabs.sendMessage(tabId, {
             id: ACTION_MESSAGE_ID.SCHEDULE_EVENTS,
             message: events,

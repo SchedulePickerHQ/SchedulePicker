@@ -14,7 +14,7 @@ export class TodayAction extends AbstractAction {
         const domain = new URL(tab.url).hostname;
         const dateTime = getNowDateTime();
 
-        await this.sendLoadingStatus(tab.id, LOADING_STATUS.SHOW);
+        await this.postLoadingStatus(tab.id, LOADING_STATUS.SHOW);
         try {
             const events = await getScheduleEvents(domain, {
                 startTime: createStartOfTime(dateTime),
@@ -22,12 +22,12 @@ export class TodayAction extends AbstractAction {
             });
             const syntax = new SyntaxFactory().create('markdown');
             const message = syntax.createTitle(dateTime) + syntax.createEvents(events);
-            await this.sendScheduleEvents(tab.id, message);
+            await this.postScheduleEvents(tab.id, message);
         } catch (error: unknown) {
             // TODO: 予定がないとき or 予定の取得に失敗したときのことを考える。
             console.dir(error);
         } finally {
-            await this.sendLoadingStatus(tab.id, LOADING_STATUS.HIDE);
+            await this.postLoadingStatus(tab.id, LOADING_STATUS.HIDE);
         }
     }
 }

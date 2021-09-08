@@ -1,6 +1,7 @@
 import { ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
 import { AbstractSyntax } from './abstract-syntax';
+import { getEventMenuColorCode } from './colors';
 
 export class HtmlSyntax extends AbstractSyntax {
     createTitle(dateTime: DateTime) {
@@ -36,7 +37,7 @@ export class HtmlSyntax extends AbstractSyntax {
 
     private createEventMenu(eventMenu: string) {
         return `<span
-                    style="background-color: ${this.getEventMenuColorCode(eventMenu)};
+                    style="background-color: ${getEventMenuColorCode(eventMenu)};
                     display: inline-block; 
                     margin-right: 3px; 
                     padding: 2px 2px 1px; 
