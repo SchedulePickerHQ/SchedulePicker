@@ -1,6 +1,7 @@
 import { ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
 import { AbstractSyntax } from './abstract-syntax';
+import { getEventMenuColorCode } from './colors';
 
 export class MarkdownSyntax extends AbstractSyntax {
     createTitle(dateTime: DateTime) {
@@ -28,13 +29,13 @@ export class MarkdownSyntax extends AbstractSyntax {
     }
 
     private createTimeRange(startTime: DateTime, endTime: DateTime) {
-        const formattedStartTime = formatDateTime(startTime, 'hh:mm');
-        const formattedEndTime = formatDateTime(endTime, 'hh:mm');
+        const formattedStartTime = formatDateTime(startTime, 'HH:mm');
+        const formattedEndTime = formatDateTime(endTime, 'HH:mm');
         return `${formattedStartTime}-${formattedEndTime}`;
     }
 
     private createEventMenu(eventMenu: string) {
-        return `<span style="color: ${this.getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
+        return `<span style="color: ${getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
     }
 
     private createSubject(eventId: string, subject: string) {

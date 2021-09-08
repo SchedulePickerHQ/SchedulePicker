@@ -34,10 +34,10 @@ const convertToDateTime = (dayjsInstance: dayjs.Dayjs) => ({
 
 export const convertToISOString = (dateTime: DateTime) => convertToDayjs(dateTime).toISOString();
 
-export const isSameDateTime = (dateTime1: DateTime, dateTime2: DateTime) => {
+export const isSameDate = (dateTime1: DateTime, dateTime2: DateTime) => {
     const dayjsInstance1 = convertToDayjs(dateTime1);
     const dayjsInstance2 = convertToDayjs(dateTime2);
-    return dayjsInstance1.isSame(dayjsInstance2);
+    return dayjsInstance1.isSame(dayjsInstance2, 'date');
 };
 
 export const isAfterDateTime = (dateTime: DateTime, afterDateTime: DateTime) => {
@@ -87,7 +87,7 @@ export const getNowDateTime = (): DateTime => {
 
 export const VisibleForTesting = {
     convertToISOString,
-    isSameDateTime,
+    isSameDate,
     isAfterDateTime,
     createStartOfTime,
     createEndOfTime,

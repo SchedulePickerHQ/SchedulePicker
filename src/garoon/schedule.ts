@@ -4,7 +4,7 @@ import {
     createStartOfTime,
     DateTime,
     isAfterDateTime,
-    isSameDateTime,
+    isSameDate,
     parseISOString,
 } from '../utils/date-time';
 import * as GaroonApi from './api';
@@ -46,11 +46,11 @@ const convertToScheduleEvent = (
     let startTime = parseISOString(gScheduleEvent.start.dateTime);
     let endTime = gScheduleEvent.isStartOnly ? null : parseISOString(gScheduleEvent.end.dateTime);
 
-    if (!isSameDateTime(queryStartTime, startTime)) {
+    if (!isSameDate(queryStartTime, startTime)) {
         startTime = createStartOfTime(queryStartTime);
     }
 
-    if (endTime === null || !isSameDateTime(queryEndTime, endTime)) {
+    if (endTime === null || !isSameDate(queryEndTime, endTime)) {
         endTime = createEndOfTime(queryEndTime);
     }
 
