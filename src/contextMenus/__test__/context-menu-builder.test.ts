@@ -1,4 +1,4 @@
-import { ContextMenuBuilder, CONTEXT_MENU_ID } from './context-menu-builder';
+import { ContextMenuBuilder, CONTEXT_MENU_ID } from '../context-menu-builder';
 
 const createItem = (id: string, title: string, parentId?: string) => ({
     id,
