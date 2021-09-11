@@ -16,6 +16,18 @@ type Time = {
 
 export type DateTime = Date & Time;
 
+const WEEK = {
+    Sun: 0,
+    Mon: 1,
+    Tue: 2,
+    Wed: 3,
+    Thu: 4,
+    Fri: 5,
+    Sat: 6,
+} as const;
+
+type Week = keyof typeof WEEK;
+
 const convertToDayjs = (dateTime: DateTime) =>
     dayjs()
         .year(dateTime.year)
@@ -46,6 +58,11 @@ export const isAfterDateTime = (dateTime: DateTime, afterDateTime: DateTime) => 
     return dayjsInstance1.isAfter(dayjsInstance2);
 };
 
+export const isDayOfWeek = (dateTime: DateTime, week: Week) => {
+    const index = convertToDayjs(dateTime).day();
+    return WEEK[week] === index;
+};
+
 export const createStartOfTime = (date: Date): DateTime => ({
     year: date.year,
     month: date.month,
@@ -62,15 +79,7 @@ export const createEndOfTime = (date: Date): DateTime => ({
     minute: 59,
 });
 
-export const parseISOString = (isoString: string): DateTime => {
-    const dayjsInstance = dayjs(isoString, ['YYYY-MM-DD HH:mm', 'YYYY-MM-DDTHH:mm:ssZ[Z]'], true);
-
-    if (!dayjsInstance.isValid()) {
-        throw new Error(`Invalid date string format : "${isoString}"`);
-    }
-
-    return convertToDateTime(dayjsInstance);
-};
+export const parseString = (str: string): DateTime => convertToDateTime(dayjs(str));
 
 export const formatDateTime = (dateTime: DateTime, format: string) => convertToDayjs(dateTime).format(format);
 
@@ -89,8 +98,9 @@ export const VisibleForTesting = {
     convertToISOString,
     isSameDate,
     isAfterDateTime,
+    isDayOfWeek,
     createStartOfTime,
     createEndOfTime,
-    parseISOString,
+    parseString,
     formatDateTime,
 };

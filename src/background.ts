@@ -6,12 +6,12 @@ import { createContextMenu, removeAllContextMenu } from './contextMenus/context-
 (async () => {
     await removeAllContextMenu();
     const builder = new ContextMenuBuilder();
-    const items = builder.addToday().addTemplate().addSettings().build();
+    const items = builder.addToday().addNextBusinessDay().addTemplate().addSettings().build();
     createContextMenu(items);
 })();
 
 browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickData, tab?: browser.Tabs.Tab) => {
-    if (tab?.id === undefined) {
+    if (tab?.id === undefined && tab?.url === undefined) {
         return;
     }
 

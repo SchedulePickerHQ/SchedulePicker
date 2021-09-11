@@ -31,7 +31,8 @@
     "space": 4,
     "prettier": true,
     "rules": {
-      "unicorn/prevent-abbreviations": "off"
+      "unicorn/prevent-abbreviations": "off",
+      "capitalized-comments": "off"
     }
   },
   "stylelint": {
