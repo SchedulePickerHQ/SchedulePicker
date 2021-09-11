@@ -10,7 +10,7 @@ browser.runtime.onMessage.addListener((actionMessage: ActionMessage) => {
             break;
         case ACTION_MESSAGE_ID.SCHEDULE_EVENTS:
             assertExists(document.activeElement);
-            insertTextAtCaret(document.activeElement as HTMLElement, actionMessage.message, 'markdown');
+            insertTextAtCaret(document.activeElement as HTMLElement, actionMessage.message);
             break;
         default:
             throw new Error('Not found action message id');
@@ -20,7 +20,7 @@ browser.runtime.onMessage.addListener((actionMessage: ActionMessage) => {
 const isTextAreaOrInputEl = (target: HTMLElement): target is HTMLInputElement | HTMLTextAreaElement =>
     target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
 
-const insertTextAtCaret = (target: HTMLElement, text: string, syntax: 'html' | 'markdown') => {
+const insertTextAtCaret = (target: HTMLElement, text: string) => {
     if (isTextAreaOrInputEl(target)) {
         const selectionStart = target.selectionStart;
         const selectionEnd = target.selectionEnd;
@@ -28,12 +28,7 @@ const insertTextAtCaret = (target: HTMLElement, text: string, syntax: 'html' | '
         assertExists(selectionEnd);
         const startText = target.value.slice(0, selectionStart);
         const endText = target.value.slice(selectionEnd);
-
-        if (syntax === 'html') {
-            // TODO: text の div をパースする
-        } else {
-            target.value = startText + text + endText;
-        }
+        target.value = startText + text + endText;
 
         // textarea に入力される文字列をリアルタイムで状態管理しているようなページだと、
         // 拡張機能側で textarea の value を変更しても change イベントが発火せず、再レンダリングしたときに
@@ -50,6 +45,8 @@ const insertTextAtCaret = (target: HTMLElement, text: string, syntax: 'html' | '
         node.innerHTML = text;
         range.insertNode(node);
 
-        // TODO: 貼り付けたものが選択状態になったままになっている
+        // カーソルを末尾に移動させる。
+        target.focus();
+        selection.collapseToEnd();
     }
 };
