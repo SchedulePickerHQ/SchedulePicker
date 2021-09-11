@@ -1,11 +1,11 @@
-import { Factory } from '../utils/factory';
-import { CONTEXT_MENU_ID } from '../contextMenus/context-menu-builder';
+import { CONTEXT_MENU_ID } from '../../contextMenus/context-menu-builder';
+import { Factory } from '../../utils/factory';
+import { HtmlAction } from '../html-action';
+import { MarkdownAction } from '../markdown-action';
+import { NextBusinessDayAction } from '../next-business-day-action';
+import { SettingsAction } from '../settings-action';
+import { TodayAction } from '../today-action';
 import { Action } from './abstract-action';
-import { HtmlAction } from './html-action';
-import { MarkdownAction } from './markdown-action';
-import { NextBusinessDayAction } from './next-business-day-action';
-import { SettingsAction } from './settings-action';
-import { TodayAction } from './today-action';
 
 export class ActionFactory implements Factory<string | number, Action> {
     create(id: string | number): Action {

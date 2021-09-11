@@ -1,12 +1,12 @@
 import { Menus, Tabs } from 'webextension-polyfill';
 import { searchNextBusinessDateTime } from '../garoon/general';
 import { getScheduleEvents } from '../garoon/schedule';
-import { SyntaxFactory } from '../syntax/syntax-factory';
+import { getSyntax } from '../storage/storage';
+import { SyntaxFactory } from '../syntax/base/syntax-factory';
 import { assertExists } from '../utils/asserts';
 import { createEndOfTime, createStartOfTime } from '../utils/date-time';
 import { LOADING_STATUS } from '../utils/loading';
-import { getSyntax } from '../storage/storage';
-import { AbstractAction } from './abstract-action';
+import { AbstractAction } from './base/abstract-action';
 
 export class NextBusinessDayAction extends AbstractAction {
     async execute(info: Menus.OnClickData, tab: Tabs.Tab) {

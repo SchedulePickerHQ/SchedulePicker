@@ -1,8 +1,8 @@
 import browser from 'webextension-polyfill';
-import { getSyntax } from './storage/storage';
-import { ActionFactory } from './actions/action-factory';
+import { ActionFactory } from './actions/base/action-factory';
 import { ContextMenuBuilder } from './contextMenus/context-menu-builder';
 import { createContextMenu, removeAllContextMenu } from './contextMenus/context-menus';
+import { getSyntax } from './storage/storage';
 
 (async () => {
     await removeAllContextMenu();

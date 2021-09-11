@@ -1,7 +1,7 @@
-import { Factory } from '../utils/factory';
+import { Factory } from '../../utils/factory';
+import { HtmlSyntax } from '../html-syntax';
+import { MarkdownSyntax } from '../markdown-syntax';
 import { Syntax } from './abstract-syntax';
-import { HtmlSyntax } from './html-syntax';
-import { MarkdownSyntax } from './markdown-syntax';
 
 export class SyntaxFactory implements Factory<'html' | 'markdown', Syntax> {
     create(syntax: 'html' | 'markdown'): Syntax {

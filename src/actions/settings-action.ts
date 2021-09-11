@@ -1,8 +1,8 @@
 import { Menus, Tabs } from 'webextension-polyfill';
-import { AbstractAction } from './abstract-action';
+import { AbstractAction } from './base/abstract-action';
 
 export class SettingsAction extends AbstractAction {
-    execute(info: Menus.OnClickData, tab: Tabs.Tab) {
-        this.sendMessage();
+    execute(_info: Menus.OnClickData, _tab: Tabs.Tab) {
+        // TODO: オプション画面を別タブで開く
     }
 }

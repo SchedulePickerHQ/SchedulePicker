@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { ActionMessage, ACTION_MESSAGE_ID } from './actions/abstract-action';
+import { ActionMessage, ACTION_MESSAGE_ID } from './actions/base/abstract-action';
 import { assertExists } from './utils/asserts';
 import { LOADING_STATUS, showLoading } from './utils/loading';
 

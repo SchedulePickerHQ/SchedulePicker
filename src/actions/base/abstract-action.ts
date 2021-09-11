@@ -1,5 +1,5 @@
 import browser, { Menus, Tabs } from 'webextension-polyfill';
-import { LoadingStatus } from '../utils/loading';
+import { LoadingStatus } from '../../utils/loading';
 
 export const ACTION_MESSAGE_ID = {
     LOADING: 'Loading',

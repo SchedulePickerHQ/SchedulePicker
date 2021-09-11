@@ -1,5 +1,5 @@
-import { ScheduleEvent } from '../garoon/schedule';
-import { DateTime } from '../utils/date-time';
+import { ScheduleEvent } from '../../garoon/schedule';
+import { DateTime } from '../../utils/date-time';
 
 export interface Syntax {
     createTitle(date: DateTime): string;
