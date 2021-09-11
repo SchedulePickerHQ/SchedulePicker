@@ -4,7 +4,7 @@ import { HtmlSyntax } from './html-syntax';
 import { MarkdownSyntax } from './markdown-syntax';
 
 export class SyntaxFactory implements Factory<'html' | 'markdown', Syntax> {
-    create(syntax: string): Syntax {
+    create(syntax: 'html' | 'markdown'): Syntax {
         switch (syntax) {
             case 'html':
                 return new HtmlSyntax();

@@ -1,12 +1,21 @@
 import browser from 'webextension-polyfill';
+import { getSyntax } from './storage/storage';
 import { ActionFactory } from './actions/action-factory';
 import { ContextMenuBuilder } from './contextMenus/context-menu-builder';
 import { createContextMenu, removeAllContextMenu } from './contextMenus/context-menus';
 
 (async () => {
     await removeAllContextMenu();
-    const builder = new ContextMenuBuilder();
-    const items = builder.addToday().addNextBusinessDay().addTemplate().addSettings().build();
+    const syntax = await getSyntax();
+    const htmlSelected = syntax === 'html';
+    const markdownSelected = syntax === 'markdown';
+    const items = new ContextMenuBuilder()
+        .addToday()
+        .addNextBusinessDay()
+        .addHtml(htmlSelected)
+        .addMarkdown(markdownSelected)
+        .addSettings()
+        .build();
     createContextMenu(items);
 })();
 

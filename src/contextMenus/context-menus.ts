@@ -2,13 +2,14 @@ import browser from 'webextension-polyfill';
 
 // https://developer.chrome.com/docs/extensions/reference/contextMenus/
 type ContextType = 'editable';
-type ItemType = 'normal';
+export type ItemType = 'normal' | 'radio';
 
 export type ContextMenuItem = {
     id: string;
     title: string;
-    parentId?: string;
     type: ItemType;
+    checked?: boolean;
+    parentId?: string;
     contexts: ContextType[];
 };
 
