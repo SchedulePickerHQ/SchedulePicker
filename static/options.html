@@ -1,14 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
     <head>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=<device-width>, initial-scale=1.0" />
         <link rel="stylesheet" href="./styles/options.scss" />
-        <title>Document</title>
+        <title>Options</title>
     </head>
     <body>
-        <div>options</div>
+        <main>
+            <header class="header">
+                <h1 class="title">設定</h1>
+                <button class="save-button">
+                    <span class="save-button__text">保存</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path
+                            d="M0 11c2.761.575 6.312 1.688 9 3.438 3.157-4.23 8.828-8.187 15-11.438-5.861 5.775-10.711 12.328-14 18.917-2.651-3.766-5.547-7.271-10-10.917z"
+                        />
+                    </svg>
+                </button>
+            </header>
+            <fieldset id="display-menu-setting" class="group">
+                <legend class="group__title">メニューの表示</legend>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" checked />
+                    <span class="checkbox-text">今日の予定</span>
+                </label>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" />
+                    <span class="checkbox-text">明日の予定</span>
+                </label>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" />
+                    <span class="checkbox-text">昨日の予定</span>
+                </label>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" />
+                    <span class="checkbox-text">翌営業日の予定</span>
+                </label>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" />
+                    <span class="checkbox-text">前営業日の予定</span>
+                </label>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" />
+                    <span class="checkbox-text">指定日の予定</span>
+                </label>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" />
+                    <span class="checkbox-text">テンプレート</span>
+                </label>
+                <label class="checkbox-label">
+                    <input class="checkbox" type="checkbox" name="display-menu-setting" checked />
+                    <span class="checkbox-text">記法</span>
+                </label>
+            </fieldset>
+            <fieldset id="syntax-setting" class="group">
+                <legend class="group__title">記法</legend>
+                <label class="radio-label">
+                    <input class="radio" type="radio" name="syntax-setting" checked />
+                    <span class="radio-text">HTML</span>
+                </label>
+                <label class="radio-label">
+                    <input class="radio" type="radio" name="syntax-setting" />
+                    <span class="radio-text">Markdown</span>
+                </label>
+            </fieldset>
+            <div id="template-setting" class="group">
+                <label class="template-setting__label group__title">テンプレート</label>
+                <textarea class="template-setting__textarea"></textarea>
+                <a class="template-setting__usage-link" href="https://google.com">テンプレートの使い方</a>
+            </div>
+        </main>
     </body>
-    <script src="../src/options.ts" defer></script>
+    <script type="module" src="../src/options.ts" defer></script>
 </html>

@@ -1,0 +1,63 @@
+@use './variable';
+
+$button-height: 32px;
+
+.save-button {
+    width: 80px;
+    height: 32px;
+    border-radius: 999px;
+    border: 2px solid variable.$primary-color;
+    box-sizing: border-box;
+    background-color: variable.$primary-color;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    &__text,
+    & svg {
+        position: absolute;
+        fill: transparent;
+    }
+}
+
+.save-button:enabled {
+    cursor: pointer;
+}
+
+.saving {
+    width: $button-height;
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 100vh;
+    border-left: 2px solid variable.$primary-color;
+    border-bottom: 2px solid variable.$primary-color;
+    animation: spin 1.2s 0.3s both;
+    transition: 0.3s;
+
+    &__text {
+        color: transparent;
+    }
+
+    & svg {
+        animation: check 0.5s 1.2s forwards;
+    }
+}
+
+@keyframes spin {
+    80% {
+        border: 2px solid transparent;
+        border-left: 2px solid variable.$primary-color;
+    }
+    100% {
+        border: 2px solid variable.$primary-color;
+        transform: rotate(1080deg);
+    }
+}
+
+@keyframes check {
+    to {
+        fill: variable.$primary-color;
+    }
+}

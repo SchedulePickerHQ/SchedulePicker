@@ -6,7 +6,7 @@
     "manifest_version": 2,
     "permissions": ["background", "contextMenus", "storage"],
     "options_ui": {
-        "chrome_style": true,
+        "chrome_style": false,
         "page": "options.html"
     },
     "background": {
