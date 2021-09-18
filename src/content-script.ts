@@ -1,6 +1,7 @@
 import browser from 'webextension-polyfill';
 import { ActionMessage, ACTION_MESSAGE_ID } from './actions/base/abstract-action';
 import { assertExists } from './utils/asserts';
+import { isInputElement, isTextareaElement } from './utils/element-type-check';
 import { LOADING_STATUS, showLoading } from './utils/loading';
 
 browser.runtime.onMessage.addListener((actionMessage: ActionMessage) => {
@@ -10,18 +11,17 @@ browser.runtime.onMessage.addListener((actionMessage: ActionMessage) => {
             break;
         case ACTION_MESSAGE_ID.SCHEDULE_EVENTS:
             assertExists(document.activeElement);
-            insertTextAtCaret(document.activeElement as HTMLElement, actionMessage.message);
+            insertTextAtCaret(document.activeElement as HTMLElement | null, actionMessage.message);
             break;
         default:
             throw new Error('Not found action message id');
     }
 });
 
-const isTextAreaOrInputEl = (target: HTMLElement): target is HTMLInputElement | HTMLTextAreaElement =>
-    target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+const insertTextAtCaret = (target: HTMLElement | null, text: string) => {
+    assertExists(target);
 
-const insertTextAtCaret = (target: HTMLElement, text: string) => {
-    if (isTextAreaOrInputEl(target)) {
+    if (isTextareaElement(target) || isInputElement(target)) {
         const selectionStart = target.selectionStart;
         const selectionEnd = target.selectionEnd;
         assertExists(selectionStart);

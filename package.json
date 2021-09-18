@@ -35,6 +35,7 @@
     }
   },
   "jest": {
+    "testEnvironment": "jsdom",
     "moduleFileExtensions": [
       "ts",
       "js"

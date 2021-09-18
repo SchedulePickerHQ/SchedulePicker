@@ -36,7 +36,6 @@ describe('isPublicHoliday', () => {
     });
 
     test('weekday', () => {
-        console.log(d_2021_09_17);
         expect(isPublicHoliday(d_2021_09_17, publicHolidays)).toEqual(false);
         expect(isPublicHoliday(d_2021_09_21, publicHolidays)).toEqual(false);
         expect(isPublicHoliday(d_2021_09_22, publicHolidays)).toEqual(false);
