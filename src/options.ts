@@ -1,4 +1,4 @@
-import { setContextMenuDisplayed } from './storage/storage';
+import { setContextMenuDisplayed, setSyntax } from './storage/storage';
 import { assert } from './utils/asserts';
 import { isButtonElement, isInputElement } from './utils/element-type-check';
 
@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
         saveButton.disabled = true;
         saveButton.classList.add('saving');
         await saveContextMenuDisplayed();
+        await saveSyntax();
 
         setTimeout(() => {
             saveButton.classList.remove('saving');
@@ -27,7 +28,6 @@ const saveContextMenuDisplayed = async () => {
     const specifiedDayInput = document.querySelector('#specified-day');
     const templateInput = document.querySelector('#template');
     const syntaxInput = document.querySelector('#syntax');
-
     assert(isInputElement(todayInput));
     assert(isInputElement(tomorrowInput));
     assert(isInputElement(yesterdayInput));
@@ -47,4 +47,12 @@ const saveContextMenuDisplayed = async () => {
         template: templateInput.checked,
         syntax: syntaxInput.checked,
     });
+};
+
+const saveSyntax = async () => {
+    const htmlInput = document.querySelector('#html');
+    assert(isInputElement(htmlInput));
+
+    const syntax = htmlInput.checked ? 'html' : 'markdown';
+    await setSyntax(syntax);
 };
