@@ -19,6 +19,7 @@ $button-height: 32px;
     & svg {
         position: absolute;
         fill: transparent;
+        pointer-events: none;
     }
 }
 
