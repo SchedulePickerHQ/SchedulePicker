@@ -1,22 +1,9 @@
 import browser from 'webextension-polyfill';
 import { ActionFactory } from './actions/base/action-factory';
-import { ContextMenuBuilder } from './contextMenus/context-menu-builder';
-import { createContextMenu, removeAllContextMenu } from './contextMenus/context-menus';
-import { getSyntax } from './storage/storage';
+import { buildContextMenu } from './contextMenus/context-menus';
 
 (async () => {
-    await removeAllContextMenu();
-    const syntax = await getSyntax();
-    const htmlSelected = syntax === 'html';
-    const markdownSelected = syntax === 'markdown';
-    const items = new ContextMenuBuilder()
-        .addToday()
-        .addNextBusinessDay()
-        .addHtml(htmlSelected)
-        .addMarkdown(markdownSelected)
-        .addSettings()
-        .build();
-    createContextMenu(items);
+    await buildContextMenu();
 })();
 
 browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickData, tab?: browser.Tabs.Tab) => {

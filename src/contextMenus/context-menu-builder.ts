@@ -1,4 +1,15 @@
-import { ContextMenuItem, ItemType } from './context-menus';
+// https://developer.chrome.com/docs/extensions/reference/contextMenus/
+type ContextType = 'editable';
+export type ItemType = 'normal' | 'radio';
+
+export type ContextMenuItem = {
+    id: string;
+    title: string;
+    type: ItemType;
+    checked?: boolean;
+    parentId?: string;
+    contexts: ContextType[];
+};
 
 export const CONTEXT_MENU_ID = {
     ROOT: 'root',
