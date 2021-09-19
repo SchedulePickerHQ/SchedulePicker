@@ -9,7 +9,7 @@ import {
     getNowDateTime,
     isValidDateFormat,
     formatDateTime,
-    parseString,
+    stringToDateTime,
 } from '../utils/date-time';
 import { LOADING_STATUS } from '../utils/loading';
 import { AbstractAction } from './base/abstract-action';
@@ -31,10 +31,10 @@ export class SpecifiedDayAction extends AbstractAction {
 
         if (!isValidDateFormat(promptResult)) {
             window.alert(`"${promptResult}"は無効な日付フォーマットです`);
-            throw new Error('Invalid datetime format');
+            throw new Error('Invalid date format');
         }
 
-        const dateTime = parseString(promptResult);
+        const dateTime = stringToDateTime(promptResult);
         const syntax = await getSyntax();
         await this.postLoadingStatus(tab.id, LOADING_STATUS.SHOW);
 

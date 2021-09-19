@@ -34,11 +34,11 @@ afterEach(() => {
     MockDate.reset();
 });
 
-describe('convertToISOString', () => {
-    const { convertToISOString } = VisibleForTesting;
+describe('dateTimeToISOString', () => {
+    const { dateTimeToISOString } = VisibleForTesting;
 
     test('Convert to ISO8601 from DateTime', () => {
-        expect(convertToISOString(d_2021_12_04__11_09)).toBe('2021-12-04T02:09:00.000Z');
+        expect(dateTimeToISOString(d_2021_12_04__11_09)).toBe('2021-12-04T02:09:00.000Z');
     });
 });
 
@@ -110,17 +110,17 @@ describe('createEndOfTime', () => {
     });
 });
 
-describe('parseString', () => {
-    const { parseString } = VisibleForTesting;
+describe('stringToDateTime', () => {
+    const { stringToDateTime } = VisibleForTesting;
 
     test('Convert to DateTime from ISO8601', () => {
-        expect(parseString('2021-12-04T02:09:00.000Z')).toEqual(d_2021_12_04__11_09);
+        expect(stringToDateTime('2021-12-04T02:09:00.000Z')).toEqual(d_2021_12_04__11_09);
     });
 
     test('Convert to DateTime from String', () => {
-        expect(parseString('2021-12-04')).toEqual(d_2021_12_04__00_00);
-        expect(parseString('2021/12/04')).toEqual(d_2021_12_04__00_00);
-        expect(parseString('2021/12/4')).toEqual(d_2021_12_04__00_00);
+        expect(stringToDateTime('2021-12-04')).toEqual(d_2021_12_04__00_00);
+        expect(stringToDateTime('2021/12/04')).toEqual(d_2021_12_04__00_00);
+        expect(stringToDateTime('2021/12/4')).toEqual(d_2021_12_04__00_00);
     });
 });
 

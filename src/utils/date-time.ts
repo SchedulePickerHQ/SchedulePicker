@@ -28,7 +28,7 @@ const WEEK = {
 
 type Week = keyof typeof WEEK;
 
-const convertToDayjs = (dateTime: DateTime) =>
+const dateTimeToDayjs = (dateTime: DateTime) =>
     dayjs()
         .year(dateTime.year)
         .month(dateTime.month - 1)
@@ -36,7 +36,7 @@ const convertToDayjs = (dateTime: DateTime) =>
         .hour(dateTime.hour)
         .minute(dateTime.minute);
 
-const convertToDateTime = (dayjsInstance: dayjs.Dayjs) => ({
+const dayjsToDateTime = (dayjsInstance: dayjs.Dayjs) => ({
     year: dayjsInstance.get('year'),
     month: dayjsInstance.get('month') + 1,
     date: dayjsInstance.get('date'),
@@ -44,22 +44,24 @@ const convertToDateTime = (dayjsInstance: dayjs.Dayjs) => ({
     minute: dayjsInstance.get('minute'),
 });
 
-export const convertToISOString = (dateTime: DateTime) => convertToDayjs(dateTime).toISOString();
+export const dateTimeToISOString = (dateTime: DateTime) => dateTimeToDayjs(dateTime).toISOString();
+
+export const stringToDateTime = (str: string): DateTime => dayjsToDateTime(dayjs(str));
 
 export const isSameDate = (dateTime1: DateTime, dateTime2: DateTime) => {
-    const dayjsInstance1 = convertToDayjs(dateTime1);
-    const dayjsInstance2 = convertToDayjs(dateTime2);
+    const dayjsInstance1 = dateTimeToDayjs(dateTime1);
+    const dayjsInstance2 = dateTimeToDayjs(dateTime2);
     return dayjsInstance1.isSame(dayjsInstance2, 'date');
 };
 
 export const isAfterDateTime = (dateTime: DateTime, afterDateTime: DateTime) => {
-    const dayjsInstance1 = convertToDayjs(dateTime);
-    const dayjsInstance2 = convertToDayjs(afterDateTime);
+    const dayjsInstance1 = dateTimeToDayjs(dateTime);
+    const dayjsInstance2 = dateTimeToDayjs(afterDateTime);
     return dayjsInstance1.isAfter(dayjsInstance2);
 };
 
 export const isDayOfWeek = (dateTime: DateTime, week: Week) => {
-    const index = convertToDayjs(dateTime).day();
+    const index = dateTimeToDayjs(dateTime).day();
     return WEEK[week] === index;
 };
 
@@ -79,14 +81,12 @@ export const createEndOfTime = (date: Date): DateTime => ({
     minute: 59,
 });
 
-export const parseString = (str: string): DateTime => convertToDateTime(dayjs(str));
-
-export const formatDateTime = (dateTime: DateTime, format: string) => convertToDayjs(dateTime).format(format);
+export const formatDateTime = (dateTime: DateTime, format: string) => dateTimeToDayjs(dateTime).format(format);
 
 export const isValidDateFormat = (result: string) => /^\d{4}((\/|-)\d{1,2}){2}$/.test(result);
 
 export const getNowDateTime = (): DateTime => {
-    const dateTime = convertToDateTime(dayjs());
+    const dateTime = dayjsToDateTime(dayjs());
     return {
         year: dateTime.year,
         month: dateTime.month,
@@ -97,13 +97,13 @@ export const getNowDateTime = (): DateTime => {
 };
 
 export const VisibleForTesting = {
-    convertToISOString,
+    dateTimeToISOString,
+    stringToDateTime,
     isSameDate,
     isAfterDateTime,
     isDayOfWeek,
     createStartOfTime,
     createEndOfTime,
-    parseString,
     formatDateTime,
     isValidDateFormat,
 };

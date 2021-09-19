@@ -1,4 +1,11 @@
-import { DateTime, getNowDateTime, isAfterDateTime, isDayOfWeek, isSameDate, parseString } from '../utils/date-time';
+import {
+    DateTime,
+    getNowDateTime,
+    isAfterDateTime,
+    isDayOfWeek,
+    isSameDate,
+    stringToDateTime,
+} from '../utils/date-time';
 import { getCalendarEvents } from './api';
 
 export const searchNextBusinessDateTime = async (domain: string): Promise<DateTime> => {
@@ -18,7 +25,7 @@ const getPublicHolidays = async (domain: string): Promise<DateTime[]> => {
     const calendarEvents = await getCalendarEvents(domain);
     return calendarEvents
         .filter((event) => event.type === 'public_holiday')
-        .map((holidayEvent) => parseString(holidayEvent.date as unknown as string)); // TODO: ドキュメントに記載されている型が間違っているので修正依頼をする
+        .map((holidayEvent) => stringToDateTime(holidayEvent.date as unknown as string)); // TODO: ドキュメントに記載されている型が間違っているので修正依頼をする
 };
 
 const isPublicHoliday = (dateTime: DateTime, publicHolidays: DateTime[]): boolean => {

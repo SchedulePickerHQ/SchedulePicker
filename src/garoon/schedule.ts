@@ -1,11 +1,11 @@
 import {
-    convertToISOString,
+    dateTimeToISOString,
     createEndOfTime,
     createStartOfTime,
     DateTime,
     isAfterDateTime,
     isSameDate,
-    parseString,
+    stringToDateTime,
 } from '../utils/date-time';
 import * as GaroonApi from './api';
 
@@ -43,8 +43,8 @@ const convertToScheduleEvent = (
     queryStartTime: DateTime,
     queryEndTime: DateTime,
 ): ScheduleEvent => {
-    let startTime = parseString(gScheduleEvent.start.dateTime);
-    let endTime = gScheduleEvent.isStartOnly ? null : parseString(gScheduleEvent.end.dateTime);
+    let startTime = stringToDateTime(gScheduleEvent.start.dateTime);
+    let endTime = gScheduleEvent.isStartOnly ? null : stringToDateTime(gScheduleEvent.end.dateTime);
 
     if (!isSameDate(queryStartTime, startTime)) {
         startTime = createStartOfTime(queryStartTime);
@@ -94,8 +94,8 @@ const sortByTime = (event: ScheduleEvent, nextEvent: ScheduleEvent) => {
 
 export const getScheduleEvents = async (domain: string, query: ScheduleEventsQuery): Promise<ScheduleEvent[]> => {
     const events = await GaroonApi.getScheduleEvents(domain, {
-        rangeStart: convertToISOString(query.startTime),
-        rangeEnd: convertToISOString(query.endTime),
+        rangeStart: dateTimeToISOString(query.startTime),
+        rangeEnd: dateTimeToISOString(query.endTime),
         targetType: query.target?.type,
         target: query.target?.id,
     });
