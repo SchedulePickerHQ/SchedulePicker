@@ -119,13 +119,53 @@ describe('parseString', () => {
 
     test('Convert to DateTime from String', () => {
         expect(parseString('2021-12-04')).toEqual(d_2021_12_04__00_00);
+        expect(parseString('2021/12/04')).toEqual(d_2021_12_04__00_00);
+        expect(parseString('2021/12/4')).toEqual(d_2021_12_04__00_00);
     });
 });
 
-describe('format', () => {
+describe('formatDateTime', () => {
     const { formatDateTime } = VisibleForTesting;
 
     test('YYYY-MM-DD', () => {
         expect(formatDateTime(d_2021_12_04__11_09, 'YYYY-MM-DD')).toBe('2021-12-04');
+    });
+});
+
+describe('isValidDateFormat', () => {
+    const { isValidDateFormat } = VisibleForTesting;
+
+    test.each([
+        '2021/09/01',
+        '2021/12/21',
+        '2021/9/1',
+        '2021/12/03',
+        '2021-09-01',
+        '2021-12-21',
+        '2021-9-1',
+        '2021-12-03',
+    ])('Valid', (value) => {
+        expect(isValidDateFormat(value)).toBe(true);
+    });
+
+    test.each([
+        '2021',
+        '2021/09',
+        '2021-09',
+        '2021/09/',
+        '2021-09-',
+        '12345/09/01',
+        '12345-09-01',
+        '2021/09/01a',
+        '2021-09-01a',
+        'aaaa/bb/cc',
+        '202/09/01',
+        '202-09-01',
+        '09/01',
+        '09-01',
+        '/09/01',
+        '-09-01',
+    ])('Invalid', (value) => {
+        expect(isValidDateFormat(value)).toBe(false);
     });
 });

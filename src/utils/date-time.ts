@@ -83,6 +83,8 @@ export const parseString = (str: string): DateTime => convertToDateTime(dayjs(st
 
 export const formatDateTime = (dateTime: DateTime, format: string) => convertToDayjs(dateTime).format(format);
 
+export const isValidDateFormat = (result: string) => /^\d{4}((\/|-)\d{1,2}){2}$/.test(result);
+
 export const getNowDateTime = (): DateTime => {
     const dateTime = convertToDateTime(dayjs());
     return {
@@ -103,4 +105,5 @@ export const VisibleForTesting = {
     createEndOfTime,
     parseString,
     formatDateTime,
+    isValidDateFormat,
 };

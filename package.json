@@ -31,7 +31,8 @@
     "prettier": true,
     "rules": {
       "unicorn/prevent-abbreviations": "off",
-      "capitalized-comments": "off"
+      "capitalized-comments": "off",
+      "no-alert": "off"
     }
   },
   "jest": {

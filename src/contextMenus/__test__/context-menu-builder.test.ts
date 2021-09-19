@@ -1,5 +1,4 @@
-import { ContextMenuId, CONTEXT_MENU_ID, VisibleForTesting } from '../context-menu-builder';
-import { ItemType } from '../context-menus';
+import { ContextMenuId, CONTEXT_MENU_ID, ItemType, VisibleForTesting } from '../context-menu-builder';
 
 const createItem = (
     id: string,
