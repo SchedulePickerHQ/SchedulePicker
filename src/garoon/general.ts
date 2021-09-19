@@ -8,6 +8,32 @@ import {
 } from '../utils/date-time';
 import { getCalendarEvents } from './api';
 
+export const searchNextBusinessDateTime = async (domain: string): Promise<DateTime> => {
+    const publicHolidays = await getPublicHolidays(domain);
+
+    const dateTime = getNowDateTime();
+    Object.assign(dateTime, { date: dateTime.date + 1 });
+
+    while (isPublicHoliday(dateTime, publicHolidays) || isDayOfWeek(dateTime, 'Sat') || isDayOfWeek(dateTime, 'Sun')) {
+        Object.assign(dateTime, { date: dateTime.date + 1 });
+    }
+
+    return dateTime;
+};
+
+export const searchPreviousBusinessDateTime = async (domain: string): Promise<DateTime> => {
+    const publicHolidays = await getPublicHolidays(domain);
+
+    const dateTime = getNowDateTime();
+    Object.assign(dateTime, { date: dateTime.date - 1 });
+
+    while (isPublicHoliday(dateTime, publicHolidays) || isDayOfWeek(dateTime, 'Sat') || isDayOfWeek(dateTime, 'Sun')) {
+        Object.assign(dateTime, { date: dateTime.date - 1 });
+    }
+
+    return dateTime;
+};
+
 const getPublicHolidays = async (domain: string): Promise<DateTime[]> => {
     const calendarEvents = await getCalendarEvents(domain);
     const publicHolidays = calendarEvents
@@ -29,19 +55,6 @@ const insertionSort = (publicHolidays: DateTime[]) => {
     }
 
     return publicHolidays;
-};
-
-export const searchNextBusinessDateTime = async (domain: string): Promise<DateTime> => {
-    const publicHolidays = await getPublicHolidays(domain);
-
-    const dateTime = getNowDateTime();
-    Object.assign(dateTime, { date: dateTime.date + 1 });
-
-    while (isPublicHoliday(dateTime, publicHolidays) || isDayOfWeek(dateTime, 'Sat') || isDayOfWeek(dateTime, 'Sun')) {
-        Object.assign(dateTime, { date: dateTime.date + 1 });
-    }
-
-    return dateTime;
 };
 
 const isPublicHoliday = (dateTime: DateTime, publicHolidays: DateTime[]): boolean => {

@@ -1,4 +1,3 @@
-import { CONTEXT_MENU_ID } from '../../contextMenus/context-menu-builder';
 import { Factory } from '../../utils/factory';
 import { HtmlCommand } from '../html-command';
 import { MarkdownCommand } from '../markdown-command';
@@ -6,6 +5,8 @@ import { NextBusinessDayCommand } from '../next-business-day-command';
 import { SettingsCommand } from '../settings-command';
 import { SpecifiedDayCommand } from '../specified-day-command';
 import { TodayCommand } from '../today-command';
+import { CONTEXT_MENU_ID } from '../../contextMenus/context-menu-builder';
+import { PreviousBusinessDayCommand } from '../previous-business-day-command';
 import { Command } from './command';
 
 export class CommandFactory implements Factory<string | number, Command> {
@@ -15,6 +16,8 @@ export class CommandFactory implements Factory<string | number, Command> {
                 return new TodayCommand();
             case CONTEXT_MENU_ID.NEXT_BUSINESS_DAY:
                 return new NextBusinessDayCommand();
+            case CONTEXT_MENU_ID.PREVIOUS_BUSINESS_DAY:
+                return new PreviousBusinessDayCommand();
             case CONTEXT_MENU_ID.SPECIFIED_DAY:
                 return new SpecifiedDayCommand();
             case CONTEXT_MENU_ID.HTML:
@@ -24,7 +27,7 @@ export class CommandFactory implements Factory<string | number, Command> {
             case CONTEXT_MENU_ID.SETTINGS:
                 return new SettingsCommand();
             default:
-                throw new Error('Action is not implemented.');
+                throw new Error('Command is not implemented.');
         }
     }
 }
