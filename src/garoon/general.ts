@@ -8,6 +8,29 @@ import {
 } from '../utils/date-time';
 import { getCalendarEvents } from './api';
 
+const getPublicHolidays = async (domain: string): Promise<DateTime[]> => {
+    const calendarEvents = await getCalendarEvents(domain);
+    const publicHolidays = calendarEvents
+        .filter((event) => event.type === 'public_holiday')
+        .map((holidayEvent) => stringToDateTime(holidayEvent.date as unknown as string)); // TODO: ドキュメントに記載されている型が間違っているので修正依頼をする
+    return insertionSort(publicHolidays); // 一部のデータのみ昇順で並んでいないので挿入ソートが効果的だと思われる
+};
+
+const insertionSort = (publicHolidays: DateTime[]) => {
+    for (let i = 1; i < publicHolidays.length; i++) {
+        let j = i;
+
+        while (j > 0 && isAfterDateTime(publicHolidays[j - 1], publicHolidays[j])) {
+            const tmp = publicHolidays[j - 1];
+            publicHolidays[j - 1] = publicHolidays[j];
+            publicHolidays[j] = tmp;
+            j--;
+        }
+    }
+
+    return publicHolidays;
+};
+
 export const searchNextBusinessDateTime = async (domain: string): Promise<DateTime> => {
     const publicHolidays = await getPublicHolidays(domain);
 
@@ -18,15 +41,7 @@ export const searchNextBusinessDateTime = async (domain: string): Promise<DateTi
         Object.assign(dateTime, { date: dateTime.date + 1 });
     }
 
-    // TODO: 9/21 取得したいのに 9/20 が取得される
     return dateTime;
-};
-
-const getPublicHolidays = async (domain: string): Promise<DateTime[]> => {
-    const calendarEvents = await getCalendarEvents(domain);
-    return calendarEvents
-        .filter((event) => event.type === 'public_holiday')
-        .map((holidayEvent) => stringToDateTime(holidayEvent.date as unknown as string)); // TODO: ドキュメントに記載されている型が間違っているので修正依頼をする
 };
 
 const isPublicHoliday = (dateTime: DateTime, publicHolidays: DateTime[]): boolean => {
@@ -53,6 +68,6 @@ const isPublicHoliday = (dateTime: DateTime, publicHolidays: DateTime[]): boolea
 };
 
 export const VisibleForTesting = {
+    insertionSort,
     isPublicHoliday,
-    searchNextBusinessDay: searchNextBusinessDateTime,
 };
