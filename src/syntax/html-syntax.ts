@@ -1,9 +1,9 @@
 import { ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
-import { AbstractSyntax } from './base/abstract-syntax';
+import { Syntax } from './base/syntax';
 import { getEventMenuColorCode } from './base/colors';
 
-export class HtmlSyntax extends AbstractSyntax {
+export class HtmlSyntax extends Syntax {
     createTitle(dateTime: DateTime) {
         return `<div>[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]</div>`;
     }
