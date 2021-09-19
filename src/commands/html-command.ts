@@ -1,8 +1,8 @@
 import { Menus, Tabs } from 'webextension-polyfill';
 import { setSyntax } from '../storage/storage';
-import { AbstractAction } from './base/abstract-action';
+import { Command } from './base/command';
 
-export class HtmlAction extends AbstractAction {
+export class HtmlCommand extends Command {
     async execute(_info: Menus.OnClickData, _tab: Tabs.Tab) {
         await setSyntax('html');
     }

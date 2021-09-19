@@ -1,17 +1,17 @@
 import browser from 'webextension-polyfill';
-import { ActionMessage, ACTION_MESSAGE_ID } from './actions/base/abstract-action';
+import { CommandMessage, COMMAND_MESSAGE_ID } from './commands/sender';
 import { assertExists } from './utils/asserts';
 import { isInputElement, isTextareaElement } from './utils/element-type-check';
 import { LOADING_STATUS, showLoading } from './utils/loading';
 
-browser.runtime.onMessage.addListener((actionMessage: ActionMessage) => {
-    switch (actionMessage.id) {
-        case ACTION_MESSAGE_ID.LOADING:
-            showLoading(actionMessage.message === LOADING_STATUS.SHOW);
+browser.runtime.onMessage.addListener((commandMessage: CommandMessage) => {
+    switch (commandMessage.id) {
+        case COMMAND_MESSAGE_ID.LOADING:
+            showLoading(commandMessage.message === LOADING_STATUS.SHOW);
             break;
-        case ACTION_MESSAGE_ID.SCHEDULE_EVENTS:
+        case COMMAND_MESSAGE_ID.SCHEDULE:
             assertExists(document.activeElement);
-            insertTextAtCaret(document.activeElement as HTMLElement | null, actionMessage.message);
+            insertTextAtCaret(document.activeElement as HTMLElement | null, commandMessage.message);
             break;
         default:
             throw new Error('Not found action message id');
