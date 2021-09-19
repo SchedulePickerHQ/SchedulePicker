@@ -2,11 +2,13 @@ import { Factory } from '../../utils/factory';
 import { HtmlCommand } from '../html-command';
 import { MarkdownCommand } from '../markdown-command';
 import { NextBusinessDayCommand } from '../next-business-day-command';
+import { PreviousBusinessDayCommand } from '../previous-business-day-command';
 import { SettingsCommand } from '../settings-command';
 import { SpecifiedDayCommand } from '../specified-day-command';
 import { TodayCommand } from '../today-command';
 import { CONTEXT_MENU_ID } from '../../contextMenus/context-menu-builder';
-import { PreviousBusinessDayCommand } from '../previous-business-day-command';
+import { TomorrowCommand } from '../tomorrow-command';
+import { YesterdayCommand } from '../yesterday-command';
 import { Command } from './command';
 
 export class CommandFactory implements Factory<string | number, Command> {
@@ -14,6 +16,10 @@ export class CommandFactory implements Factory<string | number, Command> {
         switch (id) {
             case CONTEXT_MENU_ID.TODAY:
                 return new TodayCommand();
+            case CONTEXT_MENU_ID.TOMORROW:
+                return new TomorrowCommand();
+            case CONTEXT_MENU_ID.YESTERDAY:
+                return new YesterdayCommand();
             case CONTEXT_MENU_ID.NEXT_BUSINESS_DAY:
                 return new NextBusinessDayCommand();
             case CONTEXT_MENU_ID.PREVIOUS_BUSINESS_DAY:

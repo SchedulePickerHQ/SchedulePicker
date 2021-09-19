@@ -12,10 +12,10 @@ export const searchNextBusinessDateTime = async (domain: string): Promise<DateTi
     const publicHolidays = await getPublicHolidays(domain);
 
     const dateTime = getNowDateTime();
-    Object.assign(dateTime, { date: dateTime.date + 1 });
+    dateTime.date += 1;
 
     while (isPublicHoliday(dateTime, publicHolidays) || isDayOfWeek(dateTime, 'Sat') || isDayOfWeek(dateTime, 'Sun')) {
-        Object.assign(dateTime, { date: dateTime.date + 1 });
+        dateTime.date += 1;
     }
 
     return dateTime;
@@ -25,10 +25,10 @@ export const searchPreviousBusinessDateTime = async (domain: string): Promise<Da
     const publicHolidays = await getPublicHolidays(domain);
 
     const dateTime = getNowDateTime();
-    Object.assign(dateTime, { date: dateTime.date - 1 });
+    dateTime.date -= 1;
 
     while (isPublicHoliday(dateTime, publicHolidays) || isDayOfWeek(dateTime, 'Sat') || isDayOfWeek(dateTime, 'Sun')) {
-        Object.assign(dateTime, { date: dateTime.date - 1 });
+        dateTime.date -= 1;
     }
 
     return dateTime;
