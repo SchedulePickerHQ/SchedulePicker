@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import browser from 'webextension-polyfill';
 import { CommandMessage, COMMAND_ID } from './commands/sender';
 import { assertExists } from './utils/asserts';
@@ -42,7 +43,7 @@ const insertTextAtCaret = (target: HTMLElement | null, text: string) => {
 
         const node = document.createElement('div');
         node.style.whiteSpace = 'pre';
-        node.innerHTML = text; // TODO: サニタイズする
+        node.innerHTML = DOMPurify.sanitize(text);
         range.insertNode(node);
 
         // カーソルを末尾に移動させる。
