@@ -34,7 +34,7 @@ $button-height: 32px;
     border-radius: 100vh;
     border-left: 2px solid variable.$primary-color;
     border-bottom: 2px solid variable.$primary-color;
-    animation: spin 1.2s 0.3s both;
+    animation: spin 0.8s 0.3s both;
     transition: 0.3s;
 
     &__text {
@@ -42,7 +42,7 @@ $button-height: 32px;
     }
 
     & svg {
-        animation: check 0.5s 1.2s forwards;
+        animation: check 0.4s 0.8s forwards;
     }
 }
 
