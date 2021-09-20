@@ -4,6 +4,7 @@ import { LoadingStatus } from '../utils/loading';
 export const COMMAND_ID = {
     LOADING: 'Loading',
     INSERT_TEXT: 'InsertText',
+    ERROR: 'Error',
 } as const;
 
 export type CommandMessage = {
@@ -22,5 +23,12 @@ export const sendSchedule = async (tabId: number, schedule: string) => {
     await browser.tabs.sendMessage(tabId, {
         id: COMMAND_ID.INSERT_TEXT,
         message: schedule,
+    });
+};
+
+export const sendErrorMessage = async (tabId: number, message: string) => {
+    await browser.tabs.sendMessage(tabId, {
+        id: COMMAND_ID.ERROR,
+        message,
     });
 };

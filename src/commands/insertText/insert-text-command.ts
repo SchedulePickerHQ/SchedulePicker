@@ -1,7 +1,7 @@
 import { Menus, Tabs } from 'webextension-polyfill';
 import { assertExists } from '../../utils/asserts';
 import { LOADING_STATUS } from '../../utils/loading';
-import { sendLoadingStatus, sendSchedule } from '../sender';
+import { sendLoadingStatus, sendSchedule, sendErrorMessage } from '../sender';
 import { Command } from '../base/command';
 
 export abstract class InsertTextCommand extends Command {
@@ -21,7 +21,7 @@ export abstract class InsertTextCommand extends Command {
 
             await sendSchedule(tab.id, schedule);
         } catch (error: unknown) {
-            // TODO: エラーをクライアント側に通知するかも？
+            await sendErrorMessage(tab.id, '通信に失敗しました');
             throw error;
         } finally {
             await sendLoadingStatus(tab.id, LOADING_STATUS.HIDE);

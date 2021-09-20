@@ -14,6 +14,9 @@ browser.runtime.onMessage.addListener((commandMessage: CommandMessage) => {
             assertExists(document.activeElement);
             insertTextAtCaret(document.activeElement as HTMLElement | null, commandMessage.message);
             break;
+        case COMMAND_ID.ERROR:
+            alert('SchedulePicker: ' + commandMessage.message);
+            break;
         default:
             throw new Error('Not found command message id');
     }
