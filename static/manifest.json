@@ -4,7 +4,17 @@
     "description": "",
     "homepage_url": "https://github.com/SchedulePicker/SchedulePicker3#readme",
     "manifest_version": 2,
-    "permissions": ["background", "contextMenus", "storage"],
+    "permissions": [
+        "background",
+        "contextMenus",
+        "storage",
+        "https://*.cybozu.com/k/*",
+        "https://*.cybozu-dev.com/k/*",
+        "https://*.kintone.com/k/*",
+        "https://*.kintone-dev.com/k/*",
+        "https://*.cybozu.cn/k/*",
+        "https://*.cybozu-dev.cn/k/*"
+    ],
     "options_ui": {
         "chrome_style": false,
         "page": "options.html"
@@ -15,7 +25,14 @@
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
+            "matches": [
+                "https://*.cybozu.com/k/*",
+                "https://*.cybozu-dev.com/k/*",
+                "https://*.kintone.com/k/*",
+                "https://*.kintone-dev.com/k/*",
+                "https://*.cybozu.cn/k/*",
+                "https://*.cybozu-dev.cn/k/*"
+            ],
             "js": ["../src/content-script.ts"],
             "run_at": "document_end"
         }
