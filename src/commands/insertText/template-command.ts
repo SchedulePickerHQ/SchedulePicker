@@ -3,7 +3,7 @@ import { getScheduleEvents } from '../../garoon/schedule';
 import { getSyntax, getTemplateText } from '../../storage/storage';
 import { SyntaxFactory } from '../../syntax/syntax-factory';
 import { createEndOfTime, createStartOfTime, getNowDateTime } from '../../utils/date-time';
-import { ScheduleCommand } from './schedule-command';
+import { InsertTextCommand } from './insert-text-command';
 
 const SPECIAL_TEMPLATE_CHARACTOR = {
     TODAY_TITLE: '{%TODAY_TITLE%}',
@@ -18,8 +18,8 @@ const SPECIAL_TEMPLATE_CHARACTOR = {
     PREVIOUS_BUSINESS_DAY: '{%PREVIOUS_BUSINESS_DAY%}',
 } as const;
 
-export class TemplateCommand extends ScheduleCommand {
-    protected async createSchedule(domain: string): Promise<string | null> {
+export class TemplateCommand extends InsertTextCommand {
+    protected async createInsertText(domain: string): Promise<string | null> {
         const syntax = await getSyntax();
         const factory = new SyntaxFactory().create(syntax);
         let templateText = await getTemplateText();

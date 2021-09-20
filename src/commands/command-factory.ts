@@ -1,14 +1,14 @@
-import { Factory } from '../utils/factory';
 import { CONTEXT_MENU_ID } from '../contextMenus/context-menu-builder';
+import { Factory } from '../utils/factory';
 import { Command } from './base/command';
 import { SettingsCommand } from './exceptional/settings-command';
-import { NextBusinessDayCommand } from './schedule/next-business-day-command';
-import { PreviousBusinessDayCommand } from './schedule/previous-business-day-command';
-import { SpecifiedDayCommand } from './schedule/specified-day-command';
-import { TemplateCommand } from './schedule/template-command';
-import { TodayCommand } from './schedule/today-command';
-import { TomorrowCommand } from './schedule/tomorrow-command';
-import { YesterdayCommand } from './schedule/yesterday-command';
+import { NextBusinessDayCommand } from './insertText/next-business-day-command';
+import { PreviousBusinessDayCommand } from './insertText/previous-business-day-command';
+import { SpecifiedDayCommand } from './insertText/specified-day-command';
+import { TemplateCommand } from './insertText/template-command';
+import { TodayCommand } from './insertText/today-command';
+import { TomorrowCommand } from './insertText/tomorrow-command';
+import { YesterdayCommand } from './insertText/yesterday-command';
 import { HtmlCommand } from './syntax/html-command';
 import { MarkdownCommand } from './syntax/markdown-command';
 

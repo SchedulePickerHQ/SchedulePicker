@@ -9,10 +9,10 @@ import {
     isValidDateFormat,
     stringToDateTime,
 } from '../../utils/date-time';
-import { ScheduleCommand } from './schedule-command';
+import { InsertTextCommand } from './insert-text-command';
 
-export class SpecifiedDayCommand extends ScheduleCommand {
-    protected async createSchedule(domain: string): Promise<string | null> {
+export class SpecifiedDayCommand extends InsertTextCommand {
+    protected async createInsertText(domain: string): Promise<string | null> {
         const promptResult = window.prompt(
             '取得したい予定の日付を入力してください\n例: 2021/09/19',
             formatDateTime(getNowDateTime(), 'YYYY/MM/DD'),

@@ -1,20 +1,20 @@
 import browser from 'webextension-polyfill';
-import { CommandMessage, COMMAND_MESSAGE_ID } from './commands/sender';
+import { CommandMessage, COMMAND_ID } from './commands/sender';
 import { assertExists } from './utils/asserts';
 import { isInputElement, isTextareaElement } from './utils/element-type-check';
 import { LOADING_STATUS, showLoading } from './utils/loading';
 
 browser.runtime.onMessage.addListener((commandMessage: CommandMessage) => {
     switch (commandMessage.id) {
-        case COMMAND_MESSAGE_ID.LOADING:
+        case COMMAND_ID.LOADING:
             showLoading(commandMessage.message === LOADING_STATUS.SHOW);
             break;
-        case COMMAND_MESSAGE_ID.SCHEDULE:
+        case COMMAND_ID.INSERT_TEXT:
             assertExists(document.activeElement);
             insertTextAtCaret(document.activeElement as HTMLElement | null, commandMessage.message);
             break;
         default:
-            throw new Error('Not found action message id');
+            throw new Error('Not found command message id');
     }
 });
 
@@ -42,7 +42,7 @@ const insertTextAtCaret = (target: HTMLElement | null, text: string) => {
 
         const node = document.createElement('div');
         node.style.whiteSpace = 'pre';
-        node.innerHTML = text;
+        node.innerHTML = text; // TODO: サニタイズする
         range.insertNode(node);
 
         // カーソルを末尾に移動させる。

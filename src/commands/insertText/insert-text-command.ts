@@ -4,7 +4,7 @@ import { LOADING_STATUS } from '../../utils/loading';
 import { sendLoadingStatus, sendSchedule } from '../sender';
 import { Command } from '../base/command';
 
-export abstract class ScheduleCommand extends Command {
+export abstract class InsertTextCommand extends Command {
     async execute(info: Menus.OnClickData, tab: Tabs.Tab) {
         assertExists(tab.id);
         assertExists(tab.url);
@@ -12,9 +12,10 @@ export abstract class ScheduleCommand extends Command {
         await sendLoadingStatus(tab.id, LOADING_STATUS.SHOW);
 
         try {
-            const schedule = await this.createSchedule(domain);
+            const schedule = await this.createInsertText(domain);
 
             if (schedule === null) {
+                await sendLoadingStatus(tab.id, LOADING_STATUS.HIDE);
                 return;
             }
 
@@ -27,5 +28,5 @@ export abstract class ScheduleCommand extends Command {
         }
     }
 
-    protected abstract createSchedule(domain: string): Promise<string | null>;
+    protected abstract createInsertText(domain: string): Promise<string | null>;
 }

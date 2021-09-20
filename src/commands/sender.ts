@@ -1,26 +1,26 @@
 import browser from 'webextension-polyfill';
 import { LoadingStatus } from '../utils/loading';
 
-export const COMMAND_MESSAGE_ID = {
+export const COMMAND_ID = {
     LOADING: 'Loading',
-    SCHEDULE: 'Schedule',
+    INSERT_TEXT: 'InsertText',
 } as const;
 
 export type CommandMessage = {
-    id: TypeOfValues<typeof COMMAND_MESSAGE_ID>;
+    id: TypeOfValues<typeof COMMAND_ID>;
     message: string;
 };
 
 export const sendLoadingStatus = async (tabId: number, status: LoadingStatus) => {
     await browser.tabs.sendMessage(tabId, {
-        id: COMMAND_MESSAGE_ID.LOADING,
+        id: COMMAND_ID.LOADING,
         message: status,
     });
 };
 
 export const sendSchedule = async (tabId: number, schedule: string) => {
     await browser.tabs.sendMessage(tabId, {
-        id: COMMAND_MESSAGE_ID.SCHEDULE,
+        id: COMMAND_ID.INSERT_TEXT,
         message: schedule,
     });
 };

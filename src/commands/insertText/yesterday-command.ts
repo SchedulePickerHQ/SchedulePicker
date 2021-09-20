@@ -2,11 +2,12 @@ import { getScheduleEvents } from '../../garoon/schedule';
 import { getSyntax } from '../../storage/storage';
 import { SyntaxFactory } from '../../syntax/syntax-factory';
 import { createEndOfTime, createStartOfTime, getNowDateTime } from '../../utils/date-time';
-import { ScheduleCommand } from './schedule-command';
+import { InsertTextCommand } from './insert-text-command';
 
-export class TodayCommand extends ScheduleCommand {
-    protected async createSchedule(domain: string): Promise<string | null> {
+export class YesterdayCommand extends InsertTextCommand {
+    protected async createInsertText(domain: string): Promise<string | null> {
         const dateTime = getNowDateTime();
+        dateTime.date -= 1;
         const events = await getScheduleEvents(domain, {
             startTime: createStartOfTime(dateTime),
             endTime: createEndOfTime(dateTime),
