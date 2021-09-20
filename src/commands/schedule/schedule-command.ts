@@ -2,7 +2,7 @@ import { Menus, Tabs } from 'webextension-polyfill';
 import { assertExists } from '../../utils/asserts';
 import { LOADING_STATUS } from '../../utils/loading';
 import { sendLoadingStatus, sendSchedule } from '../sender';
-import { Command } from './command';
+import { Command } from '../base/command';
 
 export abstract class ScheduleCommand extends Command {
     async execute(info: Menus.OnClickData, tab: Tabs.Tab) {

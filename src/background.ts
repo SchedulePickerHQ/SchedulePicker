@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { CommandFactory } from './commands/base/command-factory';
+import { CommandFactory } from './commands/command-factory';
 import { buildContextMenu } from './contextMenus/context-menus';
 
 (async () => {
@@ -11,6 +11,6 @@ browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickDat
         return;
     }
 
-    const action = new CommandFactory().create(info.menuItemId);
-    action.execute(info, tab);
+    const command = new CommandFactory().create(info.menuItemId);
+    command.execute(info, tab);
 });

@@ -1,8 +1,8 @@
-import { getScheduleEvents } from '../garoon/schedule';
-import { getSyntax } from '../storage/storage';
-import { SyntaxFactory } from '../syntax/base/syntax-factory';
-import { createEndOfTime, createStartOfTime, getNowDateTime } from '../utils/date-time';
-import { ScheduleCommand } from './base/schedule-command';
+import { getScheduleEvents } from '../../garoon/schedule';
+import { getSyntax } from '../../storage/storage';
+import { SyntaxFactory } from '../../syntax/syntax-factory';
+import { createEndOfTime, createStartOfTime, getNowDateTime } from '../../utils/date-time';
+import { ScheduleCommand } from './schedule-command';
 
 export class YesterdayCommand extends ScheduleCommand {
     protected async createSchedule(domain: string): Promise<string | null> {

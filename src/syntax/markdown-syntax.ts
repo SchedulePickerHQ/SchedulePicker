@@ -1,7 +1,7 @@
 import { ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
 import { Syntax } from './base/syntax';
-import { getEventMenuColorCode } from './base/colors';
+import { getEventMenuColorCode } from './colors';
 
 export class MarkdownSyntax extends Syntax {
     createTitle(dateTime: DateTime) {

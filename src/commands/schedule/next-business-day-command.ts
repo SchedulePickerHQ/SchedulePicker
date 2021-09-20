@@ -1,9 +1,9 @@
-import { searchNextBusinessDateTime } from '../garoon/general';
-import { getScheduleEvents } from '../garoon/schedule';
-import { getSyntax } from '../storage/storage';
-import { SyntaxFactory } from '../syntax/base/syntax-factory';
-import { createEndOfTime, createStartOfTime } from '../utils/date-time';
-import { ScheduleCommand } from './base/schedule-command';
+import { searchNextBusinessDateTime } from '../../garoon/general';
+import { getScheduleEvents } from '../../garoon/schedule';
+import { getSyntax } from '../../storage/storage';
+import { SyntaxFactory } from '../../syntax/syntax-factory';
+import { createEndOfTime, createStartOfTime } from '../../utils/date-time';
+import { ScheduleCommand } from './schedule-command';
 
 export class NextBusinessDayCommand extends ScheduleCommand {
     protected async createSchedule(domain: string): Promise<string | null> {

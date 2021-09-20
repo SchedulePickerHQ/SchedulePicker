@@ -1,15 +1,15 @@
-import { Factory } from '../../utils/factory';
-import { HtmlCommand } from '../html-command';
-import { MarkdownCommand } from '../markdown-command';
-import { NextBusinessDayCommand } from '../next-business-day-command';
-import { PreviousBusinessDayCommand } from '../previous-business-day-command';
-import { SettingsCommand } from '../settings-command';
-import { SpecifiedDayCommand } from '../specified-day-command';
-import { TodayCommand } from '../today-command';
-import { CONTEXT_MENU_ID } from '../../contextMenus/context-menu-builder';
-import { TomorrowCommand } from '../tomorrow-command';
-import { YesterdayCommand } from '../yesterday-command';
-import { Command } from './command';
+import { CONTEXT_MENU_ID } from '../contextMenus/context-menu-builder';
+import { Factory } from '../utils/factory';
+import { Command } from './base/command';
+import { SettingsCommand } from './exceptional/settings-command';
+import { NextBusinessDayCommand } from './schedule/next-business-day-command';
+import { PreviousBusinessDayCommand } from './schedule/previous-business-day-command';
+import { SpecifiedDayCommand } from './schedule/specified-day-command';
+import { TodayCommand } from './schedule/today-command';
+import { TomorrowCommand } from './schedule/tomorrow-command';
+import { YesterdayCommand } from './schedule/yesterday-command';
+import { HtmlCommand } from './syntax/html-command';
+import { MarkdownCommand } from './syntax/markdown-command';
 
 export class CommandFactory implements Factory<string | number, Command> {
     create(id: string | number): Command {
