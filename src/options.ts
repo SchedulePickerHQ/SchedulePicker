@@ -1,7 +1,13 @@
 import { buildContextMenu } from './contextMenus/context-menus';
-import { getContextMenuDisplayed, getSyntax, setContextMenuDisplayed, setSyntax } from './storage/storage';
+import {
+    getContextMenuDisplayed,
+    getSyntax,
+    setContextMenuDisplayed,
+    setSyntax,
+    setTemplateText,
+} from './storage/storage';
 import { assert } from './utils/asserts';
-import { isButtonElement, isInputElement } from './utils/element-type-check';
+import { isButtonElement, isInputElement, isTextareaElement } from './utils/element-type-check';
 
 window.addEventListener('DOMContentLoaded', async () => {
     const saveButton = document.querySelector('.save-button');
@@ -15,6 +21,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const syntaxInput = document.querySelector('#syntax');
     const htmlInput = document.querySelector('#html');
     const markdownInput = document.querySelector('#markdown');
+    const templateTextarea = document.querySelector('.template-setting__textarea');
     assert(isButtonElement(saveButton));
     assert(isInputElement(todayInput));
     assert(isInputElement(tomorrowInput));
@@ -26,6 +33,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     assert(isInputElement(syntaxInput));
     assert(isInputElement(htmlInput));
     assert(isInputElement(markdownInput));
+    assert(isTextareaElement(templateTextarea));
 
     const syncContextMenuDisplayed = async () => {
         const display = await getContextMenuDisplayed();
@@ -58,16 +66,12 @@ window.addEventListener('DOMContentLoaded', async () => {
         markdownInput.checked = syntax === 'markdown';
     };
 
-    const saveSyntax = async () => {
-        const syntax = htmlInput.checked ? 'html' : 'markdown';
-        await setSyntax(syntax);
-    };
-
     const handleSaveButtonClick = async () => {
         saveButton.disabled = true;
         saveButton.classList.add('saving');
         await saveContextMenuDisplayed();
-        await saveSyntax();
+        await setSyntax(htmlInput.checked ? 'html' : 'markdown');
+        await setTemplateText(templateTextarea.value);
         await buildContextMenu();
 
         setTimeout(() => {

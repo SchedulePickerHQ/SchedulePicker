@@ -67,3 +67,17 @@ export const getContextMenuDisplayed = async (): Promise<ContextMenuDisplayed> =
 
     return item[STORAGE_KEY.CONTEXT_MENU_DISPLAYED] as ContextMenuDisplayed;
 };
+
+export const setTemplateText = async (text: string) => {
+    await browser.storage.sync.set({ [STORAGE_KEY.TEMPLATE_TEXT]: text });
+};
+
+export const getTemplateText = async (): Promise<string> => {
+    const item = await browser.storage.sync.get(STORAGE_KEY.TEMPLATE_TEXT);
+
+    if (Object.keys(item).length === 0) {
+        return STORAGE_INIT_VALUE.TEMPLATE_TEXT;
+    }
+
+    return item[STORAGE_KEY.TEMPLATE_TEXT] as string;
+};

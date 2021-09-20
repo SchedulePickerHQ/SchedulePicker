@@ -1,10 +1,11 @@
-import { CONTEXT_MENU_ID } from '../contextMenus/context-menu-builder';
 import { Factory } from '../utils/factory';
+import { CONTEXT_MENU_ID } from '../contextMenus/context-menu-builder';
 import { Command } from './base/command';
 import { SettingsCommand } from './exceptional/settings-command';
 import { NextBusinessDayCommand } from './schedule/next-business-day-command';
 import { PreviousBusinessDayCommand } from './schedule/previous-business-day-command';
 import { SpecifiedDayCommand } from './schedule/specified-day-command';
+import { TemplateCommand } from './schedule/template-command';
 import { TodayCommand } from './schedule/today-command';
 import { TomorrowCommand } from './schedule/tomorrow-command';
 import { YesterdayCommand } from './schedule/yesterday-command';
@@ -26,6 +27,8 @@ export class CommandFactory implements Factory<string | number, Command> {
                 return new PreviousBusinessDayCommand();
             case CONTEXT_MENU_ID.SPECIFIED_DAY:
                 return new SpecifiedDayCommand();
+            case CONTEXT_MENU_ID.TEMPLATE:
+                return new TemplateCommand();
             case CONTEXT_MENU_ID.HTML:
                 return new HtmlCommand();
             case CONTEXT_MENU_ID.MARKDOWN:
