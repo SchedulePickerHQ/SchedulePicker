@@ -5,4 +5,5 @@ export abstract class Syntax {
     abstract createTitle(date: DateTime): string;
     abstract createEvent(event: ScheduleEvent): string;
     abstract createEvents(events: ScheduleEvent[]): string;
+    abstract getNewLine(): string;
 }

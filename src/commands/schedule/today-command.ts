@@ -13,6 +13,6 @@ export class TodayCommand extends ScheduleCommand {
         });
         const syntax = await getSyntax();
         const factory = new SyntaxFactory().create(syntax);
-        return factory.createTitle(dateTime) + factory.createEvents(events);
+        return factory.createTitle(dateTime) + factory.getNewLine() + factory.createEvents(events);
     }
 }

@@ -5,7 +5,7 @@ import { getEventMenuColorCode } from './colors';
 
 export class HtmlSyntax extends Syntax {
     createTitle(dateTime: DateTime) {
-        return `<div>[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]</div>`;
+        return `<span>[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]</span>`;
     }
 
     createEvent(event: ScheduleEvent) {
@@ -14,18 +14,25 @@ export class HtmlSyntax extends Syntax {
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
-            return `<div>${timeRange} ${subject}</div>`;
+            return `<span>${timeRange} ${subject}</span>`;
         }
 
         if (event.isAllDay) {
-            return `<div>${eventMenu} ${subject}</div>`;
+            return `<span>${eventMenu} ${subject}</span>`;
         }
 
-        return `<div>${timeRange} ${eventMenu} ${subject}</div>`;
+        return `<span>${timeRange} ${eventMenu} ${subject}</span>`;
     }
 
     createEvents(events: ScheduleEvent[]) {
-        return events.map((event) => this.createEvent(event)).join('');
+        return events
+            .map((event) => `${this.createEvent(event)}${this.getNewLine()}`)
+            .join('')
+            .replace(new RegExp(`${this.getNewLine()}$`), '');
+    }
+
+    getNewLine(): string {
+        return '<br>';
     }
 
     private createTimeRange(startTime: DateTime, endTime: DateTime) {
@@ -35,15 +42,9 @@ export class HtmlSyntax extends Syntax {
     }
 
     private createEventMenu(eventMenu: string) {
-        return `<span
-                    style="background-color: ${getEventMenuColorCode(eventMenu)};
-                    display: inline-block; 
-                    margin-right: 3px; 
-                    padding: 2px 2px 1px; 
-                    color: rgb(255, 255, 255); 
-                    font-size: 11.628px; 
-                    border-radius: 2px; 
-                    line-height: 1.1;">${eventMenu}</span>`;
+        return `<span style="background-color: ${getEventMenuColorCode(
+            eventMenu,
+        )}; display: inline-block; margin-right: 3px; padding: 2px 2px 1px; color: rgb(255, 255, 255); font-size: 11.628px; border-radius: 2px; line-height: 1.1;">${eventMenu}</span>`;
     }
 
     private createSubject(eventId: string, subject: string) {

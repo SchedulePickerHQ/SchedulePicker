@@ -6,6 +6,11 @@ import { createEndOfTime, createStartOfTime, getNowDateTime } from '../../utils/
 import { ScheduleCommand } from './schedule-command';
 
 const SPECIAL_TEMPLATE_CHARACTOR = {
+    TODAY_TITLE: '{%TODAY_TITLE%}',
+    TOMORROW_TITLE: '{%TOMORROW_TITLE%}',
+    YESTERDAY_TITLE: '{%YESTERDAY_TITLE%}',
+    NEXT_BUSINESS_DAY_TITLE: '{%NEXT_BUSINESS_DAY_TITLE%}',
+    PREVIOUS_BUSINESS_DAY_TITLE: '{%PREVIOUS_BUSINESS_DAY_TITLE%}',
     TODAY: '{%TODAY%}',
     TOMORROW: '{%TOMORROW%}',
     YESTERDAY: '{%YESTERDAY%}',
@@ -18,6 +23,38 @@ export class TemplateCommand extends ScheduleCommand {
         const syntax = await getSyntax();
         const factory = new SyntaxFactory().create(syntax);
         let templateText = await getTemplateText();
+
+        if (templateText.includes(SPECIAL_TEMPLATE_CHARACTOR.TODAY_TITLE)) {
+            const dateTime = getNowDateTime();
+            const title = factory.createTitle(dateTime);
+            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTOR.TODAY_TITLE, title);
+        }
+
+        if (templateText.includes(SPECIAL_TEMPLATE_CHARACTOR.TOMORROW_TITLE)) {
+            const dateTime = getNowDateTime();
+            dateTime.date += 1;
+            const title = factory.createTitle(dateTime);
+            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTOR.TOMORROW_TITLE, title);
+        }
+
+        if (templateText.includes(SPECIAL_TEMPLATE_CHARACTOR.YESTERDAY_TITLE)) {
+            const dateTime = getNowDateTime();
+            dateTime.date -= 1;
+            const title = factory.createTitle(dateTime);
+            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTOR.YESTERDAY_TITLE, title);
+        }
+
+        if (templateText.includes(SPECIAL_TEMPLATE_CHARACTOR.NEXT_BUSINESS_DAY_TITLE)) {
+            const dateTime = await searchNextBusinessDateTime(domain);
+            const title = factory.createTitle(dateTime);
+            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTOR.NEXT_BUSINESS_DAY_TITLE, title);
+        }
+
+        if (templateText.includes(SPECIAL_TEMPLATE_CHARACTOR.PREVIOUS_BUSINESS_DAY_TITLE)) {
+            const dateTime = await searchPreviousBusinessDateTime(domain);
+            const title = factory.createTitle(dateTime);
+            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTOR.PREVIOUS_BUSINESS_DAY_TITLE, title);
+        }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTOR.TODAY)) {
             const dateTime = getNowDateTime();

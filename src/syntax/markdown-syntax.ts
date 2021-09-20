@@ -5,7 +5,7 @@ import { getEventMenuColorCode } from './colors';
 
 export class MarkdownSyntax extends Syntax {
     createTitle(dateTime: DateTime) {
-        return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]\n`;
+        return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]`;
     }
 
     createEvent(event: ScheduleEvent) {
@@ -14,18 +14,25 @@ export class MarkdownSyntax extends Syntax {
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
-            return `${timeRange} ${subject}\n`;
+            return `${timeRange} ${subject}`;
         }
 
         if (event.isAllDay) {
-            return `${eventMenu} ${subject}\n`;
+            return `${eventMenu} ${subject}`;
         }
 
-        return `${timeRange} ${eventMenu} ${subject}\n`;
+        return `${timeRange} ${eventMenu} ${subject}`;
     }
 
     createEvents(events: ScheduleEvent[]) {
-        return events.map((event) => this.createEvent(event)).join('');
+        return events
+            .map((event) => `${this.createEvent(event)}${this.getNewLine()}`)
+            .join('')
+            .replace(new RegExp(`${this.getNewLine()}$`), '');
+    }
+
+    getNewLine(): string {
+        return '\n';
     }
 
     private createTimeRange(startTime: DateTime, endTime: DateTime) {

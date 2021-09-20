@@ -2,6 +2,7 @@ import { buildContextMenu } from './contextMenus/context-menus';
 import {
     getContextMenuDisplayed,
     getSyntax,
+    getTemplateText,
     setContextMenuDisplayed,
     setSyntax,
     setTemplateText,
@@ -47,6 +48,12 @@ window.addEventListener('DOMContentLoaded', async () => {
         syntaxInput.checked = display.syntax;
     };
 
+    const syncSyntax = async () => {
+        const syntax = await getSyntax();
+        htmlInput.checked = syntax === 'html';
+        markdownInput.checked = syntax === 'markdown';
+    };
+
     const saveContextMenuDisplayed = async () => {
         await setContextMenuDisplayed({
             today: todayInput.checked,
@@ -58,12 +65,6 @@ window.addEventListener('DOMContentLoaded', async () => {
             template: templateInput.checked,
             syntax: syntaxInput.checked,
         });
-    };
-
-    const syncSyntax = async () => {
-        const syntax = await getSyntax();
-        htmlInput.checked = syntax === 'html';
-        markdownInput.checked = syntax === 'markdown';
     };
 
     const handleSaveButtonClick = async () => {
@@ -82,5 +83,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     await syncContextMenuDisplayed();
     await syncSyntax();
+    templateTextarea.value = await getTemplateText();
     saveButton.addEventListener('click', handleSaveButtonClick);
 });
