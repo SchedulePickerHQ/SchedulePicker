@@ -5,7 +5,7 @@ import { createEndOfTime, createStartOfTime, getNowDateTime } from '../utils/dat
 import { ScheduleCommand } from './base/schedule-command';
 
 export class TomorrowCommand extends ScheduleCommand {
-    async createSchedule(domain: string): Promise<string | null> {
+    protected async createSchedule(domain: string): Promise<string | null> {
         const dateTime = getNowDateTime();
         dateTime.date += 1;
         const events = await getScheduleEvents(domain, {

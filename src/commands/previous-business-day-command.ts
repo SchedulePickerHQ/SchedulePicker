@@ -6,7 +6,7 @@ import { searchPreviousBusinessDateTime } from '../garoon/general';
 import { ScheduleCommand } from './base/schedule-command';
 
 export class PreviousBusinessDayCommand extends ScheduleCommand {
-    async createSchedule(domain: string): Promise<string | null> {
+    protected async createSchedule(domain: string): Promise<string | null> {
         const dateTime = await searchPreviousBusinessDateTime(domain);
         const events = await getScheduleEvents(domain, {
             startTime: createStartOfTime(dateTime),

@@ -6,7 +6,7 @@ import { createEndOfTime, createStartOfTime } from '../utils/date-time';
 import { ScheduleCommand } from './base/schedule-command';
 
 export class NextBusinessDayCommand extends ScheduleCommand {
-    async createSchedule(domain: string): Promise<string | null> {
+    protected async createSchedule(domain: string): Promise<string | null> {
         const dateTime = await searchNextBusinessDateTime(domain);
         const events = await getScheduleEvents(domain, {
             startTime: createStartOfTime(dateTime),

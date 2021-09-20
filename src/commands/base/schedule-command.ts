@@ -27,5 +27,5 @@ export abstract class ScheduleCommand extends Command {
         }
     }
 
-    abstract createSchedule(domain: string): Promise<string | null>;
+    protected abstract createSchedule(domain: string): Promise<string | null>;
 }

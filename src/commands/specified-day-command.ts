@@ -12,7 +12,7 @@ import {
 import { ScheduleCommand } from './base/schedule-command';
 
 export class SpecifiedDayCommand extends ScheduleCommand {
-    async createSchedule(domain: string): Promise<string | null> {
+    protected async createSchedule(domain: string): Promise<string | null> {
         const promptResult = window.prompt(
             '取得したい予定の日付を入力してください\n例: 2021/09/19',
             formatDateTime(getNowDateTime(), 'YYYY/MM/DD'),
