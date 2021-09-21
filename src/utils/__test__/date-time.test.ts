@@ -1,29 +1,16 @@
 import MockDate from 'mockdate';
-import { DateTime, VisibleForTesting } from '../date-time';
-
-const d_2021_12_04__00_00: DateTime = {
-    year: 2021,
-    month: 12,
-    date: 4,
-    hour: 0,
-    minute: 0,
-} as const;
-
-const d_2021_12_04__11_09: DateTime = {
-    year: 2021,
-    month: 12,
-    date: 4,
-    hour: 11,
-    minute: 9,
-} as const;
-
-const d_2021_12_05__11_08: DateTime = {
-    year: 2021,
-    month: 12,
-    date: 5,
-    hour: 11,
-    minute: 8,
-} as const;
+import {
+    createEndOfTime,
+    createStartOfTime,
+    dateTimeToISOString,
+    formatDateTime,
+    isAfterDateTime,
+    isDayOfWeek,
+    isSameDate,
+    isValidDateFormat,
+    stringToDateTime,
+} from '../date-time';
+import { d_2021_12_04__00_00, d_2021_12_04__11_09, d_2021_12_05__11_08 } from './mock-datetime';
 
 beforeEach(() => {
     const { year, month, date, hour, minute } = d_2021_12_04__11_09;
@@ -35,15 +22,12 @@ afterEach(() => {
 });
 
 describe('dateTimeToISOString', () => {
-    const { dateTimeToISOString } = VisibleForTesting;
-
     test('Convert to ISO8601 from DateTime', () => {
         expect(dateTimeToISOString(d_2021_12_04__11_09)).toBe('2021-12-04T02:09:00.000Z');
     });
 });
 
 describe('isSameDate', () => {
-    const { isSameDate } = VisibleForTesting;
     test('Same date time', () => {
         expect(isSameDate(d_2021_12_04__11_09, d_2021_12_04__11_09)).toBe(true);
         expect(isSameDate(d_2021_12_04__11_09, d_2021_12_04__00_00)).toBe(true);
@@ -55,8 +39,6 @@ describe('isSameDate', () => {
 });
 
 describe('isAfterDateTime', () => {
-    const { isAfterDateTime } = VisibleForTesting;
-
     test('Date of argument one is after argument two', () => {
         expect(isAfterDateTime(d_2021_12_05__11_08, d_2021_12_04__00_00)).toBe(true);
         expect(isAfterDateTime(d_2021_12_05__11_08, d_2021_12_04__11_09)).toBe(true);
@@ -69,8 +51,6 @@ describe('isAfterDateTime', () => {
 });
 
 describe('isDayOfWeek', () => {
-    const { isDayOfWeek } = VisibleForTesting;
-
     test('Saturday', () => {
         expect(isDayOfWeek(d_2021_12_04__00_00, 'Sun')).toBe(false);
         expect(isDayOfWeek(d_2021_12_04__00_00, 'Mon')).toBe(false);
@@ -83,8 +63,6 @@ describe('isDayOfWeek', () => {
 });
 
 describe('createStartOfTime', () => {
-    const { createStartOfTime } = VisibleForTesting;
-
     test('Create start of time', () => {
         expect(createStartOfTime(d_2021_12_04__11_09)).toEqual({
             year: 2021,
@@ -97,8 +75,6 @@ describe('createStartOfTime', () => {
 });
 
 describe('createEndOfTime', () => {
-    const { createEndOfTime } = VisibleForTesting;
-
     test('Create end of time', () => {
         expect(createEndOfTime(d_2021_12_04__11_09)).toEqual({
             year: 2021,
@@ -111,8 +87,6 @@ describe('createEndOfTime', () => {
 });
 
 describe('stringToDateTime', () => {
-    const { stringToDateTime } = VisibleForTesting;
-
     test('Convert to DateTime from ISO8601', () => {
         expect(stringToDateTime('2021-12-04T02:09:00.000Z')).toEqual(d_2021_12_04__11_09);
     });
@@ -125,16 +99,12 @@ describe('stringToDateTime', () => {
 });
 
 describe('formatDateTime', () => {
-    const { formatDateTime } = VisibleForTesting;
-
     test('YYYY-MM-DD', () => {
         expect(formatDateTime(d_2021_12_04__11_09, 'YYYY-MM-DD')).toBe('2021-12-04');
     });
 });
 
 describe('isValidDateFormat', () => {
-    const { isValidDateFormat } = VisibleForTesting;
-
     test.each([
         '2021/09/01',
         '2021/12/21',

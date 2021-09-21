@@ -106,7 +106,3 @@ export class ContextMenuBuilder {
         return this.items;
     }
 }
-
-export const VisibleForTesting = {
-    ContextMenuBuilder,
-};

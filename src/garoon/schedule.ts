@@ -1,8 +1,9 @@
+import { assert } from '../utils/asserts';
 import {
-    dateTimeToISOString,
     createEndOfTime,
     createStartOfTime,
     DateTime,
+    dateTimeToISOString,
     isAfterDateTime,
     isSameDate,
     stringToDateTime,
@@ -58,7 +59,7 @@ const convertToScheduleEvent = (
     const subject = isPrivateEvent ? '非公開予定' : gScheduleEvent.subject;
     const eventMenu = isPrivateEvent ? '' : gScheduleEvent.eventMenu;
 
-    console.assert(
+    assert(
         isEventTypeRegularOrRepeating(gScheduleEvent.eventType),
         `Error: ${gScheduleEvent.subject} event type is "ALL_DAY"`,
     );
@@ -68,7 +69,7 @@ const convertToScheduleEvent = (
         subject,
         startTime,
         endTime,
-        eventType: gScheduleEvent.eventType as 'REGULAR' | 'REPEATING',
+        eventType: gScheduleEvent.eventType,
         eventMenu,
         attendees: gScheduleEvent.attendees.map((attendance) => ({
             id: attendance.id,
@@ -103,4 +104,10 @@ export const getScheduleEvents = async (domain: string, query: ScheduleEventsQue
         .filter((event) => isEventTypeRegularOrRepeating(event.eventType)) // 期間予定を除外する
         .map((event) => convertToScheduleEvent(event, query.startTime, query.endTime))
         .sort(sortByTime);
+};
+
+export const VisibleForTesting = {
+    isEventTypeRegularOrRepeating,
+    convertToScheduleEvent,
+    sortByTime,
 };

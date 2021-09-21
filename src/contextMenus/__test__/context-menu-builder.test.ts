@@ -1,4 +1,4 @@
-import { ContextMenuId, CONTEXT_MENU_ID, ItemType, VisibleForTesting } from '../context-menu-builder';
+import { ContextMenuBuilder, ContextMenuId, CONTEXT_MENU_ID, ItemType } from '../context-menu-builder';
 
 const createItem = (
     id: string,
@@ -18,7 +18,6 @@ const createItem = (
 };
 
 describe('ContextMenuBuilder', () => {
-    const { ContextMenuBuilder } = VisibleForTesting;
     test('build()', () => {
         const expectItems = [
             {

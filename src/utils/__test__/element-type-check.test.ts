@@ -11,6 +11,7 @@ describe('isButtonElement', () => {
 
     test('Not button element', () => {
         expect(isButtonElement(inputEl)).toBe(false);
+        expect(isButtonElement(null)).toBe(false);
     });
 });
 
@@ -21,6 +22,7 @@ describe('isInputElement', () => {
 
     test('Not input element', () => {
         expect(isInputElement(buttonEl)).toBe(false);
+        expect(isInputElement(null)).toBe(false);
     });
 });
 
@@ -31,5 +33,6 @@ describe('isTextareaElement', () => {
 
     test('Not Textarea element', () => {
         expect(isTextareaElement(inputEl)).toBe(false);
+        expect(isTextareaElement(null)).toBe(false);
     });
 });

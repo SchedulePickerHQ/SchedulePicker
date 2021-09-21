@@ -53,3 +53,7 @@ export const getEventMenuColorCode = (eventMenu: string): string => {
             return COLOR.DEEP_ORANGE;
     }
 };
+
+export const VisibleForTesting = {
+    COLOR,
+};

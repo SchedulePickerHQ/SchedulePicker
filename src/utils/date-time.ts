@@ -95,15 +95,3 @@ export const getNowDateTime = (): DateTime => {
         minute: dateTime.minute,
     };
 };
-
-export const VisibleForTesting = {
-    dateTimeToISOString,
-    stringToDateTime,
-    isSameDate,
-    isAfterDateTime,
-    isDayOfWeek,
-    createStartOfTime,
-    createEndOfTime,
-    formatDateTime,
-    isValidDateFormat,
-};
