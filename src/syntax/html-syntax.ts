@@ -31,7 +31,7 @@ export class HtmlSyntax extends Syntax {
             .replace(new RegExp(`${this.getNewLine()}$`), '');
     }
 
-    getNewLine(): string {
+    getNewLine() {
         return '<br>';
     }
 

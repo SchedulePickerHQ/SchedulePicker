@@ -37,7 +37,7 @@ const STORAGE_INIT_VALUE: StorageInitValue = {
         template: false,
         syntax: true,
     },
-    TEMPLATE_TEXT: '', // TODO: 利用者が理解しやすい初期値を考える
+    TEMPLATE_TEXT: '',
 };
 
 export const setSyntax = async (syntax: Syntax) => {

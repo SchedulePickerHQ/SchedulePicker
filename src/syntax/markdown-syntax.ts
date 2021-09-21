@@ -31,7 +31,7 @@ export class MarkdownSyntax extends Syntax {
             .replace(new RegExp(`${this.getNewLine()}$`), '');
     }
 
-    getNewLine(): string {
+    getNewLine() {
         return '\n';
     }
 

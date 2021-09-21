@@ -34,7 +34,7 @@ export class ContextMenuBuilder {
     constructor() {
         const root: ContextMenuItem = {
             id: CONTEXT_MENU_ID.ROOT,
-            title: 'SchedulePicker',
+            title: 'SchedulePicker beta',
             type: 'normal',
             contexts: ['editable'],
         };
