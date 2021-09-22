@@ -33,8 +33,8 @@ describe('ContextMenuBuilder', () => {
             createItem(CONTEXT_MENU_ID.PREVIOUS_BUSINESS_DAY, '前営業日の予定', 'normal', {}),
             createItem(CONTEXT_MENU_ID.SPECIFIED_DAY, '指定日の予定', 'normal', {}),
             createItem(CONTEXT_MENU_ID.TEMPLATE, 'テンプレート', 'normal', {}),
+            createItem(CONTEXT_MENU_ID.MY_GROUP, 'Myグループの更新', 'normal', {}),
             createItem(CONTEXT_MENU_ID.SETTINGS, '設定', 'normal', {}),
-            createItem(CONTEXT_MENU_ID.MYSELF, '自分の予定', 'normal', { parentId: CONTEXT_MENU_ID.TODAY }),
             createItem(CONTEXT_MENU_ID.HTML, 'HTML', 'radio', { checked: true }),
             createItem(CONTEXT_MENU_ID.MARKDOWN, 'Markdown', 'radio', { checked: false }),
         ];
@@ -46,11 +46,14 @@ describe('ContextMenuBuilder', () => {
             .addPreviousBusinessDay()
             .addSpecifiedDay()
             .addTemplate()
+            .addUpdateMyGroup()
             .addSettings()
-            .addMenuItem(CONTEXT_MENU_ID.MYSELF, '自分の予定', 'normal', { parentId: CONTEXT_MENU_ID.TODAY })
             .addHtml(true)
             .addMarkdown(false)
             .build();
         expect(items).toEqual(expectItems);
     });
 });
+
+// createItem(CONTEXT_MENU_ID.MYSELF, '自分の予定', 'normal', { parentId: CONTEXT_MENU_ID.TODAY
+// addMenuItem(CONTEXT_MENU_ID.MYSELF, '自分の予定', 'normal', { parentId: CONTEXT_MENU_ID.TODAY })

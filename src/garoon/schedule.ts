@@ -1,4 +1,4 @@
-import { assert } from '../utils/asserts';
+import { assert, assertExists } from '../utils/asserts';
 import {
     createEndOfTime,
     createStartOfTime,
@@ -9,6 +9,7 @@ import {
     stringToDateTime,
 } from '../utils/date-time';
 import * as GaroonApi from './api';
+import { getMyGroups } from './general';
 
 type ScheduleEventsQuery = {
     startTime: DateTime;
@@ -33,6 +34,16 @@ export type ScheduleEvent = {
     visibilityType?: 'PUBLIC' | 'PRIVATE';
     isAllDay: boolean;
     isStartOnly: boolean;
+};
+
+type MyGroupEventsQuery = {
+    groupId: string;
+    startTime: DateTime;
+    endTime: DateTime;
+};
+
+export type MyGroupEvent = ScheduleEvent & {
+    members: string[];
 };
 
 const isEventTypeRegularOrRepeating = (
@@ -104,6 +115,40 @@ export const getScheduleEvents = async (domain: string, query: ScheduleEventsQue
         .filter((event) => isEventTypeRegularOrRepeating(event.eventType)) // 期間予定を除外する
         .map((event) => convertToScheduleEvent(event, query.startTime, query.endTime))
         .sort(sortByTime);
+};
+
+export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery): Promise<ScheduleEvent[]> => {
+    const { groupId, startTime, endTime } = query;
+    const myGroups = await getMyGroups(domain);
+    const myGroupMembers = myGroups.find((group) => group.key === groupId)?.belong_member;
+    assertExists(myGroupMembers);
+
+    const eventsList = await Promise.all(
+        myGroupMembers.map(async (userId) => {
+            const events = await getScheduleEvents(domain, {
+                startTime,
+                endTime,
+                target: { id: userId, type: 'user' },
+            });
+            return events;
+        }),
+    );
+
+    return eventsList
+        .reduce((uniqueEvents: ScheduleEvent[], events: ScheduleEvent[]) => {
+            const filter = events.filter((event) => !uniqueEvents.some((uniqueEvent) => uniqueEvent.id === event.id));
+            return uniqueEvents.concat(filter);
+        }, [])
+        .sort(sortByTime)
+        .map((event) => {
+            const memberIds = event.attendees
+                .filter((attendee) => myGroupMembers.includes(attendee.id))
+                .map((member) => member.id);
+            return {
+                ...event,
+                members: memberIds,
+            };
+        });
 };
 
 export const VisibleForTesting = {

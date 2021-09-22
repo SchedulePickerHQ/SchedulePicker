@@ -49,6 +49,7 @@ export const buildContextMenu = async () => {
         builder.addMarkdown(syntax === 'markdown');
     }
 
+    builder.addUpdateMyGroup();
     builder.addSettings();
     createContextMenu(builder.build());
 };

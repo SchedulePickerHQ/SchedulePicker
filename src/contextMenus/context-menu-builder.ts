@@ -20,10 +20,11 @@ export const CONTEXT_MENU_ID = {
     PREVIOUS_BUSINESS_DAY: 'previousBusinessDay',
     SPECIFIED_DAY: 'specifiedDay',
     TEMPLATE: 'template',
-    MYSELF: 'myself',
+    MY_GROUP: 'myGroup',
     SETTINGS: 'settings',
     HTML: 'html',
     MARKDOWN: 'markdown',
+    MYSELF: 'myself',
 } as const;
 
 export type ContextMenuId = TypeOfValues<typeof CONTEXT_MENU_ID>;
@@ -88,6 +89,10 @@ export class ContextMenuBuilder {
 
     addTemplate() {
         return this.addMenuItem(CONTEXT_MENU_ID.TEMPLATE, 'テンプレート', 'normal', {});
+    }
+
+    addUpdateMyGroup() {
+        return this.addMenuItem(CONTEXT_MENU_ID.MY_GROUP, 'Myグループの更新', 'normal', {});
     }
 
     addSettings() {

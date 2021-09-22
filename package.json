@@ -32,7 +32,8 @@
     "rules": {
       "unicorn/prevent-abbreviations": "off",
       "capitalized-comments": "off",
-      "no-alert": "off"
+      "no-alert": "off",
+      "unicorn/no-array-reduce": "off"
     }
   },
   "jest": {
