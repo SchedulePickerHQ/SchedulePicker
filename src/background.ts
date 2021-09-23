@@ -11,6 +11,6 @@ browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickDat
         return;
     }
 
-    const command = new CommandFactory().create(info.menuItemId);
+    const command = new CommandFactory().create(info.menuItemId as string);
     command.execute(info, tab);
 });

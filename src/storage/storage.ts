@@ -3,7 +3,7 @@ import { MyGroup } from '../garoon/api';
 
 type Syntax = 'html' | 'markdown';
 
-type ContextMenuDisplayed = {
+export type ContextMenuDisplayed = {
     today: boolean;
     tomorrow: boolean;
     yesterday: boolean;
@@ -19,6 +19,7 @@ type StorageInitValue = {
     CONTEXT_MENU_DISPLAYED: ContextMenuDisplayed;
     TEMPLATE_TEXT: string;
     MY_GROUPS: MyGroup[];
+    USE_MY_GROUP: boolean;
 };
 
 const STORAGE_KEY = {
@@ -26,6 +27,7 @@ const STORAGE_KEY = {
     CONTEXT_MENU_DISPLAYED: 'contextMenuDisplayed',
     TEMPLATE_TEXT: 'templateText',
     MY_GROUPS: 'myGroups',
+    USE_MY_GROUP: 'useMyGroup',
 } as const;
 
 const STORAGE_INIT_VALUE: StorageInitValue = {
@@ -42,6 +44,7 @@ const STORAGE_INIT_VALUE: StorageInitValue = {
     },
     TEMPLATE_TEXT: '',
     MY_GROUPS: [],
+    USE_MY_GROUP: false,
 };
 
 export const setSyntax = async (syntax: Syntax) => {
@@ -98,4 +101,18 @@ export const getMyGroups = async (): Promise<MyGroup[]> => {
     }
 
     return item[STORAGE_KEY.MY_GROUPS] as MyGroup[];
+};
+
+export const setToUseMyGroup = async (use: boolean) => {
+    await browser.storage.sync.set({ [STORAGE_KEY.USE_MY_GROUP]: use });
+};
+
+export const getToUseMyGroup = async (): Promise<boolean> => {
+    const item = await browser.storage.sync.get(STORAGE_KEY.USE_MY_GROUP);
+
+    if (Object.keys(item).length === 0) {
+        return STORAGE_INIT_VALUE.USE_MY_GROUP;
+    }
+
+    return item[STORAGE_KEY.USE_MY_GROUP] as boolean;
 };

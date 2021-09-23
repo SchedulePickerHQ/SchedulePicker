@@ -1,3 +1,5 @@
+import { addUUID } from '../utils/uuid';
+
 // https://developer.chrome.com/docs/extensions/reference/contextMenus/
 type ContextType = 'editable';
 export type ItemType = 'normal' | 'radio';
@@ -43,52 +45,58 @@ export class ContextMenuBuilder {
     }
 
     addMenuItem(
-        id: ContextMenuId,
+        id: ContextMenuId | string,
         title: string,
         type: ItemType,
         options: {
             checked?: boolean;
-            parentId?: ContextMenuId;
+            parentId?: ContextMenuId | string;
         },
     ) {
         const { checked, parentId } = options;
         this.items.push({
-            id: id as string,
+            id,
             title,
             type,
             checked,
-            parentId: parentId ? (parentId as string) : CONTEXT_MENU_ID.ROOT,
+            parentId: parentId ? parentId : CONTEXT_MENU_ID.ROOT,
             contexts: ['editable'],
         });
         return this;
     }
 
-    addToday() {
-        return this.addMenuItem(CONTEXT_MENU_ID.TODAY, '今日の予定', 'normal', {});
+    addToday({ parentId }: { parentId: ContextMenuId | string }) {
+        return this.addMenuItem(addUUID(CONTEXT_MENU_ID.TODAY), '今日の予定', 'normal', { parentId });
     }
 
-    addTomorrow() {
-        return this.addMenuItem(CONTEXT_MENU_ID.TOMORROW, '明日の予定', 'normal', {});
+    addTomorrow({ parentId }: { parentId: ContextMenuId | string }) {
+        return this.addMenuItem(addUUID(CONTEXT_MENU_ID.TOMORROW), '明日の予定', 'normal', { parentId });
     }
 
-    addYesterDay() {
-        return this.addMenuItem(CONTEXT_MENU_ID.YESTERDAY, '昨日の予定', 'normal', {});
+    addYesterDay({ parentId }: { parentId: ContextMenuId | string }) {
+        return this.addMenuItem(addUUID(CONTEXT_MENU_ID.YESTERDAY), '昨日の予定', 'normal', { parentId });
     }
 
-    addNextBusinessDay() {
-        return this.addMenuItem(CONTEXT_MENU_ID.NEXT_BUSINESS_DAY, '翌営業日の予定', 'normal', {});
+    addNextBusinessDay({ parentId }: { parentId: ContextMenuId | string }) {
+        return this.addMenuItem(addUUID(CONTEXT_MENU_ID.NEXT_BUSINESS_DAY), '翌営業日の予定', 'normal', { parentId });
     }
 
-    addPreviousBusinessDay() {
-        return this.addMenuItem(CONTEXT_MENU_ID.PREVIOUS_BUSINESS_DAY, '前営業日の予定', 'normal', {});
+    addPreviousBusinessDay({ parentId }: { parentId: ContextMenuId | string }) {
+        return this.addMenuItem(addUUID(CONTEXT_MENU_ID.PREVIOUS_BUSINESS_DAY), '前営業日の予定', 'normal', {
+            parentId,
+        });
     }
 
-    addSpecifiedDay() {
-        return this.addMenuItem(CONTEXT_MENU_ID.SPECIFIED_DAY, '指定日の予定', 'normal', {});
+    addSpecifiedDay({ parentId }: { parentId: ContextMenuId | string }) {
+        return this.addMenuItem(addUUID(CONTEXT_MENU_ID.SPECIFIED_DAY), '指定日の予定', 'normal', { parentId });
     }
 
-    addTemplate() {
-        return this.addMenuItem(CONTEXT_MENU_ID.TEMPLATE, 'テンプレート', 'normal', {});
+    addTemplate({ parentId }: { parentId: ContextMenuId | string }) {
+        return this.addMenuItem(addUUID(CONTEXT_MENU_ID.TEMPLATE), 'テンプレート', 'normal', { parentId });
+    }
+
+    addMyself() {
+        return this.addMenuItem(CONTEXT_MENU_ID.MYSELF, '自分', 'normal', {});
     }
 
     addUpdateMyGroup() {
@@ -99,11 +107,11 @@ export class ContextMenuBuilder {
         return this.addMenuItem(CONTEXT_MENU_ID.SETTINGS, '設定', 'normal', {});
     }
 
-    addHtml(checked = false) {
+    addHtml({ checked = false }) {
         return this.addMenuItem(CONTEXT_MENU_ID.HTML, 'HTML', 'radio', { checked });
     }
 
-    addMarkdown(checked = false) {
+    addMarkdown({ checked = false }) {
         return this.addMenuItem(CONTEXT_MENU_ID.MARKDOWN, 'Markdown', 'radio', { checked });
     }
 
