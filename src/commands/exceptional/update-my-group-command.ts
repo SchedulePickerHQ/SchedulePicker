@@ -5,6 +5,7 @@ import { getMyGroups } from '../../garoon/general';
 import { setMyGroups } from '../../storage/storage';
 import { assertExists } from '../../utils/asserts';
 import { sendErrorMessage, sendLoadingStatus } from '../sender';
+import { buildContextMenu } from '../../contextMenus/context-menus';
 
 export class UpdateMyGroupCommand extends Command {
     async execute(_info: Menus.OnClickData, tab: Tabs.Tab) {
@@ -16,6 +17,7 @@ export class UpdateMyGroupCommand extends Command {
         try {
             const myGroups = await getMyGroups(domain);
             await setMyGroups(myGroups);
+            await buildContextMenu();
         } catch (error: unknown) {
             await sendErrorMessage(tab.id, 'Myグループの更新に失敗しました');
             throw error;
