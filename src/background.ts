@@ -1,6 +1,7 @@
 import browser from 'webextension-polyfill';
 import { CommandFactory } from './commands/command-factory';
 import { buildContextMenu } from './contextMenus/context-menus';
+import { clearUUID } from './utils/uuid';
 
 (async () => {
     await buildContextMenu();
@@ -11,6 +12,6 @@ browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickDat
         return;
     }
 
-    const command = new CommandFactory().create(info.menuItemId as string);
+    const command = new CommandFactory().create(clearUUID(info.menuItemId as string));
     command.execute(info, tab);
 });

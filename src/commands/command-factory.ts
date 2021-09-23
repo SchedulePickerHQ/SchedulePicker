@@ -1,6 +1,5 @@
 import { CONTEXT_MENU_ID } from '../contextMenus/context-menu-builder';
 import { Factory } from '../utils/factory';
-import { clearUUID } from '../utils/uuid';
 import { Command } from './base/command';
 import { SettingsCommand } from './exceptional/settings-command';
 import { UpdateMyGroupCommand } from './exceptional/update-my-group-command';
@@ -16,9 +15,7 @@ import { MarkdownCommand } from './syntax/markdown-command';
 
 export class CommandFactory implements Factory<string | number, Command> {
     create(id: string): Command {
-        const contextMenuId = clearUUID(id);
-
-        switch (contextMenuId) {
+        switch (id) {
             case CONTEXT_MENU_ID.TODAY:
                 return new TodayCommand();
             case CONTEXT_MENU_ID.TOMORROW:
