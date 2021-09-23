@@ -1,8 +1,6 @@
-import { getEventMenuColorCode, VisibleForTesting } from '../colors';
+import { COLOR, getEventMenuColorCode } from '../colors';
 
 describe('getEventMenuColorCode', () => {
-    const { COLOR } = VisibleForTesting;
-
     test.each(['打合', '会議'])('Blue', (value) => {
         expect(getEventMenuColorCode(value)).toBe(COLOR.BLUE);
     });

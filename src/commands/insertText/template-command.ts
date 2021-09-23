@@ -1,5 +1,5 @@
 import { searchNextBusinessDateTime, searchPreviousBusinessDateTime } from '../../garoon/general';
-import { getScheduleEvents } from '../../garoon/schedule';
+import { getMyGroupEvents, getScheduleEvents } from '../../garoon/schedule';
 import { getSyntax, getTemplateText } from '../../storage/storage';
 import { SyntaxFactory } from '../../syntax/syntax-factory';
 import { createEndOfTime, createStartOfTime, getNowDateTime, formatDateTime } from '../../utils/date-time';
@@ -21,7 +21,7 @@ const SPECIAL_TEMPLATE_CHARACTER = {
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 export class TemplateCommand extends InsertTextCommand {
-    protected async createInsertText(domain: string): Promise<string | null> {
+    protected async createSchedule(domain: string, groupId: string | null): Promise<string | null> {
         const syntax = await getSyntax();
         const factory = new SyntaxFactory().create(syntax);
         let templateText = await getTemplateText();
@@ -60,10 +60,19 @@ export class TemplateCommand extends InsertTextCommand {
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS)) {
             const dateTime = getNowDateTime();
-            const events = await getScheduleEvents(domain, {
-                startTime: createStartOfTime(dateTime),
-                endTime: createEndOfTime(dateTime),
-            });
+            const startTime = createStartOfTime(dateTime);
+            const endTime = createEndOfTime(dateTime);
+            const events =
+                groupId === null
+                    ? await getScheduleEvents(domain, {
+                          startTime,
+                          endTime,
+                      })
+                    : await getMyGroupEvents(domain, {
+                          groupId,
+                          startTime,
+                          endTime,
+                      });
             const schedule = factory.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS, schedule);
         }
@@ -71,10 +80,19 @@ export class TemplateCommand extends InsertTextCommand {
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS)) {
             const dateTime = getNowDateTime();
             dateTime.date += 1;
-            const events = await getScheduleEvents(domain, {
-                startTime: createStartOfTime(dateTime),
-                endTime: createEndOfTime(dateTime),
-            });
+            const startTime = createStartOfTime(dateTime);
+            const endTime = createEndOfTime(dateTime);
+            const events =
+                groupId === null
+                    ? await getScheduleEvents(domain, {
+                          startTime,
+                          endTime,
+                      })
+                    : await getMyGroupEvents(domain, {
+                          groupId,
+                          startTime,
+                          endTime,
+                      });
             const schedule = factory.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS, schedule);
         }
@@ -82,30 +100,57 @@ export class TemplateCommand extends InsertTextCommand {
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS)) {
             const dateTime = getNowDateTime();
             dateTime.date -= 1;
-            const events = await getScheduleEvents(domain, {
-                startTime: createStartOfTime(dateTime),
-                endTime: createEndOfTime(dateTime),
-            });
+            const startTime = createStartOfTime(dateTime);
+            const endTime = createEndOfTime(dateTime);
+            const events =
+                groupId === null
+                    ? await getScheduleEvents(domain, {
+                          startTime,
+                          endTime,
+                      })
+                    : await getMyGroupEvents(domain, {
+                          groupId,
+                          startTime,
+                          endTime,
+                      });
             const schedule = factory.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS, schedule);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS)) {
             const dateTime = await searchNextBusinessDateTime(domain);
-            const events = await getScheduleEvents(domain, {
-                startTime: createStartOfTime(dateTime),
-                endTime: createEndOfTime(dateTime),
-            });
+            const startTime = createStartOfTime(dateTime);
+            const endTime = createEndOfTime(dateTime);
+            const events =
+                groupId === null
+                    ? await getScheduleEvents(domain, {
+                          startTime,
+                          endTime,
+                      })
+                    : await getMyGroupEvents(domain, {
+                          groupId,
+                          startTime,
+                          endTime,
+                      });
             const schedule = factory.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS, schedule);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS)) {
             const dateTime = await searchPreviousBusinessDateTime(domain);
-            const events = await getScheduleEvents(domain, {
-                startTime: createStartOfTime(dateTime),
-                endTime: createEndOfTime(dateTime),
-            });
+            const startTime = createStartOfTime(dateTime);
+            const endTime = createEndOfTime(dateTime);
+            const events =
+                groupId === null
+                    ? await getScheduleEvents(domain, {
+                          startTime,
+                          endTime,
+                      })
+                    : await getMyGroupEvents(domain, {
+                          groupId,
+                          startTime,
+                          endTime,
+                      });
             const schedule = factory.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS, schedule);
         }

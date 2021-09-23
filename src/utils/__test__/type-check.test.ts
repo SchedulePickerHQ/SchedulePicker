@@ -1,4 +1,4 @@
-import { isButtonElement, isInputElement, isTextareaElement } from '../element-type-check';
+import { isButtonElement, isInputElement, isString, isTextareaElement } from '../type-check';
 
 const buttonEl = document.createElement('button');
 const textareaEl = document.createElement('textarea');
@@ -34,5 +34,24 @@ describe('isTextareaElement', () => {
     test('Not Textarea element', () => {
         expect(isTextareaElement(inputEl)).toBe(false);
         expect(isTextareaElement(null)).toBe(false);
+    });
+});
+
+describe('isString', () => {
+    test.each([
+        [undefined, false],
+        [null, false],
+        [1, false],
+        [NaN, false], // eslint-disable-line unicorn/prefer-number-properties
+        ['', true],
+        ['a', true],
+        [true, false],
+        [Symbol('a'), false],
+        [() => {}, false], // eslint-disable-line @typescript-eslint/no-empty-function
+        [{ key: 'value' }, false],
+        [['1'], false],
+        [new Date(), false],
+    ])('isString', (value, expected) => {
+        expect(isString(value)).toBe(expected);
     });
 });

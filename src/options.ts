@@ -10,7 +10,7 @@ import {
     setToUseMyGroup,
 } from './storage/storage';
 import { assert } from './utils/asserts';
-import { isButtonElement, isInputElement, isTextareaElement } from './utils/element-type-check';
+import { isButtonElement, isInputElement, isTextareaElement } from './utils/type-check';
 
 window.addEventListener('DOMContentLoaded', async () => {
     const saveButton = document.querySelector('.save-button');

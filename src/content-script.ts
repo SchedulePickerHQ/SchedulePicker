@@ -2,8 +2,8 @@ import DOMPurify from 'dompurify';
 import browser from 'webextension-polyfill';
 import { CommandMessage, COMMAND_ID } from './commands/sender';
 import { assertExists } from './utils/asserts';
-import { isInputElement, isTextareaElement } from './utils/element-type-check';
 import { LOADING_STATUS, showLoading } from './utils/loading';
+import { isInputElement, isTextareaElement } from './utils/type-check';
 
 browser.runtime.onMessage.addListener((commandMessage: CommandMessage) => {
     switch (commandMessage.id) {

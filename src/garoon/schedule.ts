@@ -42,8 +42,13 @@ type MyGroupEventsQuery = {
     endTime: DateTime;
 };
 
+export type Member = {
+    id: string;
+    name: string;
+};
+
 export type MyGroupEvent = ScheduleEvent & {
-    members: string[];
+    members: Member[];
 };
 
 const isEventTypeRegularOrRepeating = (
@@ -117,7 +122,7 @@ export const getScheduleEvents = async (domain: string, query: ScheduleEventsQue
         .sort(sortByTime);
 };
 
-export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery): Promise<ScheduleEvent[]> => {
+export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery): Promise<MyGroupEvent[]> => {
     const { groupId, startTime, endTime } = query;
     const myGroups = await getMyGroups(domain);
     const myGroupMembers = myGroups.find((group) => group.key === groupId)?.belong_member;
@@ -141,12 +146,10 @@ export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery
         }, [])
         .sort(sortByTime)
         .map((event) => {
-            const memberIds = event.attendees
-                .filter((attendee) => myGroupMembers.includes(attendee.id))
-                .map((member) => member.id);
+            const members = event.attendees.filter((attendee) => myGroupMembers.includes(attendee.id));
             return {
                 ...event,
-                members: memberIds,
+                members,
             };
         });
 };

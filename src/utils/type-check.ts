@@ -4,3 +4,5 @@ export const isInputElement = (target: Element | null): target is HTMLInputEleme
 
 export const isTextareaElement = (target: Element | null): target is HTMLTextAreaElement =>
     target?.tagName === 'TEXTAREA';
+
+export const isString = (value: unknown): value is string => typeof value === 'string';

@@ -1,4 +1,4 @@
-const COLOR = {
+export const COLOR = {
     BLUE: '#3182dc',
     SKYBLUE: '#57b3ed',
     ORANGE: '#ef9201',
@@ -9,7 +9,7 @@ const COLOR = {
     BROWN: '#b99976',
     GRAY: '#999999',
     YELLOW_GREEN: '#9acd32',
-} as const;
+};
 
 export const getEventMenuColorCode = (eventMenu: string): string => {
     switch (eventMenu) {
@@ -52,8 +52,4 @@ export const getEventMenuColorCode = (eventMenu: string): string => {
         default:
             return COLOR.DEEP_ORANGE;
     }
-};
-
-export const VisibleForTesting = {
-    COLOR,
 };
