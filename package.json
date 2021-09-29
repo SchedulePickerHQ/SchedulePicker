@@ -8,6 +8,7 @@
     "lint-fix": "run-p 'lint:* -- --fix'",
     "lint:js": "xo",
     "test": "jest",
+    "test-ci": "TZ=Asia/Tokyo jest",
     "watch": "parcel watch static/manifest.json --dist-dir dist --no-cache --no-hmr",
     "format": "prettier --loglevel warn --write .",
     "prepare": "husky install"
