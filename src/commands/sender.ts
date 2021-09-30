@@ -19,7 +19,7 @@ export const sendLoadingStatus = async (tabId: number, status: LoadingStatus) =>
     });
 };
 
-export const sendSchedule = async (tabId: number, schedule: string) => {
+export const sendInsertText = async (tabId: number, schedule: string) => {
     await browser.tabs.sendMessage(tabId, {
         id: COMMAND_ID.INSERT_TEXT,
         message: schedule,

@@ -1,30 +1,36 @@
-import { ScheduleEvent } from '../garoon/schedule';
+import { Member, MyGroupEvent, ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
 import { Syntax } from './base/syntax';
-import { getEventMenuColorCode } from './colors';
+import { COLOR, getEventMenuColorCode } from './colors';
 
 export class HtmlSyntax extends Syntax {
     createTitle(dateTime: DateTime) {
         return `<span>[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]</span>`;
     }
 
-    createEvent(event: ScheduleEvent) {
+    createEvent(event: ScheduleEvent | MyGroupEvent) {
         const timeRange = this.createTimeRange(event.startTime, event.endTime);
         const subject = this.createSubject(event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
-            return `<span>${timeRange} ${subject}</span>`;
+            return this.isMyGroupEvent(event)
+                ? `<span>${timeRange} ${subject} ${this.createMembers(event.members)}</span>`
+                : `<span>${timeRange} ${subject}</span>`;
         }
 
         if (event.isAllDay) {
-            return `<span>${eventMenu} ${subject}</span>`;
+            return this.isMyGroupEvent(event)
+                ? `<span>${eventMenu} ${subject} ${this.createMembers(event.members)}</span>`
+                : `<span>${eventMenu} ${subject}</span>`;
         }
 
-        return `<span>${timeRange} ${eventMenu} ${subject}</span>`;
+        return this.isMyGroupEvent(event)
+            ? `<span>${timeRange} ${eventMenu} ${subject} ${this.createMembers(event.members)}</span>`
+            : `<span>${timeRange} ${eventMenu} ${subject}</span>`;
     }
 
-    createEvents(events: ScheduleEvent[]) {
+    createEvents(events: ScheduleEvent[] | MyGroupEvent[]) {
         return events
             .map((event) => `${this.createEvent(event)}${this.getNewLine()}`)
             .join('')
@@ -49,5 +55,12 @@ export class HtmlSyntax extends Syntax {
 
     private createSubject(eventId: string, subject: string) {
         return `<a href="https://bozuman.cybozu.com/g/schedule/view.csp?event=${eventId}">${subject}</a>`;
+    }
+
+    private createMembers(members: Member[]) {
+        return `<span style="color: ${COLOR.BROWN};">(${members
+            .map((member) => member.name)
+            .join(', ')
+            .replace(/, $/, '')})</span>`;
     }
 }

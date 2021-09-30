@@ -1,7 +1,7 @@
-import { ScheduleEvent } from '../garoon/schedule';
+import { Member, ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
 import { Syntax } from './base/syntax';
-import { getEventMenuColorCode } from './colors';
+import { COLOR, getEventMenuColorCode } from './colors';
 
 export class MarkdownSyntax extends Syntax {
     createTitle(dateTime: DateTime) {
@@ -14,14 +14,20 @@ export class MarkdownSyntax extends Syntax {
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
-            return `${timeRange} ${subject}`;
+            return this.isMyGroupEvent(event)
+                ? `${timeRange} ${subject} ${this.createMembers(event.members)}`
+                : `${timeRange} ${subject}`;
         }
 
         if (event.isAllDay) {
-            return `${eventMenu} ${subject}`;
+            return this.isMyGroupEvent(event)
+                ? `${eventMenu} ${subject} ${this.createMembers(event.members)}`
+                : `${eventMenu} ${subject}`;
         }
 
-        return `${timeRange} ${eventMenu} ${subject}`;
+        return this.isMyGroupEvent(event)
+            ? `${timeRange} ${eventMenu} ${subject} ${this.createMembers(event.members)}`
+            : `${timeRange} ${eventMenu} ${subject}`;
     }
 
     createEvents(events: ScheduleEvent[]) {
@@ -47,5 +53,12 @@ export class MarkdownSyntax extends Syntax {
 
     private createSubject(eventId: string, subject: string) {
         return `[${subject}](https://bozuman.cybozu.com/g/schedule/view.csp?event=${eventId})`;
+    }
+
+    private createMembers(members: Member[]) {
+        return `<span style="color: ${COLOR.BROWN};">(${members
+            .map((member) => member.name)
+            .join(', ')
+            .replace(/, $/, '')})</span>`;
     }
 }

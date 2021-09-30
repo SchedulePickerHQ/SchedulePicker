@@ -6,7 +6,7 @@ import {
     isSameDate,
     stringToDateTime,
 } from '../utils/date-time';
-import { getCalendarEvents } from './api';
+import { getCalendarEvents, getMyGroupByIds, getMyGroupVersions } from './api';
 
 export const searchNextBusinessDateTime = async (domain: string): Promise<DateTime> => {
     const publicHolidays = await getPublicHolidays(domain);
@@ -78,6 +78,13 @@ const isPublicHoliday = (dateTime: DateTime, publicHolidays: DateTime[]): boolea
     }
 
     return false;
+};
+
+export const getMyGroups = async (domain: string) => {
+    const myGroupVersions = await getMyGroupVersions(domain, []);
+    const myGroupIds = myGroupVersions.map((version) => version.id);
+    const myGroups = await getMyGroupByIds(domain, myGroupIds);
+    return myGroups;
 };
 
 export const VisibleForTesting = {

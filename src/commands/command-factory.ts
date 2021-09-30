@@ -2,6 +2,7 @@ import { CONTEXT_MENU_ID } from '../contextMenus/context-menu-builder';
 import { Factory } from '../utils/factory';
 import { Command } from './base/command';
 import { SettingsCommand } from './exceptional/settings-command';
+import { UpdateMyGroupCommand } from './exceptional/update-my-group-command';
 import { NextBusinessDayCommand } from './insertText/next-business-day-command';
 import { PreviousBusinessDayCommand } from './insertText/previous-business-day-command';
 import { SpecifiedDayCommand } from './insertText/specified-day-command';
@@ -13,7 +14,7 @@ import { HtmlCommand } from './syntax/html-command';
 import { MarkdownCommand } from './syntax/markdown-command';
 
 export class CommandFactory implements Factory<string | number, Command> {
-    create(id: string | number): Command {
+    create(id: string): Command {
         switch (id) {
             case CONTEXT_MENU_ID.TODAY:
                 return new TodayCommand();
@@ -33,6 +34,8 @@ export class CommandFactory implements Factory<string | number, Command> {
                 return new HtmlCommand();
             case CONTEXT_MENU_ID.MARKDOWN:
                 return new MarkdownCommand();
+            case CONTEXT_MENU_ID.MY_GROUP:
+                return new UpdateMyGroupCommand();
             case CONTEXT_MENU_ID.SETTINGS:
                 return new SettingsCommand();
             default:

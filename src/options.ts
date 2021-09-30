@@ -3,12 +3,14 @@ import {
     getContextMenuDisplayed,
     getSyntax,
     getTemplateText,
+    getToUseMyGroup,
     setContextMenuDisplayed,
     setSyntax,
     setTemplateText,
+    setToUseMyGroup,
 } from './storage/storage';
 import { assert } from './utils/asserts';
-import { isButtonElement, isInputElement, isTextareaElement } from './utils/element-type-check';
+import { isButtonElement, isInputElement, isTextareaElement } from './utils/type-check';
 
 window.addEventListener('DOMContentLoaded', async () => {
     const saveButton = document.querySelector('.save-button');
@@ -22,6 +24,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const syntaxInput = document.querySelector('#syntax');
     const htmlInput = document.querySelector('#html');
     const markdownInput = document.querySelector('#markdown');
+    const useMyGroupInput = document.querySelector('#use-my-group');
     const templateTextarea = document.querySelector('.template-setting__textarea');
     assert(isButtonElement(saveButton));
     assert(isInputElement(todayInput));
@@ -34,6 +37,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     assert(isInputElement(syntaxInput));
     assert(isInputElement(htmlInput));
     assert(isInputElement(markdownInput));
+    assert(isInputElement(useMyGroupInput));
     assert(isTextareaElement(templateTextarea));
 
     const syncContextMenuDisplayed = async () => {
@@ -72,6 +76,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         saveButton.classList.add('saving');
         await saveContextMenuDisplayed();
         await setSyntax(htmlInput.checked ? 'html' : 'markdown');
+        await setToUseMyGroup(useMyGroupInput.checked);
         await setTemplateText(templateTextarea.value);
         await buildContextMenu();
 
@@ -83,6 +88,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     await syncContextMenuDisplayed();
     await syncSyntax();
+    useMyGroupInput.checked = await getToUseMyGroup();
     templateTextarea.value = await getTemplateText();
     saveButton.addEventListener('click', handleSaveButtonClick);
 });
