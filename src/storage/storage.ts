@@ -39,7 +39,7 @@ const STORAGE_INIT_VALUE: StorageInitValue = {
         nextBusinessDay: false,
         previousBusinessDay: false,
         specifiedDay: false,
-        template: false,
+        template: true,
         syntax: true,
     },
     TEMPLATE_TEXT: '',
