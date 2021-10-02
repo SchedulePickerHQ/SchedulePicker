@@ -1,7 +1,7 @@
 import browser from 'webextension-polyfill';
 import { MyGroup } from '../garoon/api';
 
-type Syntax = 'html' | 'markdown';
+export type Syntax = 'html' | 'markdown';
 
 export type ContextMenuDisplayed = {
     today: boolean;

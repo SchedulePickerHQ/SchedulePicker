@@ -1,10 +1,11 @@
+import { Syntax } from '../storage/storage';
 import { Factory } from '../utils/factory';
 import { SyntaxGenerator } from './base/abstract-syntax';
 import { HtmlSyntaxGenerator } from './html-syntax-generator';
 import { MarkdownSyntaxGenerator } from './markdown-syntax-generator';
 
-export class SyntaxGeneratorFactory implements Factory<'html' | 'markdown', SyntaxGenerator> {
-    create(syntax: 'html' | 'markdown'): SyntaxGenerator {
+export class SyntaxGeneratorFactory implements Factory<Syntax, SyntaxGenerator> {
+    create(syntax: Syntax): SyntaxGenerator {
         switch (syntax) {
             case 'html':
                 return new HtmlSyntaxGenerator();
