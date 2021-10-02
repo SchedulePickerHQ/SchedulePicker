@@ -2,12 +2,12 @@ import { Menus, Tabs } from 'webextension-polyfill';
 import { getToUseMyGroup } from '../../storage/storage';
 import { LOADING_STATUS } from '../../utils/loading';
 import { isString } from '../../utils/type-check';
-import { Command } from '../base/command';
+import { AbstractCommand } from '../base/command';
 import { sendErrorMessage, sendInsertText, sendLoadingStatus } from '../sender';
 import { CONTEXT_MENU_ID } from '../../contextMenus/context-menu-builder';
 import { assert, assertExists } from '../../utils/asserts';
 
-export abstract class InsertTextCommand extends Command {
+export abstract class InsertTextCommand extends AbstractCommand {
     async execute(info: Menus.OnClickData, tab: Tabs.Tab) {
         assert(isString(info.parentMenuItemId));
         assertExists(tab.id);

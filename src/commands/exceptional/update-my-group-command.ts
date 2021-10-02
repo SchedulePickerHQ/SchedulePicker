@@ -1,13 +1,13 @@
 import { Menus, Tabs } from 'webextension-polyfill';
 import { LOADING_STATUS } from '../../utils/loading';
-import { Command } from '../base/command';
+import { AbstractCommand } from '../base/command';
 import { getMyGroups } from '../../garoon/general';
 import { setMyGroups } from '../../storage/storage';
 import { assertExists } from '../../utils/asserts';
 import { sendErrorMessage, sendLoadingStatus } from '../sender';
 import { buildContextMenu } from '../../contextMenus/context-menus';
 
-export class UpdateMyGroupCommand extends Command {
+export class UpdateMyGroupCommand extends AbstractCommand {
     async execute(_info: Menus.OnClickData, tab: Tabs.Tab) {
         assertExists(tab.id);
         assertExists(tab.url);
