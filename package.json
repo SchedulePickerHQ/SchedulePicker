@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "parcel build static/manifest.json --no-content-hash --no-source-maps --dist-dir dist --no-cache --detailed-report 0",
+    "build": "run-p build:* -- --no-content-hash --no-source-maps --no-cache --detailed-report 0",
+    "build:chrome": "parcel build static/chrome/manifest.json --dist-dir dist/chrome --no-cache",
+    "build:firefox": "parcel build static/firefox/manifest.json --dist-dir dist/firefox --no-cache",
     "lint": "run-p lint:*",
     "lint-fix": "run-p 'lint:* -- --fix'",
     "lint:js": "xo",
     "test": "jest",
     "test-ci": "TZ=Asia/Tokyo jest",
-    "watch": "parcel watch static/manifest.json --dist-dir dist --no-cache",
+    "watch:chrome": "parcel watch static/chrome/manifest.json --dist-dir dist/chrome",
+    "watch:firefox": "parcel watch static/firefox/manifest.json --dist-dir dist/firefox",
     "format": "prettier --loglevel warn --write .",
     "prepare": "husky install"
   },
