@@ -5,6 +5,6 @@ export const isInputElement = (target: Element | null): target is HTMLInputEleme
 export const isTextareaElement = (target: Element | null): target is HTMLTextAreaElement =>
     target?.tagName === 'TEXTAREA';
 
-export const isIframeElement = (target: HTMLElement): target is HTMLIFrameElement => target.tagName === 'IFRAME';
+export const isIframeElement = (target: Element | null): target is HTMLIFrameElement => target?.tagName === 'IFRAME';
 
 export const isString = (value: unknown): value is string => typeof value === 'string';
