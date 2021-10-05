@@ -6,6 +6,7 @@ import {
     dateTimeToISOString,
     isAfterDateTime,
     isSameDate,
+    isSameDateTime,
     stringToDateTime,
 } from '../utils/date-time';
 import * as GaroonApi from './api';
@@ -97,16 +98,20 @@ const convertToScheduleEvent = (
     };
 };
 
-const sortByTime = (event: ScheduleEvent, nextEvent: ScheduleEvent) => {
-    if (event.isAllDay) {
+const sortByTime = (event1: ScheduleEvent, event2: ScheduleEvent) => {
+    if (event1.isAllDay) {
         return 1;
     }
 
-    if (nextEvent.isAllDay) {
+    if (event2.isAllDay) {
         return -1;
     }
 
-    return isAfterDateTime(event.startTime, nextEvent.startTime) ? 1 : -1;
+    if (isSameDateTime(event1.startTime, event2.startTime)) {
+        return isAfterDateTime(event1.endTime, event2.endTime) ? 1 : -1;
+    }
+
+    return isAfterDateTime(event1.startTime, event2.startTime) ? 1 : -1;
 };
 
 export const getScheduleEvents = async (domain: string, query: ScheduleEventsQuery): Promise<ScheduleEvent[]> => {

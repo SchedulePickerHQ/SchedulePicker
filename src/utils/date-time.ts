@@ -54,6 +54,12 @@ export const isSameDate = (dateTime1: DateTime, dateTime2: DateTime) => {
     return dayjsInstance1.isSame(dayjsInstance2, 'date');
 };
 
+export const isSameDateTime = (dateTime1: DateTime, dateTime2: DateTime) => {
+    const dayjsInstance1 = dateTimeToDayjs(dateTime1);
+    const dayjsInstance2 = dateTimeToDayjs(dateTime2);
+    return dayjsInstance1.isSame(dayjsInstance2);
+};
+
 export const isAfterDateTime = (dateTime: DateTime, afterDateTime: DateTime) => {
     const dayjsInstance1 = dateTimeToDayjs(dateTime);
     const dayjsInstance2 = dateTimeToDayjs(afterDateTime);

@@ -28,9 +28,19 @@ describe('dateTimeToISOString', () => {
 });
 
 describe('isSameDate', () => {
-    test('Same date time', () => {
+    test('Same date', () => {
         expect(isSameDate(d_2021_12_04__11_09, d_2021_12_04__11_09)).toBe(true);
         expect(isSameDate(d_2021_12_04__11_09, d_2021_12_04__00_00)).toBe(true);
+    });
+
+    test('Different date', () => {
+        expect(isSameDate(d_2021_12_04__11_09, d_2021_12_05__11_08)).toBe(false);
+    });
+});
+
+describe('isSameDateTime', () => {
+    test('Same date time', () => {
+        expect(isSameDate(d_2021_12_04__11_09, d_2021_12_04__11_09)).toBe(true);
     });
 
     test('Different date time', () => {
