@@ -9,7 +9,9 @@ export class MarkdownSyntaxGenerator extends AbstractSyntax {
     }
 
     createEvent(event: ScheduleEvent) {
-        const timeRange = this.createTimeRange(event.startTime, event.endTime);
+        const timeRange = event.isAllDay
+            ? this.createEventMenu('終日')
+            : this.createTimeRange(event.startTime, event.endTime);
         const subject = this.createSubject(event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
@@ -17,12 +19,6 @@ export class MarkdownSyntaxGenerator extends AbstractSyntax {
             return this.isMyGroupEvent(event)
                 ? `${timeRange} ${subject} ${this.createMembers(event.members)}`
                 : `${timeRange} ${subject}`;
-        }
-
-        if (event.isAllDay) {
-            return this.isMyGroupEvent(event)
-                ? `${eventMenu} ${subject} ${this.createMembers(event.members)}`
-                : `${eventMenu} ${subject}`;
         }
 
         return this.isMyGroupEvent(event)

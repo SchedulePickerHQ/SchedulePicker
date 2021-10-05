@@ -9,7 +9,9 @@ export class HtmlSyntaxGenerator extends AbstractSyntax {
     }
 
     createEvent(event: ScheduleEvent | MyGroupEvent) {
-        const timeRange = this.createTimeRange(event.startTime, event.endTime);
+        const timeRange = event.isAllDay
+            ? this.createEventMenu('終日')
+            : this.createTimeRange(event.startTime, event.endTime);
         const subject = this.createSubject(event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
@@ -17,12 +19,6 @@ export class HtmlSyntaxGenerator extends AbstractSyntax {
             return this.isMyGroupEvent(event)
                 ? `<span>${timeRange} ${subject} ${this.createMembers(event.members)}</span>`
                 : `<span>${timeRange} ${subject}</span>`;
-        }
-
-        if (event.isAllDay) {
-            return this.isMyGroupEvent(event)
-                ? `<span>${eventMenu} ${subject} ${this.createMembers(event.members)}</span>`
-                : `<span>${eventMenu} ${subject}</span>`;
         }
 
         return this.isMyGroupEvent(event)
