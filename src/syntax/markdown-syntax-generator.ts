@@ -1,16 +1,18 @@
 import { Member, ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
-import { AbstractSyntax } from './base/abstract-syntax';
+import { AbstractSyntaxGenerator } from './base/abstract-syntax-generator';
 import { COLOR, getEventMenuColorCode } from './colors';
 
-export class MarkdownSyntaxGenerator extends AbstractSyntax {
+export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
         return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]`;
     }
 
-    createEvent(event: ScheduleEvent) {
-        const timeRange = this.createTimeRange(event.startTime, event.endTime);
-        const subject = this.createSubject(event.id, event.subject);
+    createEvent(domain: string, event: ScheduleEvent) {
+        const timeRange = event.isAllDay
+            ? this.createEventMenu('終日')
+            : this.createTimeRange(event.startTime, event.endTime);
+        const subject = this.createSubject(domain, event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
@@ -19,20 +21,14 @@ export class MarkdownSyntaxGenerator extends AbstractSyntax {
                 : `${timeRange} ${subject}`;
         }
 
-        if (event.isAllDay) {
-            return this.isMyGroupEvent(event)
-                ? `${eventMenu} ${subject} ${this.createMembers(event.members)}`
-                : `${eventMenu} ${subject}`;
-        }
-
         return this.isMyGroupEvent(event)
             ? `${timeRange} ${eventMenu} ${subject} ${this.createMembers(event.members)}`
             : `${timeRange} ${eventMenu} ${subject}`;
     }
 
-    createEvents(events: ScheduleEvent[]) {
+    createEvents(domain: string, events: ScheduleEvent[]) {
         return events
-            .map((event) => `${this.createEvent(event)}${this.getNewLine()}`)
+            .map((event) => `${this.createEvent(domain, event)}${this.getNewLine()}`)
             .join('')
             .replace(new RegExp(`${this.getNewLine()}$`), '');
     }
@@ -51,8 +47,8 @@ export class MarkdownSyntaxGenerator extends AbstractSyntax {
         return `<span style="color: ${getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
     }
 
-    private createSubject(eventId: string, subject: string) {
-        return `[${subject}](https://bozuman.cybozu.com/g/schedule/view.csp?event=${eventId})`;
+    private createSubject(domain: string, eventId: string, subject: string) {
+        return `[${subject}](https://${domain}/g/schedule/view.csp?event=${eventId})`;
     }
 
     private createMembers(members: Member[]) {

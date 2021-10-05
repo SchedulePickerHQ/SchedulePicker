@@ -73,7 +73,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = generator.createEvents(events);
+            const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS, schedule);
         }
 
@@ -93,7 +93,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = generator.createEvents(events);
+            const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS, schedule);
         }
 
@@ -113,7 +113,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = generator.createEvents(events);
+            const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS, schedule);
         }
 
@@ -132,7 +132,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = generator.createEvents(events);
+            const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS, schedule);
         }
 
@@ -151,7 +151,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = generator.createEvents(events);
+            const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS, schedule);
         }
 
