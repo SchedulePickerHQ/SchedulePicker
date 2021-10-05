@@ -7,7 +7,7 @@ export interface SyntaxGenerator {
     getNewLine(): string;
 }
 
-export abstract class AbstractSyntax implements SyntaxGenerator {
+export abstract class AbstractSyntaxGenerator implements SyntaxGenerator {
     protected isMyGroupEvent(event: ScheduleEvent | MyGroupEvent): event is MyGroupEvent {
         return 'members' in event;
     }
