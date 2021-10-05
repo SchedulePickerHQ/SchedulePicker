@@ -108,6 +108,10 @@ const sortByTime = (event1: ScheduleEvent, event2: ScheduleEvent) => {
     }
 
     if (isSameDateTime(event1.startTime, event2.startTime)) {
+        if (isSameDateTime(event1.endTime, event2.endTime)) {
+            return 0;
+        }
+
         return isAfterDateTime(event1.endTime, event2.endTime) ? 1 : -1;
     }
 
