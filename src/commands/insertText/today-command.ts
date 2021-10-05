@@ -22,6 +22,6 @@ export class TodayCommand extends InsertTextCommand {
                   });
         const syntax = await getSyntax();
         const generator = new SyntaxGeneratorFactory().create(syntax);
-        return generator.createTitle(dateTime) + generator.getNewLine() + generator.createEvents(events);
+        return generator.createTitle(dateTime) + generator.getNewLine() + generator.createEvents(domain, events);
     }
 }

@@ -8,11 +8,11 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
         return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]`;
     }
 
-    createEvent(event: ScheduleEvent) {
+    createEvent(domain: string, event: ScheduleEvent) {
         const timeRange = event.isAllDay
             ? this.createEventMenu('終日')
             : this.createTimeRange(event.startTime, event.endTime);
-        const subject = this.createSubject(event.id, event.subject);
+        const subject = this.createSubject(domain, event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
@@ -26,9 +26,9 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
             : `${timeRange} ${eventMenu} ${subject}`;
     }
 
-    createEvents(events: ScheduleEvent[]) {
+    createEvents(domain: string, events: ScheduleEvent[]) {
         return events
-            .map((event) => `${this.createEvent(event)}${this.getNewLine()}`)
+            .map((event) => `${this.createEvent(domain, event)}${this.getNewLine()}`)
             .join('')
             .replace(new RegExp(`${this.getNewLine()}$`), '');
     }
@@ -47,8 +47,8 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
         return `<span style="color: ${getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
     }
 
-    private createSubject(eventId: string, subject: string) {
-        return `[${subject}](https://bozuman.cybozu.com/g/schedule/view.csp?event=${eventId})`;
+    private createSubject(domain: string, eventId: string, subject: string) {
+        return `[${subject}](https://${domain}/g/schedule/view.csp?event=${eventId})`;
     }
 
     private createMembers(members: Member[]) {

@@ -8,11 +8,11 @@ export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
         return `<span>[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]</span>`;
     }
 
-    createEvent(event: ScheduleEvent | MyGroupEvent) {
+    createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
         const timeRange = event.isAllDay
             ? this.createEventMenu('終日')
             : this.createTimeRange(event.startTime, event.endTime);
-        const subject = this.createSubject(event.id, event.subject);
+        const subject = this.createSubject(domain, event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
@@ -26,9 +26,9 @@ export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
             : `<span>${timeRange} ${eventMenu} ${subject}</span>`;
     }
 
-    createEvents(events: ScheduleEvent[] | MyGroupEvent[]) {
+    createEvents(domain: string, events: ScheduleEvent[] | MyGroupEvent[]) {
         return events
-            .map((event) => `${this.createEvent(event)}${this.getNewLine()}`)
+            .map((event) => `${this.createEvent(domain, event)}${this.getNewLine()}`)
             .join('')
             .replace(new RegExp(`${this.getNewLine()}$`), '');
     }
@@ -49,8 +49,8 @@ export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
         )}; display: inline-block; margin-right: 3px; padding: 2px 2px 1px; color: rgb(255, 255, 255); font-size: 11.628px; border-radius: 2px; line-height: 1.1;">${eventMenu}</span>`;
     }
 
-    private createSubject(eventId: string, subject: string) {
-        return `<a href="https://bozuman.cybozu.com/g/schedule/view.csp?event=${eventId}">${subject}</a>`;
+    private createSubject(domain: string, eventId: string, subject: string) {
+        return `<a href="https://${domain}/g/schedule/view.csp?event=${eventId}">${subject}</a>`;
     }
 
     private createMembers(members: Member[]) {
