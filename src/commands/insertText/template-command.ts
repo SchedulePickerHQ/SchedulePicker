@@ -1,8 +1,8 @@
 import { searchNextBusinessDateTime, searchPreviousBusinessDateTime } from '../../garoon/general';
 import { getMyGroupEvents, getScheduleEvents } from '../../garoon/schedule';
 import { getSyntax, getTemplateText } from '../../storage/storage';
-import { SyntaxFactory } from '../../syntax/syntax-factory';
-import { createEndOfTime, createStartOfTime, getNowDateTime, formatDateTime } from '../../utils/date-time';
+import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
+import { createEndOfTime, createStartOfTime, formatDateTime, getNowDateTime } from '../../utils/date-time';
 import { InsertTextCommand } from './insert-text-command';
 
 const SPECIAL_TEMPLATE_CHARACTER = {
@@ -23,7 +23,7 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 export class TemplateCommand extends InsertTextCommand {
     protected async createSchedule(domain: string, groupId: string | null): Promise<string | null> {
         const syntax = await getSyntax();
-        const factory = new SyntaxFactory().create(syntax);
+        const generator = new SyntaxGeneratorFactory().create(syntax);
         let templateText = await getTemplateText();
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TODAY)) {
@@ -73,7 +73,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = factory.createEvents(events);
+            const schedule = generator.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS, schedule);
         }
 
@@ -93,7 +93,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = factory.createEvents(events);
+            const schedule = generator.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS, schedule);
         }
 
@@ -113,7 +113,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = factory.createEvents(events);
+            const schedule = generator.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS, schedule);
         }
 
@@ -132,7 +132,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = factory.createEvents(events);
+            const schedule = generator.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS, schedule);
         }
 
@@ -151,7 +151,7 @@ export class TemplateCommand extends InsertTextCommand {
                           startTime,
                           endTime,
                       });
-            const schedule = factory.createEvents(events);
+            const schedule = generator.createEvents(events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS, schedule);
         }
 

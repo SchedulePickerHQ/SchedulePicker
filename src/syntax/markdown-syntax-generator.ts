@@ -1,36 +1,36 @@
-import { Member, MyGroupEvent, ScheduleEvent } from '../garoon/schedule';
+import { Member, ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
-import { Syntax } from './base/syntax';
+import { AbstractSyntax } from './base/abstract-syntax';
 import { COLOR, getEventMenuColorCode } from './colors';
 
-export class HtmlSyntax extends Syntax {
+export class MarkdownSyntaxGenerator extends AbstractSyntax {
     createTitle(dateTime: DateTime) {
-        return `<span>[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]</span>`;
+        return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]`;
     }
 
-    createEvent(event: ScheduleEvent | MyGroupEvent) {
+    createEvent(event: ScheduleEvent) {
         const timeRange = this.createTimeRange(event.startTime, event.endTime);
         const subject = this.createSubject(event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
             return this.isMyGroupEvent(event)
-                ? `<span>${timeRange} ${subject} ${this.createMembers(event.members)}</span>`
-                : `<span>${timeRange} ${subject}</span>`;
+                ? `${timeRange} ${subject} ${this.createMembers(event.members)}`
+                : `${timeRange} ${subject}`;
         }
 
         if (event.isAllDay) {
             return this.isMyGroupEvent(event)
-                ? `<span>${eventMenu} ${subject} ${this.createMembers(event.members)}</span>`
-                : `<span>${eventMenu} ${subject}</span>`;
+                ? `${eventMenu} ${subject} ${this.createMembers(event.members)}`
+                : `${eventMenu} ${subject}`;
         }
 
         return this.isMyGroupEvent(event)
-            ? `<span>${timeRange} ${eventMenu} ${subject} ${this.createMembers(event.members)}</span>`
-            : `<span>${timeRange} ${eventMenu} ${subject}</span>`;
+            ? `${timeRange} ${eventMenu} ${subject} ${this.createMembers(event.members)}`
+            : `${timeRange} ${eventMenu} ${subject}`;
     }
 
-    createEvents(events: ScheduleEvent[] | MyGroupEvent[]) {
+    createEvents(events: ScheduleEvent[]) {
         return events
             .map((event) => `${this.createEvent(event)}${this.getNewLine()}`)
             .join('')
@@ -38,23 +38,21 @@ export class HtmlSyntax extends Syntax {
     }
 
     getNewLine() {
-        return '<br>';
+        return '\n';
     }
 
     private createTimeRange(startTime: DateTime, endTime: DateTime) {
         const formattedStartTime = formatDateTime(startTime, 'HH:mm');
         const formattedEndTime = formatDateTime(endTime, 'HH:mm');
-        return `<span>${formattedStartTime}-${formattedEndTime}</span>`;
+        return `${formattedStartTime}-${formattedEndTime}`;
     }
 
     private createEventMenu(eventMenu: string) {
-        return `<span style="background-color: ${getEventMenuColorCode(
-            eventMenu,
-        )}; display: inline-block; margin-right: 3px; padding: 2px 2px 1px; color: rgb(255, 255, 255); font-size: 11.628px; border-radius: 2px; line-height: 1.1;">${eventMenu}</span>`;
+        return `<span style="color: ${getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
     }
 
     private createSubject(eventId: string, subject: string) {
-        return `<a href="https://bozuman.cybozu.com/g/schedule/view.csp?event=${eventId}">${subject}</a>`;
+        return `[${subject}](https://bozuman.cybozu.com/g/schedule/view.csp?event=${eventId})`;
     }
 
     private createMembers(members: Member[]) {

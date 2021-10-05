@@ -1,7 +1,7 @@
 import { searchPreviousBusinessDateTime } from '../../garoon/general';
 import { getMyGroupEvents, getScheduleEvents } from '../../garoon/schedule';
 import { getSyntax } from '../../storage/storage';
-import { SyntaxFactory } from '../../syntax/syntax-factory';
+import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { createEndOfTime, createStartOfTime } from '../../utils/date-time';
 import { InsertTextCommand } from './insert-text-command';
 
@@ -22,7 +22,7 @@ export class PreviousBusinessDayCommand extends InsertTextCommand {
                       endTime,
                   });
         const syntax = await getSyntax();
-        const factory = new SyntaxFactory().create(syntax);
-        return factory.createTitle(dateTime) + factory.getNewLine() + factory.createEvents(events);
+        const generator = new SyntaxGeneratorFactory().create(syntax);
+        return generator.createTitle(dateTime) + generator.getNewLine() + generator.createEvents(events);
     }
 }

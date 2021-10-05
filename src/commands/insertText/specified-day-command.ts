@@ -1,6 +1,6 @@
 import { getMyGroupEvents, getScheduleEvents } from '../../garoon/schedule';
 import { getSyntax } from '../../storage/storage';
-import { SyntaxFactory } from '../../syntax/syntax-factory';
+import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import {
     createEndOfTime,
     createStartOfTime,
@@ -42,7 +42,7 @@ export class SpecifiedDayCommand extends InsertTextCommand {
                       endTime,
                   });
         const syntax = await getSyntax();
-        const factory = new SyntaxFactory().create(syntax);
-        return factory.createTitle(dateTime) + factory.getNewLine() + factory.createEvents(events);
+        const generator = new SyntaxGeneratorFactory().create(syntax);
+        return generator.createTitle(dateTime) + generator.getNewLine() + generator.createEvents(events);
     }
 }
