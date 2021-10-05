@@ -1,7 +1,7 @@
 # SchedulePicker3
 
 <div align="center">
-    <img src="https://github.com/SchedulePicker/SchedulePicker3/blob/main/static/icons/logo.png" alt="SchedulePicker" width="96" height="96" />
+    <img src="https://github.com/SchedulePicker/SchedulePicker3/blob/main/static/icons/logo_128.png" alt="SchedulePicker" width="96" height="96" />
   </a>
 </div>
 
