@@ -4,15 +4,15 @@
   "description": "",
   "scripts": {
     "build": "run-p build:* -- --no-content-hash --no-source-maps --no-cache --detailed-report 0",
-    "build:chrome": "parcel build static/chrome/manifest.json --dist-dir dist/chrome --no-cache",
-    "build:firefox": "parcel build static/firefox/manifest.json --dist-dir dist/firefox --no-cache",
+    "build:chrome": "cross-env BROWSER_ENV=chrome parcel build static/chrome/manifest.json --dist-dir dist/chrome --no-cache",
+    "build:firefox": "cross-env BROWSER_ENV=firefox parcel build static/firefox/manifest.json --dist-dir dist/firefox --no-cache",
     "lint": "run-p lint:*",
     "lint-fix": "run-p 'lint:* -- --fix'",
     "lint:js": "xo",
     "test": "jest",
     "test-ci": "TZ=Asia/Tokyo jest",
-    "watch:chrome": "parcel watch static/chrome/manifest.json --dist-dir dist/chrome",
-    "watch:firefox": "parcel watch static/firefox/manifest.json --dist-dir dist/firefox",
+    "watch:chrome": "cross-env BROWSER_ENV=chrome parcel watch static/chrome/manifest.json --dist-dir dist/chrome",
+    "watch:firefox": "cross-env BROWSER_ENV=firefox parcel watch static/firefox/manifest.json --dist-dir dist/firefox",
     "format": "prettier --loglevel warn --write .",
     "prepare": "husky install"
   },
@@ -37,7 +37,9 @@
       "unicorn/prevent-abbreviations": "off",
       "capitalized-comments": "off",
       "no-alert": "off",
-      "unicorn/no-array-reduce": "off"
+      "unicorn/no-array-reduce": "off",
+      "node/prefer-global/process": "off",
+      "@typescript-eslint/naming-convention": "off"
     }
   },
   "jest": {
@@ -71,6 +73,7 @@
     "@types/dompurify": "^2.3.1",
     "@types/jest": "^27.0.2",
     "@types/webextension-polyfill": "^0.8.1",
+    "cross-env": "^7.0.3",
     "husky": "^7.0.4",
     "jest": "^27.3.1",
     "lint-staged": "^11.2.6",
