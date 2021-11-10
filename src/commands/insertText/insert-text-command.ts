@@ -1,6 +1,6 @@
 import { Menus, Tabs } from 'webextension-polyfill';
 import { getToUseMyGroup } from '../../storage/storage';
-import { LOADING_STATUS } from '../../utils/loading';
+import { LOADING_STATUS } from '../../ui/loading/loading';
 import { isString } from '../../utils/type-check';
 import { AbstractCommand } from '../base/command';
 import { sendErrorMessage, sendInsertText, sendLoadingStatus } from '../sender';

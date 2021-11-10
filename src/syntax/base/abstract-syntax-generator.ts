@@ -8,12 +8,12 @@ export interface SyntaxGenerator {
 }
 
 export abstract class AbstractSyntaxGenerator implements SyntaxGenerator {
-    protected isMyGroupEvent(event: ScheduleEvent | MyGroupEvent): event is MyGroupEvent {
-        return 'members' in event;
-    }
-
     abstract createTitle(date: DateTime): string;
     abstract createEvent(domain: string, event: ScheduleEvent | MyGroupEvent): string;
     abstract createEvents(domain: string, events: ScheduleEvent[] | MyGroupEvent[]): string;
     abstract getNewLine(): string;
+
+    protected isMyGroupEvent(event: ScheduleEvent | MyGroupEvent): event is MyGroupEvent {
+        return 'members' in event;
+    }
 }
