@@ -10,8 +10,8 @@ import { TemplateCommand } from './insertText/template-command';
 import { TodayCommand } from './insertText/today-command';
 import { TomorrowCommand } from './insertText/tomorrow-command';
 import { YesterdayCommand } from './insertText/yesterday-command';
-import { HtmlCommand } from './syntax/html-command';
-import { MarkdownCommand } from './syntax/markdown-command';
+import { HtmlCommand } from './selectSyntax/html-command';
+import { MarkdownCommand } from './selectSyntax/markdown-command';
 
 export class CommandFactory implements Factory<string | number, Command> {
     create(id: string): Command {
