@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { LoadingStatus } from '../utils/loading';
+import { LoadingStatus } from '../ui/loading/loading';
 
 export const COMMAND_ID = {
     LOADING: 'Loading',

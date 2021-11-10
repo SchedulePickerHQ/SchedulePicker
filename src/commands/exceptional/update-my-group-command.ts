@@ -1,5 +1,5 @@
 import { Menus, Tabs } from 'webextension-polyfill';
-import { LOADING_STATUS } from '../../utils/loading';
+import { LOADING_STATUS } from '../../ui/loading/loading';
 import { AbstractCommand } from '../base/command';
 import { getMyGroups } from '../../garoon/general';
 import { setMyGroups } from '../../storage/storage';

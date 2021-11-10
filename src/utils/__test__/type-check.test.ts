@@ -1,8 +1,9 @@
-import { isButtonElement, isInputElement, isString, isTextareaElement } from '../type-check';
+import { isButtonElement, isInputElement, isString, isTextareaElement, isIframeElement } from '../type-check';
 
 const buttonEl = document.createElement('button');
 const textareaEl = document.createElement('textarea');
 const inputEl = document.createElement('input');
+const iframeEl = document.createElement('iframe');
 
 describe('isButtonElement', () => {
     test('Button element', () => {
@@ -34,6 +35,17 @@ describe('isTextareaElement', () => {
     test('Not Textarea element', () => {
         expect(isTextareaElement(inputEl)).toBe(false);
         expect(isTextareaElement(null)).toBe(false);
+    });
+});
+
+describe('isIframeElement', () => {
+    test('Iframe element', () => {
+        expect(isIframeElement(iframeEl)).toBe(true);
+    });
+
+    test('Not Iframe element', () => {
+        expect(isIframeElement(inputEl)).toBe(false);
+        expect(isIframeElement(null)).toBe(false);
     });
 });
 
