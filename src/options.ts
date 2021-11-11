@@ -2,9 +2,11 @@ import { buildContextMenu } from './contextMenus/context-menus';
 import {
     getContextMenuDisplayed,
     getSyntax,
+    getTemplateText,
     getToUseMyGroup,
     setContextMenuDisplayed,
     setSyntax,
+    setTemplateText,
     setToUseMyGroup,
 } from './storage/storage';
 import { createEditor } from './ui/editor/editor';
@@ -38,8 +40,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     assert(isInputElement(markdownInput));
     assert(isInputElement(useMyGroupInput));
     assert(isDivElement(templateEl));
-
-    createEditor(templateEl);
+    const templateEditor = createEditor(templateEl);
 
     const syncContextMenuDisplayed = async () => {
         const display = await getContextMenuDisplayed();
@@ -78,7 +79,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         await saveContextMenuDisplayed();
         await setSyntax(htmlInput.checked ? 'html' : 'markdown');
         await setToUseMyGroup(useMyGroupInput.checked);
-        // await setTemplateText(templateEditor.value);
+        await setTemplateText(templateEditor.getContents());
         await buildContextMenu();
 
         setTimeout(() => {
@@ -90,6 +91,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     await syncContextMenuDisplayed();
     await syncSyntax();
     useMyGroupInput.checked = await getToUseMyGroup();
-    // templateEditor.value = await getTemplateText();
+    const templateText = await getTemplateText();
+    templateEditor.setContents(templateText);
     saveButton.addEventListener('click', handleSaveButtonClick);
 });
