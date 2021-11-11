@@ -1,9 +1,28 @@
-import { isButtonElement, isInputElement, isString, isTextareaElement, isIframeElement } from '../type-check';
+import {
+    isButtonElement,
+    isIframeElement,
+    isInputElement,
+    isString,
+    isTextareaElement,
+    isDivElement,
+} from '../type-check';
 
+const divEl = document.createElement('div');
 const buttonEl = document.createElement('button');
 const textareaEl = document.createElement('textarea');
 const inputEl = document.createElement('input');
 const iframeEl = document.createElement('iframe');
+
+describe('isDivElement', () => {
+    test('Div element', () => {
+        expect(isDivElement(divEl)).toBe(true);
+    });
+
+    test('Not div element', () => {
+        expect(isDivElement(buttonEl)).toBe(false);
+        expect(isDivElement(null)).toBe(false);
+    });
+});
 
 describe('isButtonElement', () => {
     test('Button element', () => {

@@ -1,3 +1,5 @@
+export const isDivElement = (target: Element | null): target is HTMLDivElement => target?.tagName === 'DIV';
+
 export const isButtonElement = (target: Element | null): target is HTMLButtonElement => target?.tagName === 'BUTTON';
 
 export const isInputElement = (target: Element | null): target is HTMLInputElement => target?.tagName === 'INPUT';

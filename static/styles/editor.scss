@@ -1,0 +1,20 @@
+@use './variable';
+@import '../../node_modules/quill/dist/quill.core';
+@import '../../node_modules/quill/dist/quill.snow';
+
+.template-setting {
+    &__label {
+        display: block;
+    }
+
+    &__editor {
+        width: 100%;
+        height: 320px;
+        margin-bottom: 8px;
+    }
+
+    &__usage-link {
+        margin-top: 8px;
+        color: variable.$primary-color;
+    }
+}

@@ -2,15 +2,14 @@ import { buildContextMenu } from './contextMenus/context-menus';
 import {
     getContextMenuDisplayed,
     getSyntax,
-    getTemplateText,
     getToUseMyGroup,
     setContextMenuDisplayed,
     setSyntax,
-    setTemplateText,
     setToUseMyGroup,
 } from './storage/storage';
+import { createEditor } from './ui/editor/editor';
 import { assert } from './utils/asserts';
-import { isButtonElement, isInputElement, isTextareaElement } from './utils/type-check';
+import { isButtonElement, isDivElement, isInputElement } from './utils/type-check';
 
 window.addEventListener('DOMContentLoaded', async () => {
     const saveButton = document.querySelector('.save-button');
@@ -25,7 +24,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const htmlInput = document.querySelector('#html');
     const markdownInput = document.querySelector('#markdown');
     const useMyGroupInput = document.querySelector('#use-my-group');
-    const templateTextarea = document.querySelector('.template-setting__textarea');
+    const templateEl = document.querySelector('.template-setting__editor');
     assert(isButtonElement(saveButton));
     assert(isInputElement(todayInput));
     assert(isInputElement(tomorrowInput));
@@ -38,7 +37,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     assert(isInputElement(htmlInput));
     assert(isInputElement(markdownInput));
     assert(isInputElement(useMyGroupInput));
-    assert(isTextareaElement(templateTextarea));
+    assert(isDivElement(templateEl));
+
+    createEditor(templateEl);
 
     const syncContextMenuDisplayed = async () => {
         const display = await getContextMenuDisplayed();
@@ -77,7 +78,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         await saveContextMenuDisplayed();
         await setSyntax(htmlInput.checked ? 'html' : 'markdown');
         await setToUseMyGroup(useMyGroupInput.checked);
-        await setTemplateText(templateTextarea.value);
+        // await setTemplateText(templateEditor.value);
         await buildContextMenu();
 
         setTimeout(() => {
@@ -89,6 +90,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     await syncContextMenuDisplayed();
     await syncSyntax();
     useMyGroupInput.checked = await getToUseMyGroup();
-    templateTextarea.value = await getTemplateText();
+    // templateEditor.value = await getTemplateText();
     saveButton.addEventListener('click', handleSaveButtonClick);
 });
