@@ -2,6 +2,14 @@
 @import '../../node_modules/quill/dist/quill.core';
 @import '../../node_modules/quill/dist/quill.snow';
 
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
 .template-setting {
     &__label {
         display: block;
