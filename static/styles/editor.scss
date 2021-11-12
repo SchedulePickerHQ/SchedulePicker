@@ -26,3 +26,15 @@ em {
         color: variable.$primary-color;
     }
 }
+
+.ql-placeholder .ql-picker-label {
+    width: 112px;
+
+    &::before {
+        content: attr(data-name);
+    }
+}
+
+.ql-placeholder .ql-picker-item::before {
+    content: attr(data-name);
+}
