@@ -18,7 +18,7 @@ const options = {
         toolbar: {
             container: [
                 [{ 'placeholder': Object.values(TEMPLATE_PLACEHOLDER) }],
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                [{ 'header': [1, 2, 3, 4, false] }],
                 ['bold', 'italic', 'underline', 'strike'],
                 [{ 'color': [] }, { 'background': [] }, 'link', 'clean'],
             ],
@@ -36,7 +36,7 @@ export const createEditor = (el: HTMLElement): Editor => {
     setupCustomPicker(quill);
 
     return {
-        getContents: () => quill.root.innerHTML,
+        getContents: () => addStyleToTagOfHeader(quill.root.innerHTML),
         setContents: (contents: string) => {
             quill.root.innerHTML = DOMPurify.sanitize(contents);
         },
@@ -63,4 +63,14 @@ const setupCustomPicker = (quill: Quill) => {
             quill.setSelection(cursorPosition, value.length);
         }
     });
+};
+
+// TODO: テストを書く
+const addStyleToTagOfHeader = (contents: string) => {
+    let target = contents;
+    target = target.replaceAll(/<h1[^>]*>/g, '<h1 style="font-size: 2em; margin: 0; padding: 0;">');
+    target = target.replaceAll(/<h2[^>]*>/g, '<h2 style="font-size: 1.5em; margin: 0; padding: 0;">');
+    target = target.replaceAll(/<h3[^>]*>/g, '<h3 style="font-size: 1.17em; margin: 0; padding: 0;">');
+    target = target.replaceAll(/<h4[^>]*>/g, '<h4 style="font-size: 1.17em; margin: 0; padding: 0;">');
+    return target;
 };
