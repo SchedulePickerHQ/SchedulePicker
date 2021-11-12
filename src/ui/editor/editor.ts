@@ -33,7 +33,6 @@ const options = {
 
 export const createEditor = (el: HTMLElement): Editor => {
     const quill = new Quill(el, options);
-    // setupBlock();
     setupCustomPicker(quill);
 
     return {

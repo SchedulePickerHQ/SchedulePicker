@@ -8,11 +8,22 @@ import { InsertTextCommand } from './insert-text-command';
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
+const normalizeHtml = (html: string): string =>
+    html.replaceAll(/<p[^>]*>/g, '<div role="paragraph">').replaceAll('</p>', '</div>'); // TODO: テストを書く
+
 export class TemplateCommand extends InsertTextCommand {
     protected async createSchedule(domain: string, groupId: string | null): Promise<string | null> {
         const syntax = await getSyntax();
         const generator = new SyntaxGeneratorFactory().create(syntax);
         let templateText = await getTemplateText();
+
+        if (syntax === 'html') {
+            templateText = normalizeHtml(templateText);
+        }
+
+        if (syntax === 'markdown') {
+            // TODO
+        }
 
         if (templateText.includes(TEMPLATE_PLACEHOLDER.TODAY)) {
             const dateTime = getNowDateTime();
