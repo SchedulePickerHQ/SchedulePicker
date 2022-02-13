@@ -19,6 +19,7 @@ type StorageInitValue = {
     TEMPLATE_TEXT: string;
     MY_GROUPS: MyGroup[];
     USE_MY_GROUP: boolean;
+    ALLDAY_EVENTS_INCLUDED: boolean;
 };
 
 const STORAGE_KEY = {
@@ -27,6 +28,7 @@ const STORAGE_KEY = {
     TEMPLATE_TEXT: 'templateText',
     MY_GROUPS: 'myGroups',
     USE_MY_GROUP: 'useMyGroup',
+    ALLDAY_EVENTS_INCLUDED: 'alldayEventsIncluded',
 } as const;
 
 const STORAGE_INIT_VALUE: StorageInitValue = {
@@ -44,6 +46,7 @@ const STORAGE_INIT_VALUE: StorageInitValue = {
     TEMPLATE_TEXT: '',
     MY_GROUPS: [],
     USE_MY_GROUP: false,
+    ALLDAY_EVENTS_INCLUDED: true,
 };
 
 export const setSyntax = async (syntax: Syntax) => {
@@ -114,4 +117,18 @@ export const getToUseMyGroup = async (): Promise<boolean> => {
     }
 
     return item[STORAGE_KEY.USE_MY_GROUP] as boolean;
+};
+
+export const setAllDayEventsIncluded = async (shown: boolean) => {
+    await browser.storage.sync.set({ [STORAGE_KEY.ALLDAY_EVENTS_INCLUDED]: shown });
+};
+
+export const getAllDayEventsIncluded = async () => {
+    const item = await browser.storage.sync.get(STORAGE_KEY.ALLDAY_EVENTS_INCLUDED);
+
+    if (Object.keys(item).length === 0) {
+        return STORAGE_INIT_VALUE.ALLDAY_EVENTS_INCLUDED;
+    }
+
+    return item[STORAGE_KEY.ALLDAY_EVENTS_INCLUDED] as boolean;
 };
