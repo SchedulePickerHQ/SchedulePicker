@@ -1,7 +1,7 @@
 import { Member, ScheduleEvent } from '../garoon/schedule';
 import { DateTime, formatDateTime } from '../utils/date-time';
 import { AbstractSyntaxGenerator } from './base/abstract-syntax-generator';
-import { COLOR, getEventMenuColorCode } from './colors';
+import { getEventMenuColorCode } from './event-menu-color';
 
 export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
@@ -52,7 +52,7 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     private createMembers(members: Member[]) {
-        return `<span style="color: ${COLOR.BROWN};">(${members
+        return `<span style="color: #b99976;">(${members
             .map((member) => member.name)
             .join(', ')
             .replace(/, $/, '')})</span>`;
