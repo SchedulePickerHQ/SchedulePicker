@@ -15,6 +15,7 @@ import { getMyGroups } from './general';
 type ScheduleEventsQuery = {
     startTime: DateTime;
     endTime: DateTime;
+    alldayEventsIncluded: boolean;
     target?: {
         id: string;
         type: 'user';
@@ -41,6 +42,7 @@ type MyGroupEventsQuery = {
     groupId: string;
     startTime: DateTime;
     endTime: DateTime;
+    alldayEventsIncluded: boolean;
 };
 
 export type Member = {
@@ -125,14 +127,17 @@ export const getScheduleEvents = async (domain: string, query: ScheduleEventsQue
         targetType: query.target?.type,
         target: query.target?.id,
     });
+
     return events
-        .filter((event) => isEventTypeRegularOrRepeating(event.eventType)) // 期間予定を除外する
+        .filter((event) =>
+            isEventTypeRegularOrRepeating(event.eventType) && query.alldayEventsIncluded ? true : !event.isAllDay,
+        ) // 期間予定を除外する && 終日予定を含まない設定の場合は終日予定を除外する
         .map((event) => convertToScheduleEvent(event, query.startTime, query.endTime))
         .sort(sortByTime);
 };
 
 export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery): Promise<MyGroupEvent[]> => {
-    const { groupId, startTime, endTime } = query;
+    const { groupId, startTime, endTime, alldayEventsIncluded } = query;
     const myGroups = await getMyGroups(domain);
     const myGroupMembers = myGroups.find((group) => group.key === groupId)?.belong_member;
     assertExists(myGroupMembers);
@@ -142,6 +147,7 @@ export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery
             const events = await getScheduleEvents(domain, {
                 startTime,
                 endTime,
+                alldayEventsIncluded,
                 target: { id: userId, type: 'user' },
             });
             return events;

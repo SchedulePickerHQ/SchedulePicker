@@ -1,9 +1,11 @@
 import { buildContextMenu } from './contextMenus/context-menus';
 import {
+    getAllDayEventsIncluded,
     getContextMenuDisplayed,
     getSyntax,
     getTemplateText,
     getToUseMyGroup,
+    setAllDayEventsIncluded,
     setContextMenuDisplayed,
     setSyntax,
     setTemplateText,
@@ -24,6 +26,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const syntaxInput = document.querySelector('#syntax');
     const htmlInput = document.querySelector('#html');
     const markdownInput = document.querySelector('#markdown');
+    const alldayEventsShownInput = document.querySelector('#allday-events-shown');
     const useMyGroupInput = document.querySelector('#use-my-group');
     const templateTextarea = document.querySelector('.template-setting__textarea');
     assert(isButtonElement(saveButton));
@@ -37,6 +40,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     assert(isInputElement(syntaxInput));
     assert(isInputElement(htmlInput));
     assert(isInputElement(markdownInput));
+    assert(isInputElement(alldayEventsShownInput));
     assert(isInputElement(useMyGroupInput));
     assert(isTextareaElement(templateTextarea));
 
@@ -76,6 +80,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         saveButton.classList.add('saving');
         await saveContextMenuDisplayed();
         await setSyntax(htmlInput.checked ? 'html' : 'markdown');
+        await setAllDayEventsIncluded(alldayEventsShownInput.checked);
         await setToUseMyGroup(useMyGroupInput.checked);
         await setTemplateText(templateTextarea.value);
         await buildContextMenu();
@@ -88,6 +93,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     await syncContextMenuDisplayed();
     await syncSyntax();
+    alldayEventsShownInput.checked = await getAllDayEventsIncluded();
     useMyGroupInput.checked = await getToUseMyGroup();
     templateTextarea.value = await getTemplateText();
     saveButton.addEventListener('click', handleSaveButtonClick);

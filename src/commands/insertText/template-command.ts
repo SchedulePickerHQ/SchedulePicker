@@ -1,6 +1,6 @@
 import { searchNextBusinessDateTime, searchPreviousBusinessDateTime } from '../../garoon/general';
 import { getMyGroupEvents, getScheduleEvents } from '../../garoon/schedule';
-import { getSyntax, getTemplateText } from '../../storage/storage';
+import { getAllDayEventsIncluded, getSyntax, getTemplateText } from '../../storage/storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { createEndOfTime, createStartOfTime, formatDateTime, getNowDateTime } from '../../utils/date-time';
 import { InsertTextCommand } from './insert-text-command';
@@ -62,16 +62,19 @@ export class TemplateCommand extends InsertTextCommand {
             const dateTime = getNowDateTime();
             const startTime = createStartOfTime(dateTime);
             const endTime = createEndOfTime(dateTime);
+            const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
                     ? await getScheduleEvents(domain, {
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       })
                     : await getMyGroupEvents(domain, {
                           groupId,
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       });
             const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS, schedule);
@@ -82,16 +85,19 @@ export class TemplateCommand extends InsertTextCommand {
             dateTime.date += 1;
             const startTime = createStartOfTime(dateTime);
             const endTime = createEndOfTime(dateTime);
+            const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
                     ? await getScheduleEvents(domain, {
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       })
                     : await getMyGroupEvents(domain, {
                           groupId,
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       });
             const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS, schedule);
@@ -102,16 +108,19 @@ export class TemplateCommand extends InsertTextCommand {
             dateTime.date -= 1;
             const startTime = createStartOfTime(dateTime);
             const endTime = createEndOfTime(dateTime);
+            const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
                     ? await getScheduleEvents(domain, {
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       })
                     : await getMyGroupEvents(domain, {
                           groupId,
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       });
             const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS, schedule);
@@ -121,16 +130,19 @@ export class TemplateCommand extends InsertTextCommand {
             const dateTime = await searchNextBusinessDateTime(domain);
             const startTime = createStartOfTime(dateTime);
             const endTime = createEndOfTime(dateTime);
+            const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
                     ? await getScheduleEvents(domain, {
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       })
                     : await getMyGroupEvents(domain, {
                           groupId,
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       });
             const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS, schedule);
@@ -140,16 +152,19 @@ export class TemplateCommand extends InsertTextCommand {
             const dateTime = await searchPreviousBusinessDateTime(domain);
             const startTime = createStartOfTime(dateTime);
             const endTime = createEndOfTime(dateTime);
+            const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
                     ? await getScheduleEvents(domain, {
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       })
                     : await getMyGroupEvents(domain, {
                           groupId,
                           startTime,
                           endTime,
+                          alldayEventsIncluded,
                       });
             const schedule = generator.createEvents(domain, events);
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS, schedule);

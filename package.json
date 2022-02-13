@@ -37,9 +37,13 @@
       "unicorn/prevent-abbreviations": "off",
       "capitalized-comments": "off",
       "no-alert": "off",
+      "no-warning-comments": "off",
       "unicorn/no-array-reduce": "off",
       "node/prefer-global/process": "off",
-      "@typescript-eslint/naming-convention": "off"
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/padding-line-between-statements": "off",
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "@typescript-eslint/no-unsafe-call": "off"
     }
   },
   "jest": {

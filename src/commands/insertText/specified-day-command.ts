@@ -1,5 +1,5 @@
 import { getMyGroupEvents, getScheduleEvents } from '../../garoon/schedule';
-import { getSyntax } from '../../storage/storage';
+import { getAllDayEventsIncluded, getSyntax } from '../../storage/storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import {
     createEndOfTime,
@@ -30,16 +30,19 @@ export class SpecifiedDayCommand extends InsertTextCommand {
         const dateTime = stringToDateTime(promptResult);
         const startTime = createStartOfTime(dateTime);
         const endTime = createEndOfTime(dateTime);
+        const alldayEventsIncluded = await getAllDayEventsIncluded();
         const events =
             groupId === null
                 ? await getScheduleEvents(domain, {
                       startTime,
                       endTime,
+                      alldayEventsIncluded,
                   })
                 : await getMyGroupEvents(domain, {
                       groupId,
                       startTime,
                       endTime,
+                      alldayEventsIncluded,
                   });
         const syntax = await getSyntax();
         const generator = new SyntaxGeneratorFactory().create(syntax);
