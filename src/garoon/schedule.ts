@@ -9,6 +9,7 @@ import {
     isSameDateTime,
     stringToDateTime,
 } from '../utils/date-time';
+import { getAllDayEventsIncluded } from '../storage/storage';
 import * as GaroonApi from './api';
 import { getMyGroups } from './general';
 
@@ -125,8 +126,12 @@ export const getScheduleEvents = async (domain: string, query: ScheduleEventsQue
         targetType: query.target?.type,
         target: query.target?.id,
     });
+
+    const alldayEventsIncluded = await getAllDayEventsIncluded();
     return events
-        .filter((event) => isEventTypeRegularOrRepeating(event.eventType)) // 期間予定を除外する
+        .filter((event) =>
+            isEventTypeRegularOrRepeating(event.eventType) && alldayEventsIncluded ? true : !event.isAllDay,
+        ) // 期間予定を除外する && 終日予定を含まない設定の場合は終日予定を除外する
         .map((event) => convertToScheduleEvent(event, query.startTime, query.endTime))
         .sort(sortByTime);
 };
