@@ -30,7 +30,7 @@ export class ChromeInsertion extends AbstractInsertion {
             const range = selection.getRangeAt(0);
             range.deleteContents();
 
-            const node = document.createElement('div');
+            const node = document.createElement('span');
             node.style.whiteSpace = 'pre';
             node.innerHTML = DOMPurify.sanitize(text);
             range.insertNode(node);
