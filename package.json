@@ -14,7 +14,8 @@
     "watch:chrome": "cross-env BROWSER_ENV=chrome parcel watch static/chrome/manifest.json --dist-dir dist/chrome",
     "watch:firefox": "cross-env BROWSER_ENV=firefox parcel watch static/firefox/manifest.json --dist-dir dist/firefox",
     "format": "prettier --loglevel warn --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pack": "./tools/build.sh"
   },
   "repository": {
     "type": "git",
