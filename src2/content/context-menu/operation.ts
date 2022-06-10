@@ -1,11 +1,5 @@
 import browser from 'webextension-polyfill';
-import {
-    ContextMenuDisplayed,
-    getContextMenuDisplayed,
-    getMyGroups,
-    getSyntax,
-    getToUseMyGroup,
-} from '../storage/storage';
+import { ContextMenuDisplayed, getContextMenuDisplayed, getMyGroups, getSyntax, getToUseMyGroup } from '../storage';
 import { ContextMenuBuilder, ContextMenuId, ContextMenuItem, CONTEXT_MENU_ID } from './context-menu-builder';
 
 const createContextMenu = (items: ContextMenuItem[]) => {

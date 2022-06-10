@@ -10,7 +10,7 @@ import {
     setSyntax,
     setTemplateText,
     setToUseMyGroup,
-} from './content/storage/storage';
+} from './content/storage';
 import { assert } from './util/assert';
 import { isButtonElement, isInputElement, isTextareaElement } from './util/type-check';
 

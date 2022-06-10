@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill';
-import { MyGroup } from '../../api/garoon-api';
-import { Syntax } from '../syntax/type';
+import { MyGroup } from '../api/garoon-api';
+import { Syntax } from './syntax/type';
 
 export type ContextMenuDisplayed = {
     today: boolean;
