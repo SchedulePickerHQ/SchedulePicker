@@ -34,6 +34,9 @@
   "xo": {
     "space": 4,
     "prettier": true,
+    "include": [
+      "./src2"
+    ],
     "rules": {
       "unicorn/prevent-abbreviations": "off",
       "capitalized-comments": "off",
