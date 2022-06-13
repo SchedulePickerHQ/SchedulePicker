@@ -1,11 +1,7 @@
-export const LOADING_STATUS = {
-    SHOW: 'SHOW',
-    HIDE: 'HIDE',
-} as const;
+export const showLoading = () => {
+    document.body.style.cursor = 'progress';
+};
 
-export type LoadingStatus = TypeOfValues<typeof LOADING_STATUS>;
-
-export const showLoading = (shown: boolean) => {
-    const cursor = shown ? 'progress' : 'auto';
-    document.body.style.cursor = cursor;
+export const hideLoading = () => {
+    document.body.style.cursor = 'auto';
 };

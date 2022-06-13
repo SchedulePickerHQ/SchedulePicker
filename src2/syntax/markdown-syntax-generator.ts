@@ -1,4 +1,4 @@
-import { Member, ScheduleEvent } from '../content/events/schedule';
+import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
 import { DateTime } from '../util/date-time';
 import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 import { getEventMenuColorCode } from './event-menu-color';
@@ -8,7 +8,7 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
         return `[ ${dateTime.format('YYYY-MM-DD')} の予定 ]`;
     }
 
-    createEvent(domain: string, event: ScheduleEvent) {
+    createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
         const timeRange = event.isAllDay
             ? this.createEventMenu('終日')
             : this.createTimeRange(event.startTime, event.endTime);

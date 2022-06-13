@@ -1,6 +1,6 @@
-import { assert, assertExists } from '../../util/assert';
-import { dateTime, DateTime } from '../../util/date-time';
-import * as GaroonApi from '../../api/garoon-api';
+import * as GaroonApi from '../api/garoon-api';
+import { assert, assertExists } from '../util/assert';
+import { convertToEndOfDay, convertToStartOfDay, dateTime, DateTime } from '../util/date-time';
 import { getMyGroups } from './general';
 
 type ScheduleEventsQuery = {
@@ -58,13 +58,11 @@ const convertToScheduleEvent = (
     let endTime = gScheduleEvent.isStartOnly ? null : dateTime(gScheduleEvent.end.dateTime);
 
     if (!queryStartTime.isSame(startTime)) {
-        // startTime = createStartOfTime(queryStartTime); // TODO その国の始まりの時間
-        startTime = dateTime(); // FIXME 仮置き
+        startTime = convertToStartOfDay(queryStartTime);
     }
 
     if (endTime === null || !queryEndTime.isSame(endTime)) {
-        // endTime = createEndOfTime(queryEndTime); // TODO その国の終わりの時間
-        endTime = dateTime(); // FIXME 仮置き
+        endTime = convertToEndOfDay(queryEndTime);
     }
 
     const isPrivateEvent = gScheduleEvent.visibilityType === 'PRIVATE';

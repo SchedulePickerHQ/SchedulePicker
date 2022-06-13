@@ -1,4 +1,4 @@
-import { MyGroupEvent, ScheduleEvent } from '../content/events/schedule';
+import { MyGroupEvent, ScheduleEvent } from '../events/schedule';
 import { DateTime } from '../util/date-time';
 
 export interface SyntaxGenerator {

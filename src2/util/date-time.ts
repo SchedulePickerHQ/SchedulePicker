@@ -20,4 +20,14 @@ const WEEK = {
 
 type Week = keyof typeof WEEK;
 
-export const getWeekIndex = (week: Week) => WEEK[week];
+export const getWeekIndex = (week: Week): TypeOfValues<Week> => WEEK[week];
+
+export const convertToStartOfDay = (arg: DateTime): DateTime => {
+    return arg.startOf('day');
+};
+
+export const convertToEndOfDay = (arg: DateTime): DateTime => {
+    return arg.endOf('day');
+};
+
+export const isValidDateFormat = (result: string) => /^\d{4}((\/|-)\d{1,2}){2}$/.test(result);

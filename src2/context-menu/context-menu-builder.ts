@@ -1,4 +1,4 @@
-import { addUUID } from '../../util/uuid';
+import { addUUID } from '../util/uuid';
 
 // https://developer.chrome.com/docs/extensions/reference/contextMenus/
 type ContextType = 'editable';

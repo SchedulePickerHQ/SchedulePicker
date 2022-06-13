@@ -1,4 +1,4 @@
-import { Member } from '../content/events/schedule';
+import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
 import { DateTime } from '../util/date-time';
 import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 import { getEventMenuColorCode } from './event-menu-color';

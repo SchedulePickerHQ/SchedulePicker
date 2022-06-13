@@ -1,4 +1,4 @@
-import * as uuidModule from '../../../util/uuid';
+import * as uuidModule from '../../util/uuid';
 import { ContextMenuBuilder, ContextMenuId, CONTEXT_MENU_ID, ItemType } from '../context-menu-builder';
 
 const createItem = (
