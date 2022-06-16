@@ -57,11 +57,11 @@ const convertToScheduleEvent = (
     let startTime = dateTime(gScheduleEvent.start.dateTime);
     let endTime = gScheduleEvent.isStartOnly ? null : dateTime(gScheduleEvent.end.dateTime);
 
-    if (!queryStartTime.isSame(startTime)) {
+    if (!queryStartTime.isSame(startTime, 'day')) {
         startTime = convertToStartOfDay(queryStartTime);
     }
 
-    if (endTime === null || !queryEndTime.isSame(endTime)) {
+    if (endTime === null || !queryEndTime.isSame(endTime, 'day')) {
         endTime = convertToEndOfDay(queryEndTime);
     }
 
