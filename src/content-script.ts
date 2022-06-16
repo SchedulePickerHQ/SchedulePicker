@@ -1,42 +1,15 @@
 import browser from 'webextension-polyfill';
-import { CommandMessage, COMMAND_ID } from './commands/sender';
-import { InsertionFactory } from './ui/insertion/insertion-factory';
-import { LOADING_STATUS, showLoading } from './ui/loading/loading';
-import { assertExists } from './utils/asserts';
-import { isSupportBrowser } from './utils/support-browser';
+import { CommandFactory } from './command/command-factory';
+import { MESSAGE_CONTEXT, ToContentMessage } from './send-message/to-content';
+import { assert } from './util/assert';
+import { isString } from './util/type-check';
+import { clearUUID } from './util/uuid';
 
-browser.runtime.onMessage.addListener((commandMessage: CommandMessage) => {
-    switch (commandMessage.id) {
-        case COMMAND_ID.LOADING: {
-            showLoading(commandMessage.message === LOADING_STATUS.SHOW);
-            break;
-        }
-
-        case COMMAND_ID.INSERT_TEXT: {
-            assertExists(document.activeElement);
-            const browserEnv = process.env.BROWSER_ENV;
-
-            if (isSupportBrowser(browserEnv)) {
-                const insertion = new InsertionFactory().create(browserEnv);
-                insertion.insertTextAtCaret(
-                    window,
-                    document.activeElement as HTMLElement | null,
-                    commandMessage.message,
-                );
-            } else {
-                throw new Error('Unsupported browser.');
-            }
-
-            break;
-        }
-
-        case COMMAND_ID.ERROR: {
-            alert('SchedulePicker: ' + commandMessage.message);
-            break;
-        }
-
-        default: {
-            throw new Error('Not found command message id');
-        }
+browser.runtime.onMessage.addListener((message: ToContentMessage, _) => {
+    if (message.context === MESSAGE_CONTEXT.CONTEXT_MENU_CLICKED) {
+        const { tab, info } = message;
+        assert(isString(info.menuItemId));
+        const command = new CommandFactory().create({ id: clearUUID(info.menuItemId), info, tab });
+        command.execute();
     }
 });

@@ -1,11 +1,11 @@
-import { Member, MyGroupEvent, ScheduleEvent } from '../garoon/schedule';
-import { DateTime, formatDateTime } from '../utils/date-time';
-import { AbstractSyntaxGenerator } from './base/abstract-syntax-generator';
+import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
+import { DateTime } from '../util/date-time';
+import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 import { getEventMenuColorCode } from './event-menu-color';
 
 export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `<span>[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]</span>`;
+        return `<span>[ ${dateTime.format('YYYY-MM-DD')} の予定 ]</span>`;
     }
 
     createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
@@ -38,8 +38,8 @@ export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     private createTimeRange(startTime: DateTime, endTime: DateTime) {
-        const formattedStartTime = formatDateTime(startTime, 'HH:mm');
-        const formattedEndTime = formatDateTime(endTime, 'HH:mm');
+        const formattedStartTime = startTime.format('HH:mm');
+        const formattedEndTime = endTime.format('HH:mm');
         return `<span>${formattedStartTime}-${formattedEndTime}</span>`;
     }
 

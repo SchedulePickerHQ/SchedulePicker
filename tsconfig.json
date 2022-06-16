@@ -63,6 +63,6 @@
         /* Advanced Options */
         "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
     },
-    "include": ["src", "src2"],
+    "include": ["src"],
     "exclude": ["node_modules"]
 }

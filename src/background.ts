@@ -1,20 +1,23 @@
 import browser from 'webextension-polyfill';
-import { CommandFactory } from './commands/command-factory';
-import { buildContextMenu } from './contextMenus/context-menus';
-import { assert } from './utils/asserts';
-import { isString } from './utils/type-check';
-import { clearUUID } from './utils/uuid';
+import { buildContextMenu } from './context-menu/operation';
+import { MESSAGE_CONTEXT, ToBackgroundMessage } from './send-message/to-background';
+import { contextMenuClicked } from './send-message/to-content';
 
 (async () => {
     await buildContextMenu();
 })();
 
 browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickData, tab?: browser.Tabs.Tab) => {
-    if (tab?.id === undefined && tab?.url === undefined) {
+    if (tab?.id === undefined) {
         return;
     }
+    await contextMenuClicked(tab.id, info, tab);
+});
 
-    assert(isString(info.menuItemId));
-    const command = new CommandFactory().create(clearUUID(info.menuItemId));
-    command.execute(info, tab);
+browser.runtime.onMessage.addListener(async (message: ToBackgroundMessage, _) => {
+    if (message.context === MESSAGE_CONTEXT.OPEN_SETTINGS_PAGE) {
+        await browser.runtime.openOptionsPage();
+    } else if (message.context === MESSAGE_CONTEXT.BUILD_CONTEXT_MENU) {
+        await buildContextMenu();
+    }
 });

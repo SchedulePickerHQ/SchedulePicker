@@ -1,14 +1,14 @@
-import { Member, ScheduleEvent } from '../garoon/schedule';
-import { DateTime, formatDateTime } from '../utils/date-time';
-import { AbstractSyntaxGenerator } from './base/abstract-syntax-generator';
+import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
+import { DateTime } from '../util/date-time';
+import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 import { getEventMenuColorCode } from './event-menu-color';
 
 export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]`;
+        return `[ ${dateTime.format('YYYY-MM-DD')} の予定 ]`;
     }
 
-    createEvent(domain: string, event: ScheduleEvent) {
+    createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
         const timeRange = event.isAllDay
             ? this.createEventMenu('終日')
             : this.createTimeRange(event.startTime, event.endTime);
@@ -38,8 +38,8 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     private createTimeRange(startTime: DateTime, endTime: DateTime) {
-        const formattedStartTime = formatDateTime(startTime, 'HH:mm');
-        const formattedEndTime = formatDateTime(endTime, 'HH:mm');
+        const formattedStartTime = startTime.format('HH:mm');
+        const formattedEndTime = endTime.format('HH:mm');
         return `${formattedStartTime}-${formattedEndTime}`;
     }
 
