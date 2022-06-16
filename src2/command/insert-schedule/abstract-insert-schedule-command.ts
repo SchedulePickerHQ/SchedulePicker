@@ -39,7 +39,7 @@ export abstract class AbstractInsertScheduleCommand extends AbstractCommand {
 
                 if (isSupportBrowser(browserEnv)) {
                     const insertion = new InsertionFactory().create(browserEnv);
-                    insertion.insertTextAtCaret(window, document.activeElement as HTMLElement | null, schedule);
+                    insertion.insertTextAtCaret(window, document.activeElement as HTMLElement, schedule);
                 } else {
                     showAlert('サポートしていないブラウザです');
                 }
