@@ -1,6 +1,7 @@
 import browser from 'webextension-polyfill';
 import { buildContextMenu } from './context-menu/operation';
-import { sendContextMenuClicked } from './send-message/to-content';
+import { MESSAGE_CONTEXT, ToBackgroundMessage } from './send-message/to-background';
+import { contextMenuClicked } from './send-message/to-content';
 
 (async () => {
     await buildContextMenu();
@@ -10,5 +11,11 @@ browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickDat
     if (tab?.id === undefined) {
         return;
     }
-    await sendContextMenuClicked(tab.id, info, tab);
+    await contextMenuClicked(tab.id, info, tab);
+});
+
+browser.runtime.onMessage.addListener(async (message: ToBackgroundMessage, _) => {
+    if (message.context === MESSAGE_CONTEXT.OPEN_SETTINGS_PAGE) {
+        await browser.runtime.openOptionsPage();
+    }
 });

@@ -12,6 +12,6 @@ export type ContextMenuClicked = {
 
 export type ToContentMessage = ContextMenuClicked;
 
-export const sendContextMenuClicked = async (tabId: number, info: Menus.OnClickData, tab: Tabs.Tab) => {
+export const contextMenuClicked = async (tabId: number, info: Menus.OnClickData, tab: Tabs.Tab) => {
     await browser.tabs.sendMessage(tabId, { context: MESSAGE_CONTEXT.CONTEXT_MENU_CLICKED, info, tab });
 };
