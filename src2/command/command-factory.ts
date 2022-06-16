@@ -5,6 +5,7 @@ import { Command } from './abstract-command';
 import { SpecifiedDayCommand } from './insert-schedule/specified-day-command';
 import { TodayCommand } from './insert-schedule/today-command';
 import { SettingsCommand } from './settings-command';
+import { UpdateMyGroupCommand } from './update-my-group-command';
 
 type CreateArgs = {
     id: string | number;
@@ -33,8 +34,8 @@ export class CommandFactory implements Factory<CreateArgs, Command> {
             //     return new HtmlCommand();
             // case CONTEXT_MENU_ID.MARKDOWN:
             //     return new MarkdownCommand();
-            // case CONTEXT_MENU_ID.MY_GROUP:
-            //     return new UpdateMyGroupCommand();
+            case CONTEXT_MENU_ID.MY_GROUP:
+                return new UpdateMyGroupCommand(tab);
             case CONTEXT_MENU_ID.SETTINGS:
                 return new SettingsCommand();
             default:

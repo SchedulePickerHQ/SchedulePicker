@@ -17,5 +17,7 @@ browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickDat
 browser.runtime.onMessage.addListener(async (message: ToBackgroundMessage, _) => {
     if (message.context === MESSAGE_CONTEXT.OPEN_SETTINGS_PAGE) {
         await browser.runtime.openOptionsPage();
+    } else if (message.context === MESSAGE_CONTEXT.BUILD_CONTEXT_MENU) {
+        await buildContextMenu();
     }
 });
