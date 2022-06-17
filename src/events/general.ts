@@ -3,34 +3,32 @@ import { dateTime, DateTime, getWeekIndex } from '../util/date-time';
 
 export const searchNextBusinessDateTime = async (domain: string): Promise<DateTime> => {
     const publicHolidays = await getPublicHolidays(domain);
-    const now = dateTime();
-    now.add(1, 'day');
+    let nextDate = dateTime().add(1, 'day');
 
     while (
-        isPublicHoliday(now, publicHolidays) ||
-        now.day() === getWeekIndex('Sat') ||
-        now.day() === getWeekIndex('Sun')
+        isPublicHoliday(nextDate, publicHolidays) ||
+        nextDate.day() === getWeekIndex('Sat') ||
+        nextDate.day() === getWeekIndex('Sun')
     ) {
-        now.add(1, 'day');
+        nextDate = nextDate.add(1, 'day');
     }
 
-    return now;
+    return nextDate;
 };
 
 export const searchPreviousBusinessDateTime = async (domain: string): Promise<DateTime> => {
     const publicHolidays = await getPublicHolidays(domain);
-    const now = dateTime();
-    now.subtract(1, 'day');
+    let prevDate = dateTime().subtract(1, 'day');
 
     while (
-        isPublicHoliday(now, publicHolidays) ||
-        now.day() === getWeekIndex('Sat') ||
-        now.day() === getWeekIndex('Sun')
+        isPublicHoliday(prevDate, publicHolidays) ||
+        prevDate.day() === getWeekIndex('Sat') ||
+        prevDate.day() === getWeekIndex('Sun')
     ) {
-        now.subtract(1, 'day');
+        prevDate = prevDate.subtract(1, 'day');
     }
 
-    return now;
+    return prevDate;
 };
 
 const getPublicHolidays = async (domain: string): Promise<DateTime[]> => {
