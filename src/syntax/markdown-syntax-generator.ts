@@ -9,9 +9,7 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
-        const timeRange = event.isAllDay
-            ? this.createEventMenu('終日')
-            : this.createTimeRange(event.startTime, event.endTime);
+        const timeRange = this.createTimeRange(event);
         const subject = this.createSubject(domain, event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
@@ -37,10 +35,14 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
         return '\n';
     }
 
-    private createTimeRange(startTime: DateTime, endTime: DateTime) {
-        const formattedStartTime = startTime.format('HH:mm');
-        const formattedEndTime = endTime.format('HH:mm');
-        return `${formattedStartTime}-${formattedEndTime}`;
+    private createTimeRange(event: ScheduleEvent | MyGroupEvent) {
+        if (event.isAllDay) {
+            return this.createEventMenu('終日');
+        }
+
+        const start = event.isContinuingFromYesterday ? '(前日)' : event.startTime.format('HH:mm');
+        const end = event.isContinuingToTomorrow ? '(翌日)' : event.endTime.format('HH:mm');
+        return `${start}-${end}`;
     }
 
     private createEventMenu(eventMenu: string) {

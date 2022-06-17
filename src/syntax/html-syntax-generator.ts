@@ -9,9 +9,7 @@ export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
-        const timeRange = event.isAllDay
-            ? this.createEventMenu('終日')
-            : this.createTimeRange(event.startTime, event.endTime);
+        const timeRange = this.createTimeRange(event);
         const subject = this.createSubject(domain, event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
@@ -37,16 +35,20 @@ export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
         return '<br>';
     }
 
-    private createTimeRange(startTime: DateTime, endTime: DateTime) {
-        const formattedStartTime = startTime.format('HH:mm');
-        const formattedEndTime = endTime.format('HH:mm');
-        return `<span>${formattedStartTime}-${formattedEndTime}</span>`;
+    private createTimeRange(event: ScheduleEvent | MyGroupEvent) {
+        if (event.isAllDay) {
+            return this.createEventMenu('終日');
+        }
+
+        const start = event.isContinuingFromYesterday ? '(前日)' : event.startTime.format('HH:mm');
+        const end = event.isContinuingToTomorrow ? '(翌日)' : event.endTime.format('HH:mm');
+        return `<span>${start}-${end}</span>`;
     }
 
     private createEventMenu(eventMenu: string) {
         return `<span style="background-color: ${getEventMenuColorCode(
             eventMenu,
-        )}; display: inline-block; margin-right: 3px; padding: 2px 2px 1px; color: rgb(255, 255, 255); font-size: 11.628px; border-radius: 2px; line-height: 1.1;">${eventMenu}</span>`;
+        )}; display: inline-block; padding: 2px; color: rgb(255, 255, 255); font-size: 12px; border-radius: 2px; line-height: 1.0;">${eventMenu}</span>`;
     }
 
     private createSubject(domain: string, eventId: string, subject: string) {

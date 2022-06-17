@@ -25,8 +25,10 @@ export type ScheduleEvent = {
         name: string;
     }>;
     visibilityType?: 'PUBLIC' | 'PRIVATE';
-    isAllDay: boolean;
     isStartOnly: boolean;
+    isAllDay: boolean;
+    isContinuingFromYesterday: boolean;
+    isContinuingToTomorrow: boolean;
 };
 
 type MyGroupEventsQuery = {
@@ -57,11 +59,17 @@ const convertToScheduleEvent = (
     let startTime = dateTime(gScheduleEvent.start.dateTime);
     let endTime = gScheduleEvent.isStartOnly ? null : dateTime(gScheduleEvent.end.dateTime);
 
-    if (!queryStartTime.isSame(startTime, 'day')) {
+    if (endTime === null) {
+        endTime = convertToEndOfDay(queryEndTime);
+    }
+
+    const isContinuingFromYesterday = startTime.isBefore(queryStartTime, 'day');
+    if (isContinuingFromYesterday) {
         startTime = convertToStartOfDay(queryStartTime);
     }
 
-    if (endTime === null || !queryEndTime.isSame(endTime, 'day')) {
+    const isContinuingToTomorrow = endTime.isAfter(queryEndTime, 'day');
+    if (isContinuingToTomorrow) {
         endTime = convertToEndOfDay(queryEndTime);
     }
 
@@ -88,6 +96,8 @@ const convertToScheduleEvent = (
         visibilityType: gScheduleEvent.visibilityType,
         isAllDay: gScheduleEvent.isAllDay,
         isStartOnly: gScheduleEvent.isStartOnly,
+        isContinuingFromYesterday,
+        isContinuingToTomorrow,
     };
 };
 
