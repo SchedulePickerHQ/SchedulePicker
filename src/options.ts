@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         setTimeout(() => {
             saveButton.classList.remove('saving');
             saveButton.disabled = false;
-        }, 2000);
+        }, 1800);
     };
 
     await syncContextMenuDisplayed();
