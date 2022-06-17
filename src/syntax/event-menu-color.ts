@@ -3,6 +3,8 @@ const COLOR = {
     YELLOW_GREEN: '#9acd32',
 };
 
+// NOTE: 分割する意味がないのでルールを無視している
+// eslint-disable-next-line complexity
 export const getEventMenuColorCode = (eventMenu: string): string => {
     switch (eventMenu) {
         case '打合':

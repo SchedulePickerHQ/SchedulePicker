@@ -11,8 +11,8 @@
     "lint:js": "xo",
     "test": "jest",
     "test-ci": "TZ=Asia/Tokyo jest",
-    "watch:chrome": "cross-env BROWSER_ENV=chrome parcel watch static/chrome/manifest.json --dist-dir dist/chrome",
-    "watch:firefox": "cross-env BROWSER_ENV=firefox parcel watch static/firefox/manifest.json --dist-dir dist/firefox",
+    "watch:chrome": "cross-env BROWSER_ENV=chrome parcel watch static/chrome/manifest.json --dist-dir dist/chrome --no-hmr",
+    "watch:firefox": "cross-env BROWSER_ENV=firefox parcel watch static/firefox/manifest.json --dist-dir dist/firefox --no-hmr",
     "format": "prettier --loglevel warn --write .",
     "prepare": "husky install",
     "pack": "./tools/build.sh"
@@ -35,63 +35,64 @@
     "space": 4,
     "prettier": true,
     "rules": {
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "never",
+          "ts": "never"
+        }
+      ],
       "unicorn/prevent-abbreviations": "off",
+      "unicorn/prefer-module": "off",
       "capitalized-comments": "off",
       "no-alert": "off",
       "no-warning-comments": "off",
       "unicorn/no-array-reduce": "off",
       "node/prefer-global/process": "off",
+      "n/prefer-global/process": "off",
       "@typescript-eslint/naming-convention": "off",
       "@typescript-eslint/padding-line-between-statements": "off",
       "@typescript-eslint/restrict-template-expressions": "off",
-      "@typescript-eslint/no-unsafe-call": "off"
-    }
-  },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.ts$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfig": "tsconfig.json"
-      }
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-redundant-type-constituents": "off",
+      "@typescript-eslint/ban-types": "off",
+      "@typescript-eslint/no-throw-literal": "off"
     }
   },
   "dependencies": {
-    "dayjs": "^1.10.7",
-    "dompurify": "^2.3.3",
+    "dayjs": "^1.11.3",
+    "dompurify": "^2.3.8",
     "garoon-soap": "^0.1.12",
-    "nanoid": "^3.1.30",
+    "nanoid": "^4.0.0",
     "reset-css": "^5.0.1",
-    "typescript": "^4.4.4",
-    "webextension-polyfill": "^0.8.0"
+    "webextension-polyfill": "^0.9.0"
   },
   "devDependencies": {
-    "@parcel/config-webextension": "2.5.0",
-    "@parcel/transformer-image": "2.5.0",
-    "@parcel/transformer-sass": "2.5.0",
-    "@types/dompurify": "^2.3.1",
-    "@types/jest": "^27.0.2",
-    "@types/webextension-polyfill": "^0.8.1",
+    "@parcel/config-webextension": "2.6.0",
+    "@parcel/transformer-image": "2.6.0",
+    "@parcel/transformer-sass": "2.6.0",
+    "@swc/core": "^1.2.203",
+    "@swc/jest": "^0.2.21",
+    "@types/dompurify": "^2.3.3",
+    "@types/jest": "^28.1.1",
+    "@types/webextension-polyfill": "^0.9.0",
+    "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
-    "husky": "^7.0.4",
-    "jest": "^27.3.1",
-    "lint-staged": "^11.2.6",
+    "husky": "^8.0.1",
+    "jest": "^28.1.1",
+    "jest-environment-jsdom": "^28.1.1",
+    "lint-staged": "^13.0.2",
     "mockdate": "^3.0.5",
     "npm-run-all": "^4.1.5",
-    "parcel": "^2.0.1",
-    "prettier": "^2.4.1",
+    "parcel": "^2.6.0",
+    "prettier": "^2.7.1",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
     "timers-browserify": "^2.0.12",
-    "ts-jest": "^27.0.7",
+    "typescript": "^4.7.3",
     "web-ext-types": "^3.2.1",
-    "xo": "^0.46.4"
+    "xo": "^0.50.0"
   },
   "lint-staged": {
     "*.{js,scss,md,ts,tsx}": [
