@@ -1,17 +1,15 @@
-import { Member, ScheduleEvent } from '../garoon/schedule';
-import { DateTime, formatDateTime } from '../utils/date-time';
-import { AbstractSyntaxGenerator } from './base/abstract-syntax-generator';
+import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
+import { DateTime } from '../util/date-time';
+import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 import { getEventMenuColorCode } from './event-menu-color';
 
 export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `[ ${formatDateTime(dateTime, 'YYYY-MM-DD')} の予定 ]`;
+        return `[ ${dateTime.format('YYYY-MM-DD')} の予定 ]`;
     }
 
-    createEvent(domain: string, event: ScheduleEvent) {
-        const timeRange = event.isAllDay
-            ? this.createEventMenu('終日')
-            : this.createTimeRange(event.startTime, event.endTime);
+    createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
+        const timeRange = this.createTimeRange(event);
         const subject = this.createSubject(domain, event.id, event.subject);
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
@@ -37,10 +35,14 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
         return '\n';
     }
 
-    private createTimeRange(startTime: DateTime, endTime: DateTime) {
-        const formattedStartTime = formatDateTime(startTime, 'HH:mm');
-        const formattedEndTime = formatDateTime(endTime, 'HH:mm');
-        return `${formattedStartTime}-${formattedEndTime}`;
+    private createTimeRange(event: ScheduleEvent | MyGroupEvent) {
+        if (event.isAllDay) {
+            return this.createEventMenu('終日');
+        }
+
+        const start = event.isContinuingFromYesterday ? '(前日)' : event.startTime.format('HH:mm');
+        const end = event.isContinuingToTomorrow ? '(翌日)' : event.endTime.format('HH:mm');
+        return `${start}-${end}`;
     }
 
     private createEventMenu(eventMenu: string) {
@@ -52,9 +54,9 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     private createMembers(members: Member[]) {
-        return `<span style="color: #b99976;">(${members
+        return `<span style="color: #607d8b;">${members
             .map((member) => member.name)
             .join(', ')
-            .replace(/, $/, '')})</span>`;
+            .replace(/, $/, '')}</span>`;
     }
 }

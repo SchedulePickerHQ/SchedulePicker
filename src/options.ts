@@ -1,4 +1,4 @@
-import { buildContextMenu } from './contextMenus/context-menus';
+import { buildContextMenu } from './context-menu/operation';
 import {
     getAllDayEventsIncluded,
     getContextMenuDisplayed,
@@ -10,9 +10,9 @@ import {
     setSyntax,
     setTemplateText,
     setToUseMyGroup,
-} from './storage/storage';
-import { assert } from './utils/asserts';
-import { isButtonElement, isInputElement, isTextareaElement } from './utils/type-check';
+} from './storage';
+import { assert } from './util/assert';
+import { isButtonElement, isInputElement, isTextareaElement } from './util/type-check';
 
 window.addEventListener('DOMContentLoaded', async () => {
     const saveButton = document.querySelector('.save-button');
@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         setTimeout(() => {
             saveButton.classList.remove('saving');
             saveButton.disabled = false;
-        }, 2000);
+        }, 1800);
     };
 
     await syncContextMenuDisplayed();

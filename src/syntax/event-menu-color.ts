@@ -1,8 +1,10 @@
 const COLOR = {
     DEEP_ORANGE: '#ff5722',
-    YELLOW_GREEN: '#9acd32',
+    TEAL: '#009688',
 };
 
+// NOTE: 分割する意味がないのでルールを無視している
+// eslint-disable-next-line complexity
 export const getEventMenuColorCode = (eventMenu: string): string => {
     switch (eventMenu) {
         case '打合':
@@ -46,7 +48,7 @@ export const getEventMenuColorCode = (eventMenu: string): string => {
         case '【履歴】往訪':
             return '#873e0e';
         case '終日':
-            return COLOR.YELLOW_GREEN;
+            return COLOR.TEAL;
         default:
             return COLOR.DEEP_ORANGE;
     }
