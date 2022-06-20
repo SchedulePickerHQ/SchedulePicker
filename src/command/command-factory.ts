@@ -11,6 +11,7 @@ import { TodayCommand } from './insert-schedule/today-command';
 import { TomorrowCommand } from './insert-schedule/tomorrow-command';
 import { YesterdayCommand } from './insert-schedule/yesterday-command';
 import { MarkdownCommand } from './markdown-command';
+import { PlaneTextCommand } from './plane-text-command';
 import { SettingsCommand } from './settings-command';
 import { UpdateMyGroupCommand } from './update-my-group-command';
 
@@ -41,6 +42,8 @@ export class CommandFactory implements Factory<CreateArgs, Command> {
                 return new HtmlCommand();
             case CONTEXT_MENU_ID.MARKDOWN:
                 return new MarkdownCommand();
+            case CONTEXT_MENU_ID.PLANE_TEXT:
+                return new PlaneTextCommand();
             case CONTEXT_MENU_ID.MY_GROUP:
                 return new UpdateMyGroupCommand(tab);
             case CONTEXT_MENU_ID.SETTINGS:

@@ -42,6 +42,7 @@ describe('ContextMenuBuilder', () => {
             createItem(CONTEXT_MENU_ID.SETTINGS, '設定', 'normal', {}),
             createItem(CONTEXT_MENU_ID.HTML, 'HTML', 'radio', { checked: true }),
             createItem(CONTEXT_MENU_ID.MARKDOWN, 'Markdown', 'radio', { checked: false }),
+            createItem(CONTEXT_MENU_ID.PLANE_TEXT, 'Plane Text', 'radio', { checked: false }),
             createItem(CONTEXT_MENU_ID.MYSELF, '自分', 'normal', {}),
             createItem(MY_GROUP_ID, 'Myグループ', 'normal', {}),
         ];
@@ -57,6 +58,7 @@ describe('ContextMenuBuilder', () => {
             .addSettings()
             .addHtml({ checked: true })
             .addMarkdown({ checked: false })
+            .addPlaneText({ checked: false })
             .addMyself()
             .addMenuItem(MY_GROUP_ID, 'Myグループ', 'normal', { parentId: CONTEXT_MENU_ID.ROOT })
             .build();
