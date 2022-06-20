@@ -13,5 +13,34 @@
     "context_menu_settings": { "message": "設定" },
     "context_menu_html": { "message": "HTML" },
     "context_menu_markdown": { "message": "Markdown" },
-    "context_menu_plane_text": { "message": "Place Text" }
+    "context_menu_plane_text": { "message": "Place Text" },
+    "option_lang": { "message": "ja" },
+    "option_title": { "message": "オプション" },
+    "option_header_text": { "message": "設定" },
+    "option_save_button_text": { "message": "保存" },
+    "option_context_menu_title": { "message": "メニューの表示" },
+    "option_context_menu_today": { "message": "今日の予定" },
+    "option_context_menu_tomorrow": { "message": "明日の予定" },
+    "option_context_menu_yesterday": { "message": "昨日の予定" },
+    "option_context_menu_next_business_day": { "message": "翌営業日の予定" },
+    "option_context_menu_previous_business_day": { "message": "前営業日の予定" },
+    "option_context_menu_specified_day": { "message": "指定日の予定" },
+    "option_context_menu_template": { "message": "テンプレート" },
+    "option_context_menu_syntax": { "message": "記法" },
+    "option_syntax_title": { "message": "記法" },
+    "option_syntax_html": { "message": "HTML" },
+    "option_syntax_markdown": { "message": "Markdown" },
+    "option_syntax_plane_text": { "message": "Place Text" },
+    "option_all_day_title": { "message": "終日予定の表示" },
+    "option_all_day_shown": { "message": "終日予定を表示する" },
+    "option_mygroup_title": { "message": "Myグループ" },
+    "option_mygroup_enabled": { "message": "Myグループの予定を取得する機能を有効にする" },
+    "option_template_title": { "message": "テンプレート" },
+    "option_template_placeholder": {
+        "message": "■{%TODAY%}の予定&#13;&#10;{%TODAY_EVENTS%}&#13;&#10;&#13;&#10;■学んだこと&#13;&#10;&#13;&#10;■所感"
+    },
+    "option_template_usage": { "message": "テンプレートの使い方" },
+    "option_template_usage_url": {
+        "message": "https://github.com/SchedulePicker/SchedulePicker3/wiki/日本語#テンプレート"
+    }
 }

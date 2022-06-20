@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="__MSG_option_lang__">
     <head>
         <meta charset="UTF-8" />
         <link rel="stylesheet" href="./styles/index.scss" />
-        <title>オプション</title>
+        <title>__MSG_option_title__</title>
     </head>
     <body>
         <main>
             <header class="header">
-                <h1 class="title">設定</h1>
+                <h1 class="title">__MSG_option_header_text__</h1>
                 <button class="save-button">
-                    <span class="save-button__text">保存</span>
+                    <span class="save-button__text">__MSG_option_save_button_text__</span>
                     <svg width="20" height="20" viewBox="0 0 20 20">
                         <path
                             d="M0 11c2.761.575 6.312 1.688 9 3.438 3.157-4.23 8.828-8.187 15-11.438-5.861 5.775-10.711 12.328-14 18.917-2.651-3.766-5.547-7.271-10-10.917z"
@@ -19,78 +19,78 @@
                 </button>
             </header>
             <fieldset id="context-menu-setting" class="group">
-                <legend class="group__title">メニューの表示</legend>
+                <legend class="group__title">__MSG_option_context_menu_title__</legend>
                 <label class="checkbox-label">
                     <input id="today" class="checkbox" type="checkbox" name="display-menu-setting" checked />
-                    <span class="checkbox-text">今日の予定</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_today__</span>
                 </label>
                 <label class="checkbox-label">
                     <input id="tomorrow" class="checkbox" type="checkbox" name="display-menu-setting" />
-                    <span class="checkbox-text">明日の予定</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_tomorrow__</span>
                 </label>
                 <label class="checkbox-label">
                     <input id="yesterday" class="checkbox" type="checkbox" name="display-menu-setting" />
-                    <span class="checkbox-text">昨日の予定</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_yesterday__</span>
                 </label>
                 <label class="checkbox-label">
                     <input id="next-business-day" class="checkbox" type="checkbox" name="display-menu-setting" />
-                    <span class="checkbox-text">翌営業日の予定</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_next_business_day__</span>
                 </label>
                 <label class="checkbox-label">
                     <input id="previous-business-day" class="checkbox" type="checkbox" name="display-menu-setting" />
-                    <span class="checkbox-text">前営業日の予定</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_previous_business_day__</span>
                 </label>
                 <label class="checkbox-label">
                     <input id="specified-day" class="checkbox" type="checkbox" name="display-menu-setting" />
-                    <span class="checkbox-text">指定日の予定</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_specified_day__</span>
                 </label>
                 <label class="checkbox-label">
                     <input id="template" class="checkbox" type="checkbox" name="display-menu-setting" />
-                    <span class="checkbox-text">テンプレート</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_template__</span>
                 </label>
                 <label class="checkbox-label">
                     <input id="syntax" class="checkbox" type="checkbox" name="display-menu-setting" checked />
-                    <span class="checkbox-text">記法</span>
+                    <span class="checkbox-text">__MSG_option_context_menu_syntax__</span>
                 </label>
             </fieldset>
             <fieldset id="syntax-setting" class="group">
-                <legend class="group__title">記法</legend>
+                <legend class="group__title">__MSG_option_syntax_title__</legend>
                 <label class="radio-label">
                     <input id="html" class="radio" type="radio" name="syntax-setting" checked />
-                    <span class="radio-text">HTML</span>
+                    <span class="radio-text">__MSG_option_syntax_html__</span>
                 </label>
                 <label class="radio-label">
                     <input id="markdown" class="radio" type="radio" name="syntax-setting" />
-                    <span class="radio-text">Markdown</span>
+                    <span class="radio-text">__MSG_option_syntax_markdown__</span>
                 </label>
                 <label class="radio-label">
                     <input id="plane-text" class="radio" type="radio" name="syntax-setting" />
-                    <span class="radio-text">Plane Text</span>
+                    <span class="radio-text">__MSG_option_syntax_plane_text__</span>
                 </label>
             </fieldset>
             <fieldset id="allday-events-shown-setting" class="group">
-                <legend class="group__title">終日予定の表示</legend>
+                <legend class="group__title">__MSG_option_all_day_title__</legend>
                 <label class="checkbox-label">
                     <input id="allday-events-shown" class="checkbox" type="checkbox" name="allday-events-shown-setting" />
-                    <span class="checkbox-text">終日予定を表示する</span>
+                    <span class="checkbox-text">__MSG_option_all_day_shown__</span>
                 </label>
             </fieldset>
             <fieldset id="my-group-setting" class="group">
-                <legend class="group__title">Myグループ</legend>
+                <legend class="group__title">__MSG_option_mygroup_title</legend>
                 <label class="checkbox-label">
                     <input id="use-my-group" class="checkbox" type="checkbox" name="my-group-setting" />
-                    <span class="checkbox-text">Myグループの予定を取得する機能を有効にする</span>
+                    <span class="checkbox-text">__MSG_option_mygroup_enabled</span>
                 </label>
             </fieldset>
             <div id="template-setting" class="group">
-                <label class="template-setting__label group__title">テンプレート</label>
-                <textarea class="template-setting__textarea" placeholder="■{%TODAY%}の予定&#13;&#10;{%TODAY_EVENTS%}&#13;&#10;&#13;&#10;■学んだこと&#13;&#10;&#13;&#10;■所感"></textarea>
+                <label class="template-setting__label group__title">__MSG_option_template_title__</label>
+                <textarea class="template-setting__textarea" placeholder="__MSG_option_template_placeholder__"></textarea>
                 <a
                     class="template-setting__usage-link"
-                    href="https://github.com/SchedulePicker/SchedulePicker3/wiki"
+                    href="__MSG_option_template_usage_url__"
                     target="_blank"
                     rel="noopener noreferrer"
-                    >テンプレートの使い方</a
+                    >__MSG_option_template_usage__</a
                 >
             </div>
         </main>
