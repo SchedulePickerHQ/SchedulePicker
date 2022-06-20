@@ -17,12 +17,12 @@
     "permissions": [
         "contextMenus",
         "storage",
-        "https://*.cybozu.com/k/*",
-        "https://*.cybozu-dev.com/k/*",
-        "https://*.kintone.com/k/*",
-        "https://*.kintone-dev.com/k/*",
-        "https://*.cybozu.cn/k/*",
-        "https://*.cybozu-dev.cn/k/*"
+        "https://*.cybozu.com/*",
+        "https://*.cybozu-dev.com/*",
+        "https://*.kintone.com/*",
+        "https://*.kintone-dev.com/*",
+        "https://*.cybozu.cn/*",
+        "https://*.cybozu-dev.cn/*"
     ],
     "options_ui": {
         "page": "../options.html"
@@ -33,12 +33,12 @@
     "content_scripts": [
         {
             "matches": [
-                "https://*.cybozu.com/k/*",
-                "https://*.cybozu-dev.com/k/*",
-                "https://*.kintone.com/k/*",
-                "https://*.kintone-dev.com/k/*",
-                "https://*.cybozu.cn/k/*",
-                "https://*.cybozu-dev.cn/k/*"
+                "https://*.cybozu.com/*",
+                "https://*.cybozu-dev.com/*",
+                "https://*.kintone.com/*",
+                "https://*.kintone-dev.com/*",
+                "https://*.cybozu.cn/*",
+                "https://*.cybozu-dev.cn/*"
             ],
             "js": ["../../src/content-script.ts"],
             "run_at": "document_end"

@@ -26,6 +26,7 @@ export const CONTEXT_MENU_ID = {
     SETTINGS: 'settings',
     HTML: 'html',
     MARKDOWN: 'markdown',
+    PLANE_TEXT: 'planeText',
     MYSELF: 'myself',
 } as const;
 
@@ -113,6 +114,10 @@ export class ContextMenuBuilder {
 
     addMarkdown({ checked = false }) {
         return this.addMenuItem(CONTEXT_MENU_ID.MARKDOWN, 'Markdown', 'radio', { checked });
+    }
+
+    addPlaneText({ checked = false }) {
+        return this.addMenuItem(CONTEXT_MENU_ID.PLANE_TEXT, 'Plane Text', 'radio', { checked });
     }
 
     build() {

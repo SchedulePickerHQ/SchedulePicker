@@ -1,1 +1,1 @@
-export type Syntax = 'html' | 'markdown';
+export type Syntax = 'html' | 'markdown' | 'planeText';

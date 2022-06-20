@@ -32,6 +32,7 @@ export const buildContextMenu = async () => {
         const syntax = await getSyntax();
         builder.addHtml({ checked: syntax === 'html' });
         builder.addMarkdown({ checked: syntax === 'markdown' });
+        builder.addPlaneText({ checked: syntax === 'planeText' });
     }
 
     if (useMyGroup) {

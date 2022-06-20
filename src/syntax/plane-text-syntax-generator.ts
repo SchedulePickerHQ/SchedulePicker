@@ -1,16 +1,15 @@
 import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
 import { DateTime } from '../util/date-time';
 import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
-import { getEventMenuColorCode } from './event-menu-color';
 
-export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
+export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
         return `[ ${dateTime.format('YYYY-MM-DD')} の予定 ]`;
     }
 
-    createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {
+    createEvent(_: string, event: ScheduleEvent | MyGroupEvent) {
         const timeRange = this.createTimeRange(event);
-        const subject = this.createSubject(domain, event.id, event.subject);
+        const subject = event.subject;
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
 
         if (eventMenu === null) {
@@ -46,17 +45,13 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     private createEventMenu(eventMenu: string) {
-        return `<span style="color: ${getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
-    }
-
-    private createSubject(domain: string, eventId: string, subject: string) {
-        return `[${subject}](https://${domain}/g/schedule/view.csp?event=${eventId})`;
+        return `[${eventMenu}]`;
     }
 
     private createMembers(members: Member[]) {
-        return `<span style="color: #607d8b;">: ${members
+        return `: ${members
             .map((member) => member.name)
             .join(', ')
-            .replace(/, $/, '')}</span>`;
+            .replace(/, $/, '')}`;
     }
 }

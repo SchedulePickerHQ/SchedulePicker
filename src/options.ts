@@ -26,6 +26,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const syntaxInput = document.querySelector('#syntax');
     const htmlInput = document.querySelector('#html');
     const markdownInput = document.querySelector('#markdown');
+    const planeTextInput = document.querySelector('#plane-text');
     const alldayEventsShownInput = document.querySelector('#allday-events-shown');
     const useMyGroupInput = document.querySelector('#use-my-group');
     const templateTextarea = document.querySelector('.template-setting__textarea');
@@ -40,6 +41,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     assert(isInputElement(syntaxInput));
     assert(isInputElement(htmlInput));
     assert(isInputElement(markdownInput));
+    assert(isInputElement(planeTextInput));
     assert(isInputElement(alldayEventsShownInput));
     assert(isInputElement(useMyGroupInput));
     assert(isTextareaElement(templateTextarea));
@@ -60,6 +62,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         const syntax = await getSyntax();
         htmlInput.checked = syntax === 'html';
         markdownInput.checked = syntax === 'markdown';
+        planeTextInput.checked = syntax === 'planeText';
     };
 
     const saveContextMenuDisplayed = async () => {
@@ -79,7 +82,15 @@ window.addEventListener('DOMContentLoaded', async () => {
         saveButton.disabled = true;
         saveButton.classList.add('saving');
         await saveContextMenuDisplayed();
-        await setSyntax(htmlInput.checked ? 'html' : 'markdown');
+
+        if (htmlInput.checked) {
+            await setSyntax('html');
+        } else if (markdownInput.checked) {
+            await setSyntax('markdown');
+        } else if (planeTextInput.checked) {
+            await setSyntax('planeText');
+        }
+
         await setAllDayEventsIncluded(alldayEventsShownInput.checked);
         await setToUseMyGroup(useMyGroupInput.checked);
         await setTemplateText(templateTextarea.value);
