@@ -49,9 +49,9 @@ export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     private createMembers(members: Member[]) {
-        return members
+        return `: ${members
             .map((member) => member.name)
             .join(', ')
-            .replace(/, $/, '');
+            .replace(/, $/, '')}`;
     }
 }

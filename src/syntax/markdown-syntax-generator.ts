@@ -54,7 +54,7 @@ export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     }
 
     private createMembers(members: Member[]) {
-        return `<span style="color: #607d8b;">${members
+        return `<span style="color: #607d8b;">: ${members
             .map((member) => member.name)
             .join(', ')
             .replace(/, $/, '')}</span>`;
