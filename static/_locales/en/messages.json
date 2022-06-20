@@ -1,0 +1,15 @@
+{
+    "context_menu_today": { "message": "Today's events" },
+    "context_menu_tomorrow": { "message": "Tomorrow's events" },
+    "context_menu_yesterday": { "message": "Yesterday's events" },
+    "context_menu_next_business_day": { "message": "Next business day events" },
+    "context_menu_previous_business_day": { "message": "Previous business day events" },
+    "context_menu_specified_day": { "message": "Specified day events" },
+    "context_menu_template": { "message": "Template" },
+    "context_menu_myself": { "message": "Myself" },
+    "context_menu_mygroup": { "message": "Update my group" },
+    "context_menu_settings": { "message": "Settings" },
+    "context_menu_html": { "message": "HTML" },
+    "context_menu_markdown": { "message": "Markdown" },
+    "context_menu_plane_text": { "message": "Place Text" }
+}

@@ -1,0 +1,15 @@
+{
+    "context_menu_today": { "message": "今日の予定" },
+    "context_menu_tomorrow": { "message": "明日の予定" },
+    "context_menu_yesterday": { "message": "昨日の予定" },
+    "context_menu_next_business_day": { "message": "翌営業日の予定" },
+    "context_menu_previous_business_day": { "message": "前営業日の予定" },
+    "context_menu_specified_day": { "message": "指定日の予定" },
+    "context_menu_template": { "message": "テンプレート" },
+    "context_menu_myself": { "message": "自分" },
+    "context_menu_mygroup": { "message": "Myグループの更新" },
+    "context_menu_settings": { "message": "設定" },
+    "context_menu_html": { "message": "HTML" },
+    "context_menu_markdown": { "message": "Markdown" },
+    "context_menu_plane_text": { "message": "Place Text" }
+}
