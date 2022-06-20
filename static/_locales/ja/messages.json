@@ -1,4 +1,6 @@
 {
+    "ext_name": { "message": "SchedulePicker" },
+    "ext_description": { "message": "Garoonの予定をテキストエリアに簡単に貼り付けることができます。" },
     "context_menu_today": { "message": "今日の予定" },
     "context_menu_tomorrow": { "message": "明日の予定" },
     "context_menu_yesterday": { "message": "昨日の予定" },

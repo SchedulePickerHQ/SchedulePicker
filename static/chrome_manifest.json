@@ -1,8 +1,8 @@
 {
-    "name": "SchedulePicker",
+    "name": "__MSG_ext_name__",
     "version": "3.3.2",
     "default_locale": "en",
-    "description": "You can easily insert Garoon scheduled events to a text editor on kintone.",
+    "description": "__MSG_ext_description__",
     "homepage_url": "https://github.com/SchedulePicker/SchedulePicker3#readme",
     "manifest_version": 3,
     "icons": {
