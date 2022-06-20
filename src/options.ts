@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+import { i18n } from 'webextension-polyfill';
 import { buildContextMenu } from './context-menu/operation';
 import {
     getAllDayEventsIncluded,
@@ -14,7 +16,7 @@ import {
 import { assert } from './util/assert';
 import { isButtonElement, isInputElement, isTextareaElement } from './util/type-check';
 
-window.addEventListener('DOMContentLoaded', async () => {
+const setup = async () => {
     const saveButton = document.querySelector('.save-button');
     const todayInput = document.querySelector('#today');
     const tomorrowInput = document.querySelector('#tomorrow');
@@ -108,4 +110,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     useMyGroupInput.checked = await getToUseMyGroup();
     templateTextarea.value = await getTemplateText();
     saveButton.addEventListener('click', handleSaveButtonClick);
+};
+
+const localize = () => {
+    const replacedBody = document.body.innerHTML
+        .toString()
+        .replace(/__MSG_(\w+)__/g, (_, p1) => (p1 ? i18n.getMessage(p1) : ''));
+    document.body.innerHTML = DOMPurify.sanitize(replacedBody);
+};
+
+window.addEventListener('DOMContentLoaded', async () => {
+    localize();
+    await setup();
 });

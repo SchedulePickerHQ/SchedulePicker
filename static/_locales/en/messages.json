@@ -15,7 +15,6 @@
     "context_menu_markdown": { "message": "Markdown" },
     "context_menu_plane_text": { "message": "Place Text" },
     "option_lang": { "message": "en" },
-    "option_title": { "message": "Options" },
     "option_header_text": { "message": "Settings" },
     "option_save_button_text": { "message": "Save" },
     "option_context_menu_title": { "message": "Display Menu" },
