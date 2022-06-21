@@ -38,8 +38,8 @@
     "option_template_placeholder": {
         "message": "■{%TODAY%} events&#13;&#10;{%TODAY_EVENTS%}&#13;&#10;&#13;&#10;■I learned it&#13;&#10;&#13;&#10;■Impressions"
     },
-    "option_template_usage": { "message": "Usage the template function" },
+    "option_template_usage": { "message": "Usage Templates" },
     "option_template_usage_url": {
-        "message": "https://github.com/SchedulePicker/SchedulePicker3/wiki/日本語#テンプレート"
+        "message": "https://github.com/SchedulePicker/SchedulePicker3/wiki/English#templates"
     }
 }

@@ -116,7 +116,7 @@ const localize = () => {
     const replacedBody = document.body.innerHTML
         .toString()
         .replace(/__MSG_(\w+)__/g, (_, p1) => (p1 ? i18n.getMessage(p1) : ''));
-    document.body.innerHTML = DOMPurify.sanitize(replacedBody);
+    document.body.innerHTML = DOMPurify.sanitize(replacedBody, { ADD_ATTR: ['target'] });
 };
 
 window.addEventListener('DOMContentLoaded', async () => {
