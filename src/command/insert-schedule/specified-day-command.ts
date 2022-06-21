@@ -1,3 +1,4 @@
+import { i18n } from 'webextension-polyfill';
 import { getMyGroupEvents, getScheduleEvents } from '../../events/schedule';
 import { getAllDayEventsIncluded, getSyntax } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
@@ -17,7 +18,8 @@ export class SpecifiedDayCommand extends AbstractInsertScheduleCommand {
         }
 
         if (!isValidDateFormat(promptResult)) {
-            showAlert(`"${promptResult}"は無効な日付フォーマットです`);
+            // showAlert(`"${promptResult}"は無効な日付フォーマットです`);
+            showAlert(i18n.getMessage('error_invalid_date_format', promptResult));
             return null;
         }
 

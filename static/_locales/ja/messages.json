@@ -14,6 +14,10 @@
     "context_menu_html": { "message": "HTML" },
     "context_menu_markdown": { "message": "Markdown" },
     "context_menu_plane_text": { "message": "Place Text" },
+    "error_invalid_date_format": {
+        "message": "エラー: '$inputted$'は無効な日付フォーマットです。",
+        "placeholders": { "inputted": { "content": "$1", "example": "無効な日付フォーマット" } }
+    },
     "option_lang": { "message": "ja" },
     "option_header_text": { "message": "設定" },
     "option_save_button_text": { "message": "保存" },
