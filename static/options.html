@@ -18,6 +18,12 @@
                     </svg>
                 </button>
             </header>
+            <div id="template-setting" class="group">
+                <label class="template-setting__label group__title">__MSG_option_template_title__</label>
+                <textarea class="template-setting__textarea" placeholder="__MSG_option_template_placeholder__"></textarea>
+                <a class="template-setting__usage-link" href="__MSG_option_template_usage_url__" target="_blank"
+                    rel="noopener noreferrer">__MSG_option_template_usage__</a>
+            </div>
             <fieldset id="context-menu-setting" class="group">
                 <legend class="group__title">__MSG_option_context_menu_title__</legend>
                 <label class="checkbox-label">
@@ -82,17 +88,6 @@
                     <span class="checkbox-text">__MSG_option_mygroup_enabled__</span>
                 </label>
             </fieldset>
-            <div id="template-setting" class="group">
-                <label class="template-setting__label group__title">__MSG_option_template_title__</label>
-                <textarea class="template-setting__textarea" placeholder="__MSG_option_template_placeholder__"></textarea>
-                <a
-                    class="template-setting__usage-link"
-                    href="__MSG_option_template_usage_url__"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >__MSG_option_template_usage__</a
-                >
-            </div>
         </main>
     </body>
     <script type="module" src="../src/options.ts" defer></script>
