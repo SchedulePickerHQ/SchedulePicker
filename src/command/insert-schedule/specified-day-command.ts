@@ -1,14 +1,14 @@
+import { i18n } from 'webextension-polyfill';
 import { getMyGroupEvents, getScheduleEvents } from '../../events/schedule';
 import { getAllDayEventsIncluded, getSyntax } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { convertToEndOfDay, convertToStartOfDay, dateTime, isValidDateFormat } from '../../util/date-time';
-import { showAlert } from '../../view/alert';
 import { AbstractInsertScheduleCommand } from './abstract-insert-schedule-command';
 
 export class SpecifiedDayCommand extends AbstractInsertScheduleCommand {
     protected async getSchedule(domain: string, groupId: string | null): Promise<string | null> {
-        const promptResult = window.prompt(
-            '取得したい予定の日付を入力してください\n例: 2021/09/19',
+        const promptResult = prompt(
+            i18n.getMessage('prompt_specified_date_description'),
             dateTime().format('YYYY/MM/DD'),
         );
         if (promptResult === null) {
@@ -17,7 +17,7 @@ export class SpecifiedDayCommand extends AbstractInsertScheduleCommand {
         }
 
         if (!isValidDateFormat(promptResult)) {
-            showAlert(`"${promptResult}"は無効な日付フォーマットです`);
+            alert(i18n.getMessage('error_invalid_date_format', promptResult));
             return null;
         }
 

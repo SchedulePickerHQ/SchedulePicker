@@ -7,4 +7,5 @@ module.exports = {
         '^.+\\.[jt]s$': ['@swc/jest'],
     },
     transformIgnorePatterns: ['/node_modules/(?!nanoid)'],
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
 };

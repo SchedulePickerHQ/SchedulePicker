@@ -1,11 +1,10 @@
-import { Menus, Tabs } from 'webextension-polyfill';
+import { i18n, Menus, Tabs } from 'webextension-polyfill';
 import { CONTEXT_MENU_ID } from '../../context-menu/context-menu-builder';
 import { InsertionFactory } from '../../insertion/insertion-factory';
 import { getToUseMyGroup } from '../../storage';
 import { assert, assertExists } from '../../util/assert';
 import { isSupportBrowser } from '../../util/support-browser';
 import { isString } from '../../util/type-check';
-import { showAlert } from '../../view/alert';
 import { hideLoading, showLoading } from '../../view/loading';
 import { AbstractCommand } from '../abstract-command';
 
@@ -41,11 +40,11 @@ export abstract class AbstractInsertScheduleCommand extends AbstractCommand {
                     const insertion = new InsertionFactory().create(browserEnv);
                     insertion.insertTextAtCaret(window, document.activeElement as HTMLElement, schedule);
                 } else {
-                    showAlert('サポートしていないブラウザです');
+                    alert(i18n.getMessage('error_not_support_browser'));
                 }
             }
         } catch {
-            showAlert('予定の取得に失敗しました');
+            alert(i18n.getMessage('error_get_events'));
         } finally {
             hideLoading();
         }
