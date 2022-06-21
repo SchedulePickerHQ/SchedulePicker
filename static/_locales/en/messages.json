@@ -19,7 +19,7 @@
         "placeholders": { "inputted": { "content": "$1", "example": "Invalid date format." } }
     },
     "error_update_mygroup": {
-        "message": "Error: Failed to update MyGroup."
+        "message": "Error: Failed to update my groups."
     },
     "error_get_events": {
         "message": "Error: Failed to get events."

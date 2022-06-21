@@ -1,4 +1,4 @@
-import { Menus, Tabs } from 'webextension-polyfill';
+import { i18n, Menus, Tabs } from 'webextension-polyfill';
 import { CONTEXT_MENU_ID } from '../../context-menu/context-menu-builder';
 import { InsertionFactory } from '../../insertion/insertion-factory';
 import { getToUseMyGroup } from '../../storage';
@@ -40,11 +40,11 @@ export abstract class AbstractInsertScheduleCommand extends AbstractCommand {
                     const insertion = new InsertionFactory().create(browserEnv);
                     insertion.insertTextAtCaret(window, document.activeElement as HTMLElement, schedule);
                 } else {
-                    alert('error_not_support_browser');
+                    alert(i18n.getMessage('error_not_support_browser'));
                 }
             }
         } catch {
-            alert('error_get_events');
+            alert(i18n.getMessage('error_get_events'));
         } finally {
             hideLoading();
         }
