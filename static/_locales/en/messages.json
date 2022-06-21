@@ -27,6 +27,10 @@
     "error_not_support_browser": {
         "message": "Error: This extension isn't supported with your using the browser."
     },
+    "event_title": {
+        "message": "Schedule for $date$",
+        "placeholders": { "date": { "content": "$1", "example": "2021-09-19" } }
+    },
     "option_lang": { "message": "en" },
     "option_header_text": { "message": "Settings" },
     "option_save_button_text": { "message": "Save" },
@@ -49,7 +53,7 @@
     "option_mygroup_enabled": { "message": "Enable functions to get events of my groups " },
     "option_template_title": { "message": "Template" },
     "option_template_placeholder": {
-        "message": "■{%TODAY%} events&#13;&#10;{%TODAY_EVENTS%}&#13;&#10;&#13;&#10;■I learned it&#13;&#10;&#13;&#10;■Impressions"
+        "message": "■Schedule for {%TODAY%}&#13;&#10;{%TODAY_EVENTS%}&#13;&#10;&#13;&#10;■I learned it&#13;&#10;&#13;&#10;■Impressions"
     },
     "option_template_usage": { "message": "Usage Templates" },
     "option_template_usage_url": {

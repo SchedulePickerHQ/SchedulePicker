@@ -1,3 +1,4 @@
+import { i18n } from 'webextension-polyfill';
 import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
 import { DateTime } from '../util/date-time';
 import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
@@ -5,7 +6,7 @@ import { getEventMenuColorCode } from './event-menu-color';
 
 export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `[ ${dateTime.format('YYYY-MM-DD')} の予定 ]`;
+        return `[ ${i18n.getMessage('event_title', dateTime.format('YYYY-MM-DD'))} ]`;
     }
 
     createEvent(domain: string, event: ScheduleEvent | MyGroupEvent) {

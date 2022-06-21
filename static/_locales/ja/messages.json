@@ -27,6 +27,10 @@
     "error_not_support_browser": {
         "message": "エラー: サポートしていないブラウザです。"
     },
+    "event_title": {
+        "message": "$date$ の予定",
+        "placeholders": { "date": { "content": "$1", "example": "2021-09-19" } }
+    },
     "option_lang": { "message": "ja" },
     "option_header_text": { "message": "設定" },
     "option_save_button_text": { "message": "保存" },
