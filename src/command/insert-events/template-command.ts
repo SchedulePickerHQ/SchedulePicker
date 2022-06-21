@@ -150,7 +150,7 @@ export class TemplateCommand extends AbstractInsertEventsCommand {
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS)) {
-            const previousBusinessDayDateTime = await searchNextBusinessDateTime(domain);
+            const previousBusinessDayDateTime = await searchPreviousBusinessDateTime(domain);
             const startTime = convertToStartOfDay(previousBusinessDayDateTime);
             const endTime = convertToEndOfDay(previousBusinessDayDateTime);
             const alldayEventsIncluded = await getAllDayEventsIncluded();
