@@ -1,5 +1,5 @@
-import { getCalendarEvents, getMyGroupByIds, getMyGroupVersions } from '../api/garoon-api';
 import { dateTime, DateTime, getWeekIndex } from '../util/date-time';
+import { getCalendarEvents, getMyGroupByIds, getMyGroupVersions } from './garoon-api';
 
 export const searchNextBusinessDateTime = async (domain: string): Promise<DateTime> => {
     const publicHolidays = await getPublicHolidays(domain);

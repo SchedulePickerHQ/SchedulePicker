@@ -1,5 +1,5 @@
 import { i18n, Tabs } from 'webextension-polyfill';
-import { getMyGroups } from '../events/general';
+import { getMyGroups } from '../api/general';
 import { buildContextMenu } from '../send-message/to-background';
 import { setMyGroups } from '../storage';
 import { assertExists } from '../util/assert';

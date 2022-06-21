@@ -1,9 +1,9 @@
-import { searchNextBusinessDateTime, searchPreviousBusinessDateTime } from '../../events/general';
-import { getMyGroupEvents, getScheduleEvents } from '../../events/schedule';
+import { searchNextBusinessDateTime, searchPreviousBusinessDateTime } from '../../api/general';
+import { getEvents, getMyGroupEvents } from '../../api/schedule';
 import { getAllDayEventsIncluded, getSyntax, getTemplateText } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { convertToEndOfDay, convertToStartOfDay, dateTime } from '../../util/date-time';
-import { AbstractInsertScheduleCommand } from './abstract-insert-schedule-command';
+import { AbstractInsertEventsCommand } from './abstract-insert-events-command';
 
 const SPECIAL_TEMPLATE_CHARACTER = {
     TODAY: '{%TODAY%}',
@@ -20,8 +20,8 @@ const SPECIAL_TEMPLATE_CHARACTER = {
 
 const DATE_FORMAT = 'YYYY-MM-DD';
 
-export class TemplateCommand extends AbstractInsertScheduleCommand {
-    protected async getSchedule(domain: string, groupId: string | null): Promise<string | null> {
+export class TemplateCommand extends AbstractInsertEventsCommand {
+    protected async getEvents(domain: string, groupId: string | null): Promise<string | null> {
         const syntax = await getSyntax();
         const generator = new SyntaxGeneratorFactory().create(syntax);
         let templateText = await getTemplateText();
@@ -60,7 +60,7 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
             const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
-                    ? await getScheduleEvents(domain, {
+                    ? await getEvents(domain, {
                           startTime,
                           endTime,
                           alldayEventsIncluded,
@@ -71,8 +71,10 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
                           endTime,
                           alldayEventsIncluded,
                       });
-            const schedule = generator.createEvents(domain, events);
-            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS, schedule);
+            templateText = templateText.replaceAll(
+                SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS,
+                generator.createEvents(domain, events),
+            );
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS)) {
@@ -82,7 +84,7 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
             const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
-                    ? await getScheduleEvents(domain, {
+                    ? await getEvents(domain, {
                           startTime,
                           endTime,
                           alldayEventsIncluded,
@@ -93,8 +95,10 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
                           endTime,
                           alldayEventsIncluded,
                       });
-            const schedule = generator.createEvents(domain, events);
-            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS, schedule);
+            templateText = templateText.replaceAll(
+                SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS,
+                generator.createEvents(domain, events),
+            );
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS)) {
@@ -104,7 +108,7 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
             const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
-                    ? await getScheduleEvents(domain, {
+                    ? await getEvents(domain, {
                           startTime,
                           endTime,
                           alldayEventsIncluded,
@@ -115,8 +119,10 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
                           endTime,
                           alldayEventsIncluded,
                       });
-            const schedule = generator.createEvents(domain, events);
-            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS, schedule);
+            templateText = templateText.replaceAll(
+                SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS,
+                generator.createEvents(domain, events),
+            );
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS)) {
@@ -126,7 +132,7 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
             const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
-                    ? await getScheduleEvents(domain, {
+                    ? await getEvents(domain, {
                           startTime,
                           endTime,
                           alldayEventsIncluded,
@@ -137,8 +143,10 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
                           endTime,
                           alldayEventsIncluded,
                       });
-            const schedule = generator.createEvents(domain, events);
-            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS, schedule);
+            templateText = templateText.replaceAll(
+                SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS,
+                generator.createEvents(domain, events),
+            );
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS)) {
@@ -148,7 +156,7 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
             const alldayEventsIncluded = await getAllDayEventsIncluded();
             const events =
                 groupId === null
-                    ? await getScheduleEvents(domain, {
+                    ? await getEvents(domain, {
                           startTime,
                           endTime,
                           alldayEventsIncluded,
@@ -159,8 +167,10 @@ export class TemplateCommand extends AbstractInsertScheduleCommand {
                           endTime,
                           alldayEventsIncluded,
                       });
-            const schedule = generator.createEvents(domain, events);
-            templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS, schedule);
+            templateText = templateText.replaceAll(
+                SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS,
+                generator.createEvents(domain, events),
+            );
         }
 
         return templateText;

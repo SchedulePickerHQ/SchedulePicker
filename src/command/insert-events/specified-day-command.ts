@@ -1,12 +1,12 @@
 import { i18n } from 'webextension-polyfill';
-import { getMyGroupEvents, getScheduleEvents } from '../../events/schedule';
+import { getMyGroupEvents, getEvents } from '../../api/schedule';
 import { getAllDayEventsIncluded, getSyntax } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { convertToEndOfDay, convertToStartOfDay, dateTime, isValidDateFormat } from '../../util/date-time';
-import { AbstractInsertScheduleCommand } from './abstract-insert-schedule-command';
+import { AbstractInsertEventsCommand } from './abstract-insert-events-command';
 
-export class SpecifiedDayCommand extends AbstractInsertScheduleCommand {
-    protected async getSchedule(domain: string, groupId: string | null): Promise<string | null> {
+export class SpecifiedDayCommand extends AbstractInsertEventsCommand {
+    protected async getEvents(domain: string, groupId: string | null): Promise<string | null> {
         const promptResult = prompt(
             i18n.getMessage('prompt_specified_date_description'),
             dateTime().format('YYYY/MM/DD'),
@@ -27,7 +27,7 @@ export class SpecifiedDayCommand extends AbstractInsertScheduleCommand {
         const alldayEventsIncluded = await getAllDayEventsIncluded();
         const events =
             groupId === null
-                ? await getScheduleEvents(domain, {
+                ? await getEvents(domain, {
                       startTime,
                       endTime,
                       alldayEventsIncluded,

@@ -1,5 +1,5 @@
 import { i18n } from 'webextension-polyfill';
-import { Member, MyGroupEvent, ScheduleEvent } from '../events/schedule';
+import { Event, Member, MyGroupEvent } from '../api/schedule';
 import { DateTime } from '../util/date-time';
 import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 
@@ -8,7 +8,7 @@ export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
         return `[ ${i18n.getMessage('event_title', dateTime.format('YYYY-MM-DD'))} ]`;
     }
 
-    createEvent(_: string, event: ScheduleEvent | MyGroupEvent) {
+    createEvent(_: string, event: Event | MyGroupEvent) {
         const timeRange = this.createTimeRange(event);
         const subject = event.subject;
         const eventMenu = event.eventMenu === '' ? null : this.createEventMenu(event.eventMenu);
@@ -24,7 +24,7 @@ export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
             : `${timeRange} ${eventMenu} ${subject}`;
     }
 
-    createEvents(domain: string, events: ScheduleEvent[]) {
+    createEvents(domain: string, events: Event[]) {
         return events
             .map((event) => `${this.createEvent(domain, event)}${this.getNewLine()}`)
             .join('')
@@ -35,7 +35,7 @@ export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
         return '\n';
     }
 
-    private createTimeRange(event: ScheduleEvent | MyGroupEvent) {
+    private createTimeRange(event: Event | MyGroupEvent) {
         if (event.isAllDay) {
             return this.createEventMenu('終日');
         }

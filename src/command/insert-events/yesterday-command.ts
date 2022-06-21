@@ -1,18 +1,18 @@
-import { getMyGroupEvents, getScheduleEvents } from '../../events/schedule';
+import { getMyGroupEvents, getEvents } from '../../api/schedule';
 import { getAllDayEventsIncluded, getSyntax } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { convertToEndOfDay, convertToStartOfDay, dateTime } from '../../util/date-time';
-import { AbstractInsertScheduleCommand } from './abstract-insert-schedule-command';
+import { AbstractInsertEventsCommand } from './abstract-insert-events-command';
 
-export class TomorrowCommand extends AbstractInsertScheduleCommand {
-    protected async getSchedule(domain: string, groupId: string | null): Promise<string | null> {
-        const tomorrowDateTime = dateTime().add(1, 'day');
-        const startTime = convertToStartOfDay(tomorrowDateTime);
-        const endTime = convertToEndOfDay(tomorrowDateTime);
+export class YesterdayCommand extends AbstractInsertEventsCommand {
+    protected async getEvents(domain: string, groupId: string | null): Promise<string | null> {
+        const yesterdayDateTime = dateTime().subtract(1, 'day');
+        const startTime = convertToStartOfDay(yesterdayDateTime);
+        const endTime = convertToEndOfDay(yesterdayDateTime);
         const alldayEventsIncluded = await getAllDayEventsIncluded();
         const events =
             groupId === null
-                ? await getScheduleEvents(domain, {
+                ? await getEvents(domain, {
                       startTime,
                       endTime,
                       alldayEventsIncluded,
@@ -26,7 +26,7 @@ export class TomorrowCommand extends AbstractInsertScheduleCommand {
         const syntax = await getSyntax();
         const generator = new SyntaxGeneratorFactory().create(syntax);
         return (
-            generator.createTitle(tomorrowDateTime) + generator.getNewLine() + generator.createEvents(domain, events)
+            generator.createTitle(yesterdayDateTime) + generator.getNewLine() + generator.createEvents(domain, events)
         );
     }
 }

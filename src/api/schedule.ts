@@ -1,9 +1,9 @@
-import * as GaroonApi from '../api/garoon-api';
 import { assert, assertExists } from '../util/assert';
 import { convertToEndOfDay, convertToStartOfDay, dateTime, DateTime } from '../util/date-time';
+import { getScheduleEvents, ScheduleEvent } from './garoon-api';
 import { getMyGroups } from './general';
 
-type ScheduleEventsQuery = {
+type EventsQuery = {
     startTime: DateTime;
     endTime: DateTime;
     alldayEventsIncluded: boolean;
@@ -13,7 +13,7 @@ type ScheduleEventsQuery = {
     };
 };
 
-export type ScheduleEvent = {
+export type Event = {
     id: string;
     subject: string;
     startTime: DateTime;
@@ -43,7 +43,7 @@ export type Member = {
     name: string;
 };
 
-export type MyGroupEvent = ScheduleEvent & {
+export type MyGroupEvent = Event & {
     members: Member[];
 };
 
@@ -51,13 +51,9 @@ const isEventTypeRegularOrRepeating = (
     eventType: 'REGULAR' | 'REPEATING' | 'ALL_DAY',
 ): eventType is 'REGULAR' | 'REPEATING' => eventType === 'REGULAR' || eventType === 'REPEATING';
 
-const convertToScheduleEvent = (
-    gScheduleEvent: GaroonApi.ScheduleEvent,
-    queryStartTime: DateTime,
-    queryEndTime: DateTime,
-): ScheduleEvent => {
-    let startTime = dateTime(gScheduleEvent.start.dateTime);
-    let endTime = gScheduleEvent.isStartOnly ? null : dateTime(gScheduleEvent.end.dateTime);
+const convertToEvent = (scheduleEvent: ScheduleEvent, queryStartTime: DateTime, queryEndTime: DateTime): Event => {
+    let startTime = dateTime(scheduleEvent.start.dateTime);
+    let endTime = scheduleEvent.isStartOnly ? null : dateTime(scheduleEvent.end.dateTime);
 
     if (endTime === null) {
         endTime = convertToEndOfDay(queryEndTime);
@@ -73,35 +69,35 @@ const convertToScheduleEvent = (
         endTime = convertToEndOfDay(queryEndTime);
     }
 
-    const isPrivateEvent = gScheduleEvent.visibilityType === 'PRIVATE';
-    const subject = isPrivateEvent ? '非公開予定' : gScheduleEvent.subject;
-    const eventMenu = isPrivateEvent ? '' : gScheduleEvent.eventMenu;
+    const isPrivateEvent = scheduleEvent.visibilityType === 'PRIVATE';
+    const subject = isPrivateEvent ? '非公開予定' : scheduleEvent.subject;
+    const eventMenu = isPrivateEvent ? '' : scheduleEvent.eventMenu;
 
     assert(
-        isEventTypeRegularOrRepeating(gScheduleEvent.eventType),
-        `Error: ${gScheduleEvent.subject} event type is "ALL_DAY"`,
+        isEventTypeRegularOrRepeating(scheduleEvent.eventType),
+        `Error: ${scheduleEvent.subject} event type is "ALL_DAY"`,
     );
 
     return {
-        id: gScheduleEvent.id,
+        id: scheduleEvent.id,
         subject,
         startTime,
         endTime,
-        eventType: gScheduleEvent.eventType,
+        eventType: scheduleEvent.eventType,
         eventMenu,
-        attendees: gScheduleEvent.attendees.map((attendance) => ({
+        attendees: scheduleEvent.attendees.map((attendance) => ({
             id: attendance.id,
             name: attendance.name,
         })),
-        visibilityType: gScheduleEvent.visibilityType,
-        isAllDay: gScheduleEvent.isAllDay,
-        isStartOnly: gScheduleEvent.isStartOnly,
+        visibilityType: scheduleEvent.visibilityType,
+        isAllDay: scheduleEvent.isAllDay,
+        isStartOnly: scheduleEvent.isStartOnly,
         isContinuingFromYesterday,
         isContinuingToTomorrow,
     };
 };
 
-const sortByTime = (event1: ScheduleEvent, event2: ScheduleEvent) => {
+const sortByTime = (event1: Event, event2: Event) => {
     if (event1.isAllDay) {
         return 1;
     }
@@ -121,8 +117,8 @@ const sortByTime = (event1: ScheduleEvent, event2: ScheduleEvent) => {
     return event1.startTime.isAfter(event2.startTime) ? 1 : -1;
 };
 
-export const getScheduleEvents = async (domain: string, query: ScheduleEventsQuery): Promise<ScheduleEvent[]> => {
-    const events = await GaroonApi.getScheduleEvents(domain, {
+export const getEvents = async (domain: string, query: EventsQuery): Promise<Event[]> => {
+    const events = await getScheduleEvents(domain, {
         rangeStart: query.startTime.toISOString(),
         rangeEnd: query.endTime.toISOString(),
         targetType: query.target?.type,
@@ -133,7 +129,7 @@ export const getScheduleEvents = async (domain: string, query: ScheduleEventsQue
         .filter((event) =>
             isEventTypeRegularOrRepeating(event.eventType) && query.alldayEventsIncluded ? true : !event.isAllDay,
         ) // 期間予定を除外する && 終日予定を含まない設定の場合は終日予定を除外する
-        .map((event) => convertToScheduleEvent(event, query.startTime, query.endTime))
+        .map((event) => convertToEvent(event, query.startTime, query.endTime))
         .sort(sortByTime);
 };
 
@@ -145,7 +141,7 @@ export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery
 
     const eventsList = await Promise.all(
         myGroupMembers.map(async (userId) => {
-            const events = await getScheduleEvents(domain, {
+            const events = await getEvents(domain, {
                 startTime,
                 endTime,
                 alldayEventsIncluded,
@@ -156,7 +152,7 @@ export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery
     );
 
     return eventsList
-        .reduce((uniqueEvents: ScheduleEvent[], events: ScheduleEvent[]) => {
+        .reduce((uniqueEvents: Event[], events: Event[]) => {
             const filter = events.filter((event) => !uniqueEvents.some((uniqueEvent) => uniqueEvent.id === event.id));
             return uniqueEvents.concat(filter);
         }, [])
@@ -172,6 +168,6 @@ export const getMyGroupEvents = async (domain: string, query: MyGroupEventsQuery
 
 export const VisibleForTesting = {
     isEventTypeRegularOrRepeating,
-    convertToScheduleEvent,
+    convertToScheduleEvent: convertToEvent,
     sortByTime,
 };

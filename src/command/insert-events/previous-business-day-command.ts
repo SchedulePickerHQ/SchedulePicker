@@ -1,19 +1,19 @@
-import { searchNextBusinessDateTime } from '../../events/general';
-import { getMyGroupEvents, getScheduleEvents } from '../../events/schedule';
+import { searchPreviousBusinessDateTime } from '../../api/general';
+import { getMyGroupEvents, getEvents } from '../../api/schedule';
 import { getAllDayEventsIncluded, getSyntax } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { convertToEndOfDay, convertToStartOfDay } from '../../util/date-time';
-import { AbstractInsertScheduleCommand } from './abstract-insert-schedule-command';
+import { AbstractInsertEventsCommand } from './abstract-insert-events-command';
 
-export class NextBusinessDayCommand extends AbstractInsertScheduleCommand {
-    protected async getSchedule(domain: string, groupId: string | null): Promise<string | null> {
-        const nextBusinessDayDateTime = await searchNextBusinessDateTime(domain);
-        const startTime = convertToStartOfDay(nextBusinessDayDateTime);
-        const endTime = convertToEndOfDay(nextBusinessDayDateTime);
+export class PreviousBusinessDayCommand extends AbstractInsertEventsCommand {
+    protected async getEvents(domain: string, groupId: string | null): Promise<string | null> {
+        const previousBusinessDayDateTime = await searchPreviousBusinessDateTime(domain);
+        const startTime = convertToStartOfDay(previousBusinessDayDateTime);
+        const endTime = convertToEndOfDay(previousBusinessDayDateTime);
         const alldayEventsIncluded = await getAllDayEventsIncluded();
         const events =
             groupId === null
-                ? await getScheduleEvents(domain, {
+                ? await getEvents(domain, {
                       startTime,
                       endTime,
                       alldayEventsIncluded,
@@ -27,7 +27,7 @@ export class NextBusinessDayCommand extends AbstractInsertScheduleCommand {
         const syntax = await getSyntax();
         const generator = new SyntaxGeneratorFactory().create(syntax);
         return (
-            generator.createTitle(nextBusinessDayDateTime) +
+            generator.createTitle(previousBusinessDayDateTime) +
             generator.getNewLine() +
             generator.createEvents(domain, events)
         );

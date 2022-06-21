@@ -8,7 +8,7 @@ import { isString } from '../../util/type-check';
 import { hideLoading, showLoading } from '../../view/loading';
 import { AbstractCommand } from '../abstract-command';
 
-export abstract class AbstractInsertScheduleCommand extends AbstractCommand {
+export abstract class AbstractInsertEventsCommand extends AbstractCommand {
     protected info: Menus.OnClickData;
     protected tab: Tabs.Tab;
 
@@ -31,14 +31,14 @@ export abstract class AbstractInsertScheduleCommand extends AbstractCommand {
                 ? this.info.parentMenuItemId
                 : null;
         try {
-            const schedule = await this.getSchedule(domain, groupId);
+            const events = await this.getEvents(domain, groupId);
 
-            if (schedule !== null && document.activeElement) {
+            if (events !== null && document.activeElement) {
                 const browserEnv = process.env.BROWSER_ENV;
 
                 if (isSupportBrowser(browserEnv)) {
                     const insertion = new InsertionFactory().create(browserEnv);
-                    insertion.insertTextAtCaret(window, document.activeElement as HTMLElement, schedule);
+                    insertion.insertTextAtCaret(window, document.activeElement as HTMLElement, events);
                 } else {
                     alert(i18n.getMessage('error_not_support_browser'));
                 }
@@ -50,5 +50,5 @@ export abstract class AbstractInsertScheduleCommand extends AbstractCommand {
         }
     }
 
-    protected abstract getSchedule(domain: string, groupId: string | null): Promise<string | null>;
+    protected abstract getEvents(domain: string, groupId: string | null): Promise<string | null>;
 }

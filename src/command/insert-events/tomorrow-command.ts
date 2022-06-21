@@ -1,18 +1,18 @@
+import { getMyGroupEvents, getEvents } from '../../api/schedule';
+import { getAllDayEventsIncluded, getSyntax } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
 import { convertToEndOfDay, convertToStartOfDay, dateTime } from '../../util/date-time';
-import { getMyGroupEvents, getScheduleEvents } from '../../events/schedule';
-import { getAllDayEventsIncluded, getSyntax } from '../../storage';
-import { AbstractInsertScheduleCommand } from './abstract-insert-schedule-command';
+import { AbstractInsertEventsCommand } from './abstract-insert-events-command';
 
-export class TodayCommand extends AbstractInsertScheduleCommand {
-    protected async getSchedule(domain: string, groupId: string | null): Promise<string | null> {
-        const now = dateTime();
-        const startTime = convertToStartOfDay(now);
-        const endTime = convertToEndOfDay(now);
+export class TomorrowCommand extends AbstractInsertEventsCommand {
+    protected async getEvents(domain: string, groupId: string | null): Promise<string | null> {
+        const tomorrowDateTime = dateTime().add(1, 'day');
+        const startTime = convertToStartOfDay(tomorrowDateTime);
+        const endTime = convertToEndOfDay(tomorrowDateTime);
         const alldayEventsIncluded = await getAllDayEventsIncluded();
         const events =
             groupId === null
-                ? await getScheduleEvents(domain, {
+                ? await getEvents(domain, {
                       startTime,
                       endTime,
                       alldayEventsIncluded,
@@ -25,6 +25,8 @@ export class TodayCommand extends AbstractInsertScheduleCommand {
                   });
         const syntax = await getSyntax();
         const generator = new SyntaxGeneratorFactory().create(syntax);
-        return generator.createTitle(now) + generator.getNewLine() + generator.createEvents(domain, events);
+        return (
+            generator.createTitle(tomorrowDateTime) + generator.getNewLine() + generator.createEvents(domain, events)
+        );
     }
 }
