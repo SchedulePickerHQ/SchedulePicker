@@ -18,6 +18,15 @@
         "message": "エラー: '$inputted$'は無効な日付フォーマットです。",
         "placeholders": { "inputted": { "content": "$1", "example": "無効な日付フォーマット" } }
     },
+    "error_update_mygroup": {
+        "message": "エラー: Myグループの更新に失敗しました。"
+    },
+    "error_get_events": {
+        "message": "エラー: 予定の取得に失敗しました。"
+    },
+    "error_not_support_browser": {
+        "message": "エラー: サポートしていないブラウザです。"
+    },
     "option_lang": { "message": "ja" },
     "option_header_text": { "message": "設定" },
     "option_save_button_text": { "message": "保存" },
@@ -45,5 +54,6 @@
     "option_template_usage": { "message": "テンプレートの使い方" },
     "option_template_usage_url": {
         "message": "https://github.com/SchedulePicker/SchedulePicker3/wiki/日本語#テンプレート"
-    }
+    },
+    "prompt_specified_date_description": { "message": "取得したい予定の日付を入力してください。\n例: 2021/09/19" }
 }

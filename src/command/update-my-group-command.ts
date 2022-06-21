@@ -1,9 +1,8 @@
-import { Tabs } from 'webextension-polyfill';
+import { i18n, Tabs } from 'webextension-polyfill';
 import { getMyGroups } from '../events/general';
 import { buildContextMenu } from '../send-message/to-background';
 import { setMyGroups } from '../storage';
 import { assertExists } from '../util/assert';
-import { showAlert } from '../view/alert';
 import { hideLoading, showLoading } from '../view/loading';
 import { AbstractCommand } from './abstract-command';
 
@@ -26,7 +25,7 @@ export class UpdateMyGroupCommand extends AbstractCommand {
             await setMyGroups(myGroups);
             await buildContextMenu();
         } catch {
-            showAlert('Myグループの更新に失敗しました');
+            alert(i18n.getMessage('error_update_mygroup'));
         } finally {
             hideLoading();
         }

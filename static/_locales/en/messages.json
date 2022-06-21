@@ -18,6 +18,15 @@
         "message": "Error: '$inputted$' is invalid date format.",
         "placeholders": { "inputted": { "content": "$1", "example": "Invalid date format." } }
     },
+    "error_update_mygroup": {
+        "message": "Error: Failed to update MyGroup."
+    },
+    "error_get_events": {
+        "message": "Error: Failed to get events."
+    },
+    "error_not_support_browser": {
+        "message": "Error: This extension isn't supported with your using the browser."
+    },
     "option_lang": { "message": "en" },
     "option_header_text": { "message": "Settings" },
     "option_save_button_text": { "message": "Save" },
@@ -45,5 +54,8 @@
     "option_template_usage": { "message": "Usage Templates" },
     "option_template_usage_url": {
         "message": "https://github.com/SchedulePicker/SchedulePicker3/wiki/English#templates"
+    },
+    "prompt_specified_date_description": {
+        "message": "Please input date what you want to get events.\nExample: 2021/09/19"
     }
 }
