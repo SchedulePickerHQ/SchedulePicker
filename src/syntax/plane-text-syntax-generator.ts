@@ -40,8 +40,8 @@ export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
             return this.createEventMenu('終日');
         }
 
-        const start = event.isContinuingFromYesterday ? '(前日)' : event.startTime.format('HH:mm');
-        const end = event.isContinuingToTomorrow ? '(翌日)' : event.endTime.format('HH:mm');
+        const start = event.isContinuingFromYesterday ? 'XXXX' : event.startTime.format('HH:mm');
+        const end = event.isContinuingToTomorrow ? 'XXXX' : event.endTime.format('HH:mm');
         return `${start}-${end}`;
     }
 
