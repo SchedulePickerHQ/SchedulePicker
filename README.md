@@ -12,7 +12,45 @@
   </a>
 </div>
 
-SchedulePicker is browser extension what can easily insert schedule events of the Garoon to a text editor on the kintone. Please read [wiki](https://github.com/SchedulePicker/SchedulePicker3/wiki) if you want to know it usage.
+SchedulePicker is browser extension what can easily insert schedule events of the Garoon to a textarea. Please read [wiki](https://github.com/SchedulePicker/SchedulePicker3/wiki) if you want to know it usage.
+
+## Getting Started
+
+```
+cd SchedulePicker3
+npm install
+npm run watch:(chrome|firefox)
+```
+
+## Development scripts
+
+#### `npm run build`
+
+> It generate package of this extensions.
+
+- `npm run build:chrome` - package is generated to `dist/chrome`.
+- `npm run build:firefox` - package is generated to `dist/firefox`.
+
+#### `npm run watch`
+
+> Runtime detection of code changes.
+
+- `npm run watch:chrome` - script for chrome.
+- `npm run watch:firefox` - script for firefox.
+
+#### `npm run lint`
+
+> Boolean check if code conforms to linting rules - uses xo
+
+#### `npm run test`
+
+> Boolean check if unit tests all pass - uses jest
+
+- `npm run test -- --watch` - will run core tests in watch-mode
+
+#### `npm run pack`
+
+> Generate a zip file for distribution
 
 ## LICENSE
 
