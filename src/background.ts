@@ -3,10 +3,6 @@ import { buildContextMenu } from './context-menu/operation';
 import { MESSAGE_CONTEXT, ToBackgroundMessage } from './send-message/to-background';
 import { contextMenuClicked } from './send-message/to-content';
 
-(async () => {
-    await buildContextMenu();
-})();
-
 browser.contextMenus.onClicked.addListener(async (info: browser.Menus.OnClickData, tab?: browser.Tabs.Tab) => {
     if (tab?.id === undefined) {
         return;
