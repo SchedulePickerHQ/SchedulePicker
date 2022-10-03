@@ -1,9 +1,19 @@
-import { isButtonElement, isInputElement, isString, isTextareaElement, isIframeElement } from '../type-check';
+import {
+    isButtonElement,
+    isInputElement,
+    isString,
+    isTextareaElement,
+    isIframeElement,
+    isSelectElement,
+    isDivElement,
+} from '../type-check';
 
 const buttonEl = document.createElement('button');
 const textareaEl = document.createElement('textarea');
 const inputEl = document.createElement('input');
+const selectEl = document.createElement('select');
 const iframeEl = document.createElement('iframe');
+const divEl = document.createElement('div');
 
 describe('isButtonElement', () => {
     test('Button element', () => {
@@ -27,6 +37,17 @@ describe('isInputElement', () => {
     });
 });
 
+describe('isSelectElement', () => {
+    test('Select element', () => {
+        expect(isSelectElement(selectEl)).toBe(true);
+    });
+
+    test('Not select element', () => {
+        expect(isSelectElement(inputEl)).toBe(false);
+        expect(isSelectElement(null)).toBe(false);
+    });
+});
+
 describe('isTextareaElement', () => {
     test('Textarea element', () => {
         expect(isTextareaElement(textareaEl)).toBe(true);
@@ -46,6 +67,17 @@ describe('isIframeElement', () => {
     test('Not Iframe element', () => {
         expect(isIframeElement(inputEl)).toBe(false);
         expect(isIframeElement(null)).toBe(false);
+    });
+});
+
+describe('isDivElement', () => {
+    test('Div element', () => {
+        expect(isDivElement(divEl)).toBe(true);
+    });
+
+    test('Not Iframe element', () => {
+        expect(isDivElement(buttonEl)).toBe(false);
+        expect(isDivElement(null)).toBe(false);
     });
 });
 
