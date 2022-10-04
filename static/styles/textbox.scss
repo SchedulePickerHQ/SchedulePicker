@@ -9,6 +9,7 @@
 
     &:hover {
         border-color: variable.$primary-color;
+        transition: 0.2s;
     }
 
     & input {
