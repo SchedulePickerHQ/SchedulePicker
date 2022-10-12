@@ -20,7 +20,7 @@ describe('isButtonElement', () => {
         expect(isButtonElement(buttonEl)).toBe(true);
     });
 
-    test('Not button element', () => {
+    test('Not Button element', () => {
         expect(isButtonElement(inputEl)).toBe(false);
         expect(isButtonElement(null)).toBe(false);
     });
@@ -31,7 +31,7 @@ describe('isInputElement', () => {
         expect(isInputElement(inputEl)).toBe(true);
     });
 
-    test('Not input element', () => {
+    test('Not Input element', () => {
         expect(isInputElement(buttonEl)).toBe(false);
         expect(isInputElement(null)).toBe(false);
     });
@@ -42,7 +42,7 @@ describe('isSelectElement', () => {
         expect(isSelectElement(selectEl)).toBe(true);
     });
 
-    test('Not select element', () => {
+    test('Not Select element', () => {
         expect(isSelectElement(inputEl)).toBe(false);
         expect(isSelectElement(null)).toBe(false);
     });
@@ -75,7 +75,7 @@ describe('isDivElement', () => {
         expect(isDivElement(divEl)).toBe(true);
     });
 
-    test('Not Iframe element', () => {
+    test('Not Div element', () => {
         expect(isDivElement(buttonEl)).toBe(false);
         expect(isDivElement(null)).toBe(false);
     });
