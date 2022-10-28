@@ -1,6 +1,13 @@
 {
     "ext_name": { "message": "SchedulePicker" },
     "ext_description": { "message": "You can easily paste Garoon scheduled events to a textarea." },
+    "day_of_week_0": { "message": "Sun" },
+    "day_of_week_1": { "message": "Mon" },
+    "day_of_week_2": { "message": "Tue" },
+    "day_of_week_3": { "message": "Wed" },
+    "day_of_week_4": { "message": "Thu" },
+    "day_of_week_5": { "message": "Fri" },
+    "day_of_week_6": { "message": "Sat" },
     "context_menu_today": { "message": "Today's events" },
     "context_menu_tomorrow": { "message": "Tomorrow's events" },
     "context_menu_yesterday": { "message": "Yesterday's events" },
