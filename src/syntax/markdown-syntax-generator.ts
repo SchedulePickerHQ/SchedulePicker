@@ -6,7 +6,7 @@ import { getEventMenuColorCode } from './event-menu-color';
 
 export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `[ ${i18n.getMessage('event_title', `${dateTime.format('YYYY-MM-DD')}(${getDayOfWeek(dateTime)})`)} ]`;
+        return `[ ${i18n.getMessage('event_title', `${dateTime.format('YYYY/MM/DD')}(${getDayOfWeek(dateTime)})`)} ]`;
     }
 
     createEvent(domain: string, event: Event | MyGroupEvent) {

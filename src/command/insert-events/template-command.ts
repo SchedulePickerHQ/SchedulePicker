@@ -18,7 +18,7 @@ const SPECIAL_TEMPLATE_CHARACTER = {
     PREVIOUS_BUSINESS_DAY_EVENTS: '{%PREVIOUS_BUSINESS_DAY_EVENTS%}',
 } as const;
 
-const DATE_FORMAT = 'YYYY-MM-DD';
+const DATE_FORMAT = 'YYYY/MM/DD';
 
 export class TemplateCommand extends AbstractInsertEventsCommand {
     protected async getEvents(domain: string, groupId: string | null): Promise<string | null> {

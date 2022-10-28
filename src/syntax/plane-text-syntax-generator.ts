@@ -5,7 +5,7 @@ import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 
 export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `[ ${i18n.getMessage('event_title', `${dateTime.format('YYYY-MM-DD')}(${getDayOfWeek(dateTime)})`)} ]`;
+        return `[ ${i18n.getMessage('event_title', `${dateTime.format('YYYY/MM/DD')}(${getDayOfWeek(dateTime)})`)} ]`;
     }
 
     createEvent(_: string, event: Event | MyGroupEvent) {
