@@ -28,31 +28,31 @@ export class TemplateCommand extends AbstractInsertEventsCommand {
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TODAY)) {
             const todayDateTime = dateTime();
-            const title = `${todayDateTime.format(DATE_FORMAT)}(${getDayOfWeek(todayDateTime)})`;
+            const title = `${todayDateTime.format(DATE_FORMAT)} (${getDayOfWeek(todayDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TOMORROW)) {
             const tomorrowDateTime = dateTime().add(1, 'day');
-            const title = `${tomorrowDateTime.format(DATE_FORMAT)}(${getDayOfWeek(tomorrowDateTime)})`;
+            const title = `${tomorrowDateTime.format(DATE_FORMAT)} (${getDayOfWeek(tomorrowDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY)) {
             const yesterdayDateTime = dateTime().subtract(1, 'day');
-            const title = `${yesterdayDateTime.format(DATE_FORMAT)}(${getDayOfWeek(yesterdayDateTime)})`;
+            const title = `${yesterdayDateTime.format(DATE_FORMAT)} (${getDayOfWeek(yesterdayDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY)) {
             const nextBusinessDateTime = await searchNextBusinessDateTime(domain);
-            const title = `${nextBusinessDateTime.format(DATE_FORMAT)}(${getDayOfWeek(nextBusinessDateTime)})`;
+            const title = `${nextBusinessDateTime.format(DATE_FORMAT)} (${getDayOfWeek(nextBusinessDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY)) {
             const previousBusinessDateTime = await searchPreviousBusinessDateTime(domain);
-            const title = `${previousBusinessDateTime.format(DATE_FORMAT)}(${getDayOfWeek(previousBusinessDateTime)})`;
+            const title = `${previousBusinessDateTime.format(DATE_FORMAT)} (${getDayOfWeek(previousBusinessDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY, title);
         }
 

@@ -8,7 +8,7 @@ export class HtmlSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
         return `<span>[ ${i18n.getMessage(
             'event_title',
-            `${dateTime.format('YYYY/MM/DD')}(${getDayOfWeek(dateTime)})`,
+            `${dateTime.format('YYYY/MM/DD')} (${getDayOfWeek(dateTime)})`,
         )} ]</span>`;
     }
 
