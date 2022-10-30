@@ -1,12 +1,12 @@
 import { i18n } from 'webextension-polyfill';
 import { Event, Member, MyGroupEvent } from '../api/schedule';
-import { DateTime } from '../util/date-time';
+import { DateTime, getDayOfWeek } from '../util/date-time';
 import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 import { getEventMenuColorCode } from './event-menu-color';
 
 export class MarkdownSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `[ ${i18n.getMessage('event_title', dateTime.format('YYYY-MM-DD'))} ]`;
+        return `[ ${i18n.getMessage('event_title', `${dateTime.format('YYYY/MM/DD')} (${getDayOfWeek(dateTime)})`)} ]`;
     }
 
     createEvent(domain: string, event: Event | MyGroupEvent) {

@@ -1,3 +1,4 @@
+import { i18n } from 'webextension-polyfill';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
@@ -21,6 +22,8 @@ const WEEK = {
 type Week = keyof typeof WEEK;
 
 export const getWeekIndex = (week: Week): TypeOfValues<Week> => WEEK[week];
+
+export const getDayOfWeek = (arg: DateTime) => i18n.getMessage(`day_of_week_${arg.day()}`);
 
 export const convertToStartOfDay = (arg: DateTime): DateTime => {
     return arg.startOf('day');

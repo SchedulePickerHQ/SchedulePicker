@@ -1,11 +1,11 @@
 import { i18n } from 'webextension-polyfill';
 import { Event, Member, MyGroupEvent } from '../api/schedule';
-import { DateTime } from '../util/date-time';
+import { DateTime, getDayOfWeek } from '../util/date-time';
 import { AbstractSyntaxGenerator } from './abstract-syntax-generator';
 
 export class PlaneTextSyntaxGenerator extends AbstractSyntaxGenerator {
     createTitle(dateTime: DateTime) {
-        return `[ ${i18n.getMessage('event_title', dateTime.format('YYYY-MM-DD'))} ]`;
+        return `[ ${i18n.getMessage('event_title', `${dateTime.format('YYYY/MM/DD')} (${getDayOfWeek(dateTime)})`)} ]`;
     }
 
     createEvent(_: string, event: Event | MyGroupEvent) {

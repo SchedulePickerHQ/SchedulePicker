@@ -1,6 +1,13 @@
 {
     "ext_name": { "message": "SchedulePicker" },
     "ext_description": { "message": "Garoonの予定をテキストエリアに簡単に貼り付けることができます。" },
+    "day_of_week_0": { "message": "日" },
+    "day_of_week_1": { "message": "月" },
+    "day_of_week_2": { "message": "火" },
+    "day_of_week_3": { "message": "水" },
+    "day_of_week_4": { "message": "木" },
+    "day_of_week_5": { "message": "金" },
+    "day_of_week_6": { "message": "土" },
     "context_menu_today": { "message": "今日の予定" },
     "context_menu_tomorrow": { "message": "明日の予定" },
     "context_menu_yesterday": { "message": "昨日の予定" },

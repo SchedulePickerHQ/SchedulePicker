@@ -2,7 +2,7 @@ import { searchNextBusinessDateTime, searchPreviousBusinessDateTime } from '../.
 import { getEvents, getMyGroupEvents } from '../../api/schedule';
 import { getAllDayEventsIncluded, getSyntax, getTemplateText } from '../../storage';
 import { SyntaxGeneratorFactory } from '../../syntax/syntax-generator-factory';
-import { convertToEndOfDay, convertToStartOfDay, dateTime } from '../../util/date-time';
+import { convertToEndOfDay, convertToStartOfDay, dateTime, getDayOfWeek } from '../../util/date-time';
 import { AbstractInsertEventsCommand } from './abstract-insert-events-command';
 
 const SPECIAL_TEMPLATE_CHARACTER = {
@@ -18,7 +18,7 @@ const SPECIAL_TEMPLATE_CHARACTER = {
     PREVIOUS_BUSINESS_DAY_EVENTS: '{%PREVIOUS_BUSINESS_DAY_EVENTS%}',
 } as const;
 
-const DATE_FORMAT = 'YYYY-MM-DD';
+const DATE_FORMAT = 'YYYY/MM/DD';
 
 export class TemplateCommand extends AbstractInsertEventsCommand {
     protected async getEvents(domain: string, groupId: string | null): Promise<string | null> {
@@ -27,29 +27,32 @@ export class TemplateCommand extends AbstractInsertEventsCommand {
         let templateText = await getTemplateText();
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TODAY)) {
-            const title = dateTime().format(DATE_FORMAT);
+            const todayDateTime = dateTime();
+            const title = `${todayDateTime.format(DATE_FORMAT)} (${getDayOfWeek(todayDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.TOMORROW)) {
-            const title = dateTime().add(1, 'day').format(DATE_FORMAT);
+            const tomorrowDateTime = dateTime().add(1, 'day');
+            const title = `${tomorrowDateTime.format(DATE_FORMAT)} (${getDayOfWeek(tomorrowDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY)) {
-            const title = dateTime().subtract(1, 'day').format(DATE_FORMAT);
+            const yesterdayDateTime = dateTime().subtract(1, 'day');
+            const title = `${yesterdayDateTime.format(DATE_FORMAT)} (${getDayOfWeek(yesterdayDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY)) {
             const nextBusinessDateTime = await searchNextBusinessDateTime(domain);
-            const title = nextBusinessDateTime.format(DATE_FORMAT);
+            const title = `${nextBusinessDateTime.format(DATE_FORMAT)} (${getDayOfWeek(nextBusinessDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY, title);
         }
 
         if (templateText.includes(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY)) {
             const previousBusinessDateTime = await searchPreviousBusinessDateTime(domain);
-            const title = previousBusinessDateTime.format(DATE_FORMAT);
+            const title = `${previousBusinessDateTime.format(DATE_FORMAT)} (${getDayOfWeek(previousBusinessDateTime)})`;
             templateText = templateText.replaceAll(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY, title);
         }
 
