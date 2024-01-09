@@ -46,7 +46,7 @@ export const getEventMenuColorCode = (eventMenu: string): string => {
         case '人事研修 / HR train.':
             return '#646600';
         case '終日':
-            return '#009688';
+            return '#fb8c00';
         // 過去に対応していたメニューの分岐 ここから
         case '打合':
             return '#3182dc';
