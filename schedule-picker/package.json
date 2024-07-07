@@ -1,9 +1,10 @@
 {
   "name": "schedule-picker",
-  "displayName": "SchedulePicker",
-  "version": "1.0.0",
-  "description": "",
+  "displayName": "__MSG_ext_name__",
+  "version": "4.0.0",
+  "description": "__MSG_ext_description__",
   "author": "kuroppe1819",
+  "homepage": "",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -24,8 +25,19 @@
     "typescript": "5.3.3"
   },
   "manifest": {
+    "default_locale": "ja",
+    "permissions": [
+      "background",
+      "contextMenus",
+      "storage"
+    ],
     "host_permissions": [
-      "https://*/*"
+      "https://*.cybozu.com/*",
+      "https://*.cybozu-dev.com/*",
+      "https://*.kintone.com/*",
+      "https://*.kintone-dev.com/*",
+      "https://*.cybozu.cn/*",
+      "https://*.cybozu-dev.cn/*"
     ]
   }
 }
