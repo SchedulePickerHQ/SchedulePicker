@@ -1,10 +1,10 @@
 import { assert } from "console";
 
-import { CONTEXT_MENU_ID } from "~contextMenus/builder";
-import { ContextMenuController } from "~contextMenus/command/controller";
-import { TodayCommand } from "~contextMenus/command/today";
-import { TomorrowCommand } from "~contextMenus/command/tomorrow";
-import { MESSAGE_CONTEXT, sendBuildContextMenu, type MessageContext } from "~messages";
+import { TodayCommand } from "~/menu/command/today";
+import { CONTEXT_MENU_ID } from "~menu/builder";
+import { ContextMenuController } from "~menu/command/controller";
+import { TomorrowCommand } from "~menu/command/tomorrow";
+import { MESSAGE_CONTEXT, sendBuildContextMenu, type MessageContext } from "~utils/messages";
 
 (async () => {
   await sendBuildContextMenu();

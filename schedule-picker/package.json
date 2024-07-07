@@ -11,6 +11,8 @@
     "package": "plasmo package"
   },
   "dependencies": {
+    "dayjs": "^1.11.11",
+    "garoon-soap": "^0.1.12",
     "plasmo": "0.88.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
