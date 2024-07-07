@@ -10,7 +10,7 @@ type ContextMenuItem = {
   contexts: "editable"[];
 };
 
-type ContextMenuId = TypeOfValues<typeof CONTEXT_MENU_ID>;
+export type ContextMenuId = TypeOfValues<typeof CONTEXT_MENU_ID>;
 
 export const CONTEXT_MENU_ID = {
   ROOT: "ROOT",
