@@ -8,8 +8,6 @@ import type { Command } from "../../utils/interface";
 
 export class TodayCommand implements Command {
   async execute() {
-    document.body.style.cursor = "progress";
-
     const now = dateTime();
     const startTime = convertToStartOfDay(now);
     const endTime = convertToEndOfDay(now);
@@ -17,25 +15,24 @@ export class TodayCommand implements Command {
     const syntax = await loadSyntaxSetting();
     const generator = new SyntaxGeneratorFactory().create(syntax);
 
-    let events = null;
-
     try {
-      events = await getUserEvents(location.hostname, {
+      document.body.style.cursor = "progress";
+
+      const events = await getUserEvents(location.hostname, {
         startTime,
         endTime,
         alldayEventIncluded
       });
+
+      const text =
+        generator.createTitle(now) + generator.getNewLine() + generator.createEvents(location.hostname, events);
+
+      insertTextAtCursorPosition(text);
     } catch (e) {
       console.error(e);
       alert(chrome.i18n.getMessage("error_get_events"));
     } finally {
       document.body.style.cursor = "auto";
-    }
-
-    if (events !== null) {
-      const text =
-        generator.createTitle(now) + generator.getNewLine() + generator.createEvents(location.hostname, events);
-      insertTextAtCursorPosition(text);
     }
   }
 }

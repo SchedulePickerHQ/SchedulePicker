@@ -35,6 +35,8 @@ export const insertTextAtCursorPosition = (text: string) => {
     // 挿入文字列の末尾にカーソルを移動させる
     targetEl.focus();
     selection.collapseToEnd();
+  } else {
+    throw new Error("Unsupported input field.");
   }
 };
 
