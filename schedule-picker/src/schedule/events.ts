@@ -3,13 +3,12 @@ import { convertToEndOfDay, convertToStartOfDay, dateTime, type DateTime } from 
 import { getScheduleEvents, type ScheduleEvent } from "./api/garoon";
 
 type UserEventsQuery = {
-  userId: string;
   startTime: DateTime;
   endTime: DateTime;
   alldayEventIncluded: boolean;
 };
 
-export type Event = {
+export type UserEvent = {
   id: string;
   subject: string;
   startTime: DateTime;
@@ -23,21 +22,23 @@ export type Event = {
   isContinuingToTomorrow: boolean;
 };
 
-export const getUserEvents = async (hostname: string, query: UserEventsQuery): Promise<Event[]> => {
+export const getUserEvents = async (hostname: string, query: UserEventsQuery): Promise<UserEvent[]> => {
   const events = await getScheduleEvents(hostname, {
     rangeStart: query.startTime.toISOString(),
-    rangeEnd: query.endTime.toISOString(),
-    targetType: "user",
-    target: query.userId
+    rangeEnd: query.endTime.toISOString()
   });
 
   return events
     .filter((event) => (query.alldayEventIncluded ? true : !event.isAllDay))
-    .map((event) => convertToEvent(event, query.startTime, query.endTime))
+    .map((event) => convertToUserEvent(event, query.startTime, query.endTime))
     .sort(sortByTime);
 };
 
-const convertToEvent = (scheduleEvent: ScheduleEvent, queryStartTime: DateTime, queryEndTime: DateTime): Event => {
+const convertToUserEvent = (
+  scheduleEvent: ScheduleEvent,
+  queryStartTime: DateTime,
+  queryEndTime: DateTime
+): UserEvent => {
   const scheduleEventStartTime = dateTime(scheduleEvent.start.dateTime);
   const isContinuingFromYesterday = scheduleEventStartTime.isBefore(queryStartTime, "day");
   const startTime = isContinuingFromYesterday ? convertToStartOfDay(queryStartTime) : scheduleEventStartTime;
@@ -66,7 +67,7 @@ const convertToEvent = (scheduleEvent: ScheduleEvent, queryStartTime: DateTime, 
   };
 };
 
-const sortByTime = (event1: Event, event2: Event) => {
+const sortByTime = (event1: UserEvent, event2: UserEvent) => {
   if (event1.isAllDay) {
     return 1;
   }

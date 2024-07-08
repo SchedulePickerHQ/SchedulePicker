@@ -1,5 +1,5 @@
-import { buildContextMenu } from "~usecase/contextMenus/builder";
-import { MESSAGE_CONTEXT, sendContextMenuClicked, type MessageContext } from "~utils/messages";
+import { buildContextMenu } from "~menu/builder";
+import { MESSAGE_CONTEXT, sendContextMenuClicked, type MessageContext } from "~messages";
 
 chrome.contextMenus.onClicked.addListener(async (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => {
   if (tab?.id === undefined) {

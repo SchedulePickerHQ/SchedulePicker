@@ -1,4 +1,4 @@
-import type { Command } from "./interface";
+import type { Command } from "../utils/interface";
 
 export class ContextMenuController {
   private commands = new Map<string, Command>();

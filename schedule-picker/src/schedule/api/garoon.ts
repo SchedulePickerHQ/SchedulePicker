@@ -51,7 +51,7 @@ export const getScheduleEvents = async (
   hostname: string,
   parameters: ScheduleEventsParameters
 ): Promise<ScheduleEvent[]> => {
-  const { rangeStart, rangeEnd, targetType, target } = parameters;
+  const { rangeStart, rangeEnd } = parameters;
   const url = new URL(`https://${hostname}/g/api/v1/schedule/events`);
   url.searchParams.append("orderBy", "start asc");
 
@@ -61,14 +61,6 @@ export const getScheduleEvents = async (
 
   if (rangeEnd !== undefined) {
     url.searchParams.append("rangeEnd", rangeEnd);
-  }
-
-  if (targetType !== undefined) {
-    url.searchParams.append("targetType", targetType);
-  }
-
-  if (target !== undefined) {
-    url.searchParams.append("target", target);
   }
 
   const response = (await fetch(url, {

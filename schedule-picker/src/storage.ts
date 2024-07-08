@@ -89,11 +89,11 @@ export const loadTemplateText = async (): Promise<StorageValue["TEMPLATE_TEXT"]>
 
 // 終日の予定を含めるかどうかの設定
 
-export const saveAllDayEventsIncludedSetting = async (shown: StorageValue["ALLDAY_EVENTS_INCLUDED"]) => {
+export const saveAllDayEventIncludedSetting = async (shown: StorageValue["ALLDAY_EVENTS_INCLUDED"]) => {
   await chrome.storage.sync.set({ [STORAGE_KEY.ALLDAY_EVENTS_INCLUDED]: shown });
 };
 
-export const loadAllDayEventsIncludedSetting = async (): Promise<StorageValue["ALLDAY_EVENTS_INCLUDED"]> => {
+export const loadAllDayEventIncludedSetting = async (): Promise<StorageValue["ALLDAY_EVENTS_INCLUDED"]> => {
   const item = await chrome.storage.sync.get(STORAGE_KEY.ALLDAY_EVENTS_INCLUDED);
 
   if (Object.keys(item).length === 0) {

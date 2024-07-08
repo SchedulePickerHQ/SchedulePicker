@@ -1,4 +1,4 @@
-import type { Command } from "./interface";
+import type { Command } from "../../utils/interface";
 
 export class TomorrowCommand implements Command {
   execute(): void {
