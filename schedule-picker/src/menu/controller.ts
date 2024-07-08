@@ -7,7 +7,7 @@ export class ContextMenuController {
     this.commands.set(id, command);
   }
 
-  action(id: string) {
+  clicked(id: string) {
     this.commands.get(id)?.execute();
   }
 }

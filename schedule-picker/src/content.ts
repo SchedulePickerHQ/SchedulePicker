@@ -1,5 +1,3 @@
-import { assert } from "console";
-
 import { TodayCommand } from "~/menu/command/today";
 import { CONTEXT_MENU_ID } from "~menu/builder";
 import { TomorrowCommand } from "~menu/command/tomorrow";
@@ -17,7 +15,6 @@ contextMenuController.setCommend(CONTEXT_MENU_ID.TOMORROW, new TomorrowCommand()
 chrome.runtime.onMessage.addListener((message: MessageContext, _) => {
   if (message.context === MESSAGE_CONTEXT.CONTEXT_MENU_CLICKED) {
     const { info } = message;
-    assert(typeof info.menuItemId === "string");
-    contextMenuController.action(info.menuItemId as string);
+    contextMenuController.clicked(info.menuItemId.toString());
   }
 });
