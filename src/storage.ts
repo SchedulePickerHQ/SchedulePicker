@@ -1,8 +1,6 @@
-import browser from 'webextension-polyfill';
-import { MyGroup } from './api/garoon-api';
-import { Syntax } from './syntax/types';
-
-export type ContextMenuDisplayed = {
+type StorageValue = {
+  SYNTAX: "html" | "markdown" | "planeText";
+  CONTEXT_MENU_DISPLAYED: {
     today: boolean;
     tomorrow: boolean;
     yesterday: boolean;
@@ -11,124 +9,96 @@ export type ContextMenuDisplayed = {
     specifiedDay: boolean;
     template: boolean;
     syntax: boolean;
-};
-
-type StorageInitValue = {
-    SYNTAX: Syntax;
-    CONTEXT_MENU_DISPLAYED: ContextMenuDisplayed;
-    TEMPLATE_TEXT: string;
-    MY_GROUPS: MyGroup[];
-    USE_MY_GROUP: boolean;
-    ALLDAY_EVENTS_INCLUDED: boolean;
+  };
+  TEMPLATE_TEXT: string;
+  ALLDAY_EVENTS_INCLUDED: boolean;
 };
 
 const STORAGE_KEY = {
-    SYNTAX: 'syntax',
-    CONTEXT_MENU_DISPLAYED: 'contextMenuDisplayed',
-    TEMPLATE_TEXT: 'templateText',
-    MY_GROUPS: 'myGroups',
-    USE_MY_GROUP: 'useMyGroup',
-    ALLDAY_EVENTS_INCLUDED: 'alldayEventsIncluded',
+  SYNTAX: "syntax",
+  CONTEXT_MENU_DISPLAYED: "contextMenuDisplayed",
+  TEMPLATE_TEXT: "templateText",
+  ALLDAY_EVENTS_INCLUDED: "alldayEventsIncluded"
 } as const;
 
-const STORAGE_INIT_VALUE: StorageInitValue = {
-    SYNTAX: 'html',
-    CONTEXT_MENU_DISPLAYED: {
-        today: true,
-        tomorrow: false,
-        yesterday: false,
-        nextBusinessDay: false,
-        previousBusinessDay: false,
-        specifiedDay: false,
-        template: true,
-        syntax: true,
-    },
-    TEMPLATE_TEXT: '',
-    MY_GROUPS: [],
-    USE_MY_GROUP: false,
-    ALLDAY_EVENTS_INCLUDED: true,
+const STORAGE_INIT_VALUE: StorageValue = {
+  SYNTAX: "html",
+  CONTEXT_MENU_DISPLAYED: {
+    today: true,
+    tomorrow: false,
+    yesterday: false,
+    nextBusinessDay: false,
+    previousBusinessDay: false,
+    specifiedDay: false,
+    template: true,
+    syntax: true
+  },
+  TEMPLATE_TEXT: "",
+  ALLDAY_EVENTS_INCLUDED: true
 };
 
-export const setSyntax = async (syntax: Syntax) => {
-    await browser.storage.sync.set({ [STORAGE_KEY.SYNTAX]: syntax });
+// 記法の設定
+
+export const saveSyntaxSetting = async (syntax: StorageValue["SYNTAX"]) => {
+  await chrome.storage.sync.set({ [STORAGE_KEY.SYNTAX]: syntax });
 };
 
-export const getSyntax = async (): Promise<Syntax> => {
-    const item = await browser.storage.sync.get(STORAGE_KEY.SYNTAX);
+export const loadSyntaxSetting = async (): Promise<StorageValue["SYNTAX"]> => {
+  const item = await chrome.storage.sync.get(STORAGE_KEY.SYNTAX);
 
-    if (Object.keys(item).length === 0) {
-        return STORAGE_INIT_VALUE.SYNTAX;
-    }
+  if (Object.keys(item).length === 0) {
+    return STORAGE_INIT_VALUE.SYNTAX;
+  }
 
-    return item[STORAGE_KEY.SYNTAX] as Syntax;
+  return item[STORAGE_KEY.SYNTAX] as StorageValue["SYNTAX"];
 };
 
-export const setContextMenuDisplayed = async (displayed: ContextMenuDisplayed) => {
-    await browser.storage.sync.set({ [STORAGE_KEY.CONTEXT_MENU_DISPLAYED]: displayed });
+// コンテキストメニューの表示設定
+
+export const saveContextMenuDisplaySettings = async (displayed: StorageValue["CONTEXT_MENU_DISPLAYED"]) => {
+  await chrome.storage.sync.set({ [STORAGE_KEY.CONTEXT_MENU_DISPLAYED]: displayed });
 };
 
-export const getContextMenuDisplayed = async (): Promise<ContextMenuDisplayed> => {
-    const item = await browser.storage.sync.get(STORAGE_KEY.CONTEXT_MENU_DISPLAYED);
+export const loadContextMenuDisplaySettings = async (): Promise<StorageValue["CONTEXT_MENU_DISPLAYED"]> => {
+  const item = await chrome.storage.sync.get(STORAGE_KEY.CONTEXT_MENU_DISPLAYED);
 
-    if (Object.keys(item).length === 0) {
-        return STORAGE_INIT_VALUE.CONTEXT_MENU_DISPLAYED;
-    }
+  if (Object.keys(item).length === 0) {
+    return STORAGE_INIT_VALUE.CONTEXT_MENU_DISPLAYED;
+  }
 
-    return item[STORAGE_KEY.CONTEXT_MENU_DISPLAYED] as ContextMenuDisplayed;
+  console.log(item[STORAGE_KEY.CONTEXT_MENU_DISPLAYED]);
+
+  return item[STORAGE_KEY.CONTEXT_MENU_DISPLAYED] as StorageValue["CONTEXT_MENU_DISPLAYED"];
 };
 
-export const setTemplateText = async (text: string) => {
-    await browser.storage.sync.set({ [STORAGE_KEY.TEMPLATE_TEXT]: text });
+// テンプレートの設定
+
+export const saveTemplateText = async (text: StorageValue["TEMPLATE_TEXT"]) => {
+  await chrome.storage.sync.set({ [STORAGE_KEY.TEMPLATE_TEXT]: text });
 };
 
-export const getTemplateText = async (): Promise<string> => {
-    const item = await browser.storage.sync.get(STORAGE_KEY.TEMPLATE_TEXT);
+export const loadTemplateText = async (): Promise<StorageValue["TEMPLATE_TEXT"]> => {
+  const item = await chrome.storage.sync.get(STORAGE_KEY.TEMPLATE_TEXT);
 
-    if (Object.keys(item).length === 0) {
-        return STORAGE_INIT_VALUE.TEMPLATE_TEXT;
-    }
+  if (Object.keys(item).length === 0) {
+    return STORAGE_INIT_VALUE.TEMPLATE_TEXT;
+  }
 
-    return item[STORAGE_KEY.TEMPLATE_TEXT] as string;
+  return item[STORAGE_KEY.TEMPLATE_TEXT] as StorageValue["TEMPLATE_TEXT"];
 };
 
-export const setMyGroups = async (myGroups: MyGroup[]) => {
-    await browser.storage.sync.set({ [STORAGE_KEY.MY_GROUPS]: myGroups });
+// 終日の予定を含めるかどうかの設定
+
+export const saveAllDayEventIncludedSetting = async (shown: StorageValue["ALLDAY_EVENTS_INCLUDED"]) => {
+  await chrome.storage.sync.set({ [STORAGE_KEY.ALLDAY_EVENTS_INCLUDED]: shown });
 };
 
-export const getMyGroups = async (): Promise<MyGroup[]> => {
-    const item = await browser.storage.sync.get(STORAGE_KEY.MY_GROUPS);
+export const loadAllDayEventIncludedSetting = async (): Promise<StorageValue["ALLDAY_EVENTS_INCLUDED"]> => {
+  const item = await chrome.storage.sync.get(STORAGE_KEY.ALLDAY_EVENTS_INCLUDED);
 
-    if (Object.keys(item).length === 0) {
-        return STORAGE_INIT_VALUE.MY_GROUPS;
-    }
+  if (Object.keys(item).length === 0) {
+    return STORAGE_INIT_VALUE.ALLDAY_EVENTS_INCLUDED;
+  }
 
-    return item[STORAGE_KEY.MY_GROUPS] as MyGroup[];
-};
-
-export const setToUseMyGroup = async (use: boolean) => {
-    await browser.storage.sync.set({ [STORAGE_KEY.USE_MY_GROUP]: use });
-};
-
-export const getToUseMyGroup = async (): Promise<boolean> => {
-    const item = await browser.storage.sync.get(STORAGE_KEY.USE_MY_GROUP);
-
-    if (Object.keys(item).length === 0) {
-        return STORAGE_INIT_VALUE.USE_MY_GROUP;
-    }
-
-    return item[STORAGE_KEY.USE_MY_GROUP] as boolean;
-};
-
-export const setAllDayEventsIncluded = async (shown: boolean) => {
-    await browser.storage.sync.set({ [STORAGE_KEY.ALLDAY_EVENTS_INCLUDED]: shown });
-};
-
-export const getAllDayEventsIncluded = async () => {
-    const item = await browser.storage.sync.get(STORAGE_KEY.ALLDAY_EVENTS_INCLUDED);
-
-    if (Object.keys(item).length === 0) {
-        return STORAGE_INIT_VALUE.ALLDAY_EVENTS_INCLUDED;
-    }
-
-    return item[STORAGE_KEY.ALLDAY_EVENTS_INCLUDED] as boolean;
+  return item[STORAGE_KEY.ALLDAY_EVENTS_INCLUDED] as StorageValue["ALLDAY_EVENTS_INCLUDED"];
 };
