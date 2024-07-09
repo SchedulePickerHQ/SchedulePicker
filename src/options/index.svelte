@@ -2,18 +2,17 @@
   import "./i18n";
 
   import { _ } from "svelte-i18n";
+
+  import Button from "./Button.svelte";
 </script>
 
 <main lang={$_("option_lang.message")}>
   <header class="header">
     <h1 class="title">{$_("option_header_text.message")}</h1>
-    <button class="save-button">
-      <span class="save-button__text">{$_("option_save_button_text.message")}</span>
-      <svg width="20" height="20" viewBox="0 0 20 20">
-        <path
-          d="M0 11c2.761.575 6.312 1.688 9 3.438 3.157-4.23 8.828-8.187 15-11.438-5.861 5.775-10.711 12.328-14 18.917-2.651-3.766-5.547-7.271-10-10.917z" />
-      </svg>
-    </button>
+    <Button
+      on:click={() => {
+        console.log("saved");
+      }}>{$_("option_save_button_text.message")}</Button>
   </header>
   <div id="template-setting" class="group">
     <h2 class="template-setting__label group__title">{$_("option_template_title.message")}</h2>
