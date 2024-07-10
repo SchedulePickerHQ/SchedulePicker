@@ -4,6 +4,7 @@
   import { _ } from "svelte-i18n";
 
   import Button from "./Button.svelte";
+  import Checkbox from "./Checkbox.svelte";
 </script>
 
 <main lang={$_("option_lang.message")}>
@@ -25,38 +26,14 @@
   </div>
   <fieldset id="context-menu-setting" class="group">
     <legend class="group__title">{$_("option_context_menu_title.message")}</legend>
-    <label class="checkbox-label">
-      <input id="today" class="checkbox" type="checkbox" name="display-menu-setting" checked />
-      <span class="checkbox-text">{$_("option_context_menu_today.message")}</span>
-    </label>
-    <label class="checkbox-label">
-      <input id="tomorrow" class="checkbox" type="checkbox" name="display-menu-setting" />
-      <span class="checkbox-text">{$_("option_context_menu_tomorrow.message")}</span>
-    </label>
-    <label class="checkbox-label">
-      <input id="yesterday" class="checkbox" type="checkbox" name="display-menu-setting" />
-      <span class="checkbox-text">{$_("option_context_menu_yesterday.message")}</span>
-    </label>
-    <label class="checkbox-label">
-      <input id="next-business-day" class="checkbox" type="checkbox" name="display-menu-setting" />
-      <span class="checkbox-text">{$_("option_context_menu_next_business_day.message")}</span>
-    </label>
-    <label class="checkbox-label">
-      <input id="previous-business-day" class="checkbox" type="checkbox" name="display-menu-setting" />
-      <span class="checkbox-text">{$_("option_context_menu_previous_business_day.message")}</span>
-    </label>
-    <label class="checkbox-label">
-      <input id="specified-day" class="checkbox" type="checkbox" name="display-menu-setting" />
-      <span class="checkbox-text">{$_("option_context_menu_specified_day.message")}</span>
-    </label>
-    <label class="checkbox-label">
-      <input id="template" class="checkbox" type="checkbox" name="display-menu-setting" />
-      <span class="checkbox-text">{$_("option_context_menu_template.message")}</span>
-    </label>
-    <label class="checkbox-label">
-      <input id="syntax" class="checkbox" type="checkbox" name="display-menu-setting" checked />
-      <span class="checkbox-text">{$_("option_context_menu_syntax.message")}</span>
-    </label>
+    <Checkbox label={$_("option_context_menu_today.message")} />
+    <Checkbox label={$_("option_context_menu_tomorrow.message")} />
+    <Checkbox label={$_("option_context_menu_yesterday.message")} />
+    <Checkbox label={$_("option_context_menu_next_business_day.message")} />
+    <Checkbox label={$_("option_context_menu_previous_business_day.message")} />
+    <Checkbox label={$_("option_context_menu_specified_day.message")} />
+    <Checkbox label={$_("option_context_menu_template.message")} />
+    <Checkbox label={$_("option_context_menu_syntax.message")} />
   </fieldset>
   <fieldset id="syntax-setting" class="group">
     <legend class="group__title">{$_("option_syntax_title.message")}</legend>
@@ -75,10 +52,7 @@
   </fieldset>
   <fieldset id="allday-events-shown-setting" class="group">
     <legend class="group__title">{$_("option_all_day_title.message")}</legend>
-    <label class="checkbox-label">
-      <input id="allday-events-shown" class="checkbox" type="checkbox" name="allday-events-shown-setting" />
-      <span class="checkbox-text">{$_("option_all_day_shown.message")}</span>
-    </label>
+    <Checkbox label={$_("option_all_day_shown.message")} />
   </fieldset>
 </main>
 
@@ -95,6 +69,7 @@
     margin: 24px;
     padding: 24px;
     background-color: white;
+    font-size: 14px;
   }
 
   .header {
@@ -108,9 +83,13 @@
   .title {
     display: inline-block;
     font-size: 28px;
+    font-weight: normal;
+    margin: 0;
   }
 
   .group {
+    border: none;
+    padding: 0;
     margin-bottom: 32px;
   }
 
@@ -121,11 +100,13 @@
 
   .template-setting__label {
     display: block;
+    font-size: 20px;
+    font-weight: normal;
   }
 
   .template-setting__textarea {
     width: 100%;
-    height: 320px;
+    height: 280px;
     padding: 8px;
     margin: 8px 0;
     box-sizing: border-box;
