@@ -5,6 +5,7 @@
 
   import Button from "./Button.svelte";
   import Checkbox from "./Checkbox.svelte";
+  import Radio from "./Radio.svelte";
 </script>
 
 <main lang={$_("option_lang.message")}>
@@ -26,29 +27,20 @@
   </div>
   <fieldset id="context-menu-setting" class="group">
     <legend class="group__title">{$_("option_context_menu_title.message")}</legend>
-    <Checkbox label={$_("option_context_menu_today.message")} />
-    <Checkbox label={$_("option_context_menu_tomorrow.message")} />
-    <Checkbox label={$_("option_context_menu_yesterday.message")} />
-    <Checkbox label={$_("option_context_menu_next_business_day.message")} />
-    <Checkbox label={$_("option_context_menu_previous_business_day.message")} />
-    <Checkbox label={$_("option_context_menu_specified_day.message")} />
-    <Checkbox label={$_("option_context_menu_template.message")} />
-    <Checkbox label={$_("option_context_menu_syntax.message")} />
+    <Checkbox label={$_("option_context_menu_today.message")} name="context-menu-setting" />
+    <Checkbox label={$_("option_context_menu_tomorrow.message")} name="context-menu-setting" />
+    <Checkbox label={$_("option_context_menu_yesterday.message")} name="context-menu-setting" />
+    <Checkbox label={$_("option_context_menu_next_business_day.message")} name="context-menu-setting" />
+    <Checkbox label={$_("option_context_menu_previous_business_day.message")} name="context-menu-setting" />
+    <Checkbox label={$_("option_context_menu_specified_day.message")} name="context-menu-setting" />
+    <Checkbox label={$_("option_context_menu_template.message")} name="context-menu-setting" />
+    <Checkbox label={$_("option_context_menu_syntax.message")} name="context-menu-setting" />
   </fieldset>
   <fieldset id="syntax-setting" class="group">
     <legend class="group__title">{$_("option_syntax_title.message")}</legend>
-    <label class="radio-label">
-      <input id="html" class="radio" type="radio" name="syntax-setting" checked />
-      <span class="radio-text">{$_("option_syntax_html.message")}</span>
-    </label>
-    <label class="radio-label">
-      <input id="markdown" class="radio" type="radio" name="syntax-setting" />
-      <span class="radio-text">{$_("option_syntax_markdown.message")}</span>
-    </label>
-    <label class="radio-label">
-      <input id="plane-text" class="radio" type="radio" name="syntax-setting" />
-      <span class="radio-text">{$_("option_syntax_plane_text.message")}</span>
-    </label>
+    <Radio label={$_("option_syntax_html.message")} name="syntax-setting" />
+    <Radio label={$_("option_syntax_markdown.message")} name="syntax-setting" />
+    <Radio label={$_("option_syntax_plane_text.message")} name="syntax-setting" />
   </fieldset>
   <fieldset id="allday-events-shown-setting" class="group">
     <legend class="group__title">{$_("option_all_day_title.message")}</legend>

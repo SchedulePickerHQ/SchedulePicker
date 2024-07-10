@@ -1,9 +1,11 @@
 <script lang="ts">
   export let label: string = "";
+  export let name: string = "";
+  export let checked: boolean = false;
 </script>
 
 <label>
-  <input id="today" class="checkbox" type="checkbox" name="display-menu-setting" checked />
+  <input type="checkbox" {name} {checked} />
   <span class="text">{label}</span>
 </label>
 
