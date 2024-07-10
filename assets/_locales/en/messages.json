@@ -50,7 +50,7 @@
     "option_all_day_shown": { "message": "Show all-day events" },
     "option_template_title": { "message": "Template" },
     "option_template_placeholder": {
-        "message": "■Schedule for {%TODAY%}&#13;&#10;{%TODAY_EVENTS%}&#13;&#10;&#13;&#10;■I learned it&#13;&#10;&#13;&#10;■Impressions"
+        "message": "■Schedule for {%TODAY%}\n{%TODAY_EVENTS%}\n\n■I learned it\n\n■Impressions"
     },
     "option_template_usage": { "message": "Usage of template" },
     "option_template_usage_url": {

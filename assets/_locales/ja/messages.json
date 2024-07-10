@@ -50,7 +50,7 @@
     "option_all_day_shown": { "message": "終日予定を表示する" },
     "option_template_title": { "message": "テンプレート" },
     "option_template_placeholder": {
-        "message": "■{%TODAY%}の予定&#13;&#10;{%TODAY_EVENTS%}&#13;&#10;&#13;&#10;■学んだこと&#13;&#10;&#13;&#10;■所感"
+        "message": "■{%TODAY%}の予定\n{%TODAY_EVENTS%}\n\n■学んだこと\n\n■所感"
     },
     "option_template_usage": { "message": "テンプレートの使い方" },
     "option_template_usage_url": {
