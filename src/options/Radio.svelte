@@ -1,11 +1,12 @@
 <script lang="ts">
+  export let value: string;
+  export let selected: string;
   export let label: string = "";
   export let name: string = "";
-  export let checked: boolean = false;
 </script>
 
 <label>
-  <input type="radio" {name} {checked} />
+  <input type="radio" {value} bind:group={selected} {name} />
   <span class="text">{label}</span>
 </label>
 

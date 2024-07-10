@@ -1,6 +1,7 @@
 <script lang="ts">
   import "./i18n";
 
+  import { onMount } from "svelte";
   import { _ } from "svelte-i18n";
 
   import {
@@ -8,33 +9,62 @@
     loadContextMenuDisplaySettings,
     loadSyntaxSetting,
     loadTemplateText,
-    saveContextMenuDisplaySettings
+    saveAllDayEventIncludedSetting,
+    saveContextMenuDisplaySettings,
+    saveSyntaxSetting,
+    saveTemplateText
   } from "~storage";
 
   import Button from "./Button.svelte";
   import Checkbox from "./Checkbox.svelte";
   import Radio from "./Radio.svelte";
 
-  let templateTextPromise = loadTemplateText();
-  let contextMenuDisplayPromise = loadContextMenuDisplaySettings();
-  let syntaxPromise = loadSyntaxSetting();
-  let allDayEventIncludedPromise = loadAllDayEventIncludedSetting();
   let saved = false;
+  let templateText: string;
+  let todayChecked: boolean;
+  let tomorrowChecked: boolean;
+  let yesterdayChecked: boolean;
+  let nextBusinessDayChecked: boolean;
+  let previousBusinessDayChecked: boolean;
+  let specifiedDayChecked: boolean;
+  let templateChecked: boolean;
+  let syntaxChecked: boolean;
+  let selectedSyntax: "html" | "markdown" | "planeText";
+  let alldayEventIncludedChecked: boolean;
+
+  onMount(async () => {
+    templateText = await loadTemplateText();
+
+    const contextMenuDisplaySettings = await loadContextMenuDisplaySettings();
+    todayChecked = contextMenuDisplaySettings.today;
+    tomorrowChecked = contextMenuDisplaySettings.tomorrow;
+    yesterdayChecked = contextMenuDisplaySettings.yesterday;
+    nextBusinessDayChecked = contextMenuDisplaySettings.nextBusinessDay;
+    previousBusinessDayChecked = contextMenuDisplaySettings.previousBusinessDay;
+    specifiedDayChecked = contextMenuDisplaySettings.specifiedDay;
+    templateChecked = contextMenuDisplaySettings.template;
+    syntaxChecked = contextMenuDisplaySettings.syntax;
+    selectedSyntax = await loadSyntaxSetting();
+    alldayEventIncludedChecked = await loadAllDayEventIncludedSetting();
+  });
 
   let onSaveButtonClick = async () => {
     if (saved) return;
     saved = true;
 
+    await saveTemplateText(templateText);
     await saveContextMenuDisplaySettings({
-      today: true,
-      tomorrow: true,
-      yesterday: true,
-      nextBusinessDay: true,
-      previousBusinessDay: true,
-      specifiedDay: true,
-      template: true,
-      syntax: true
+      today: todayChecked,
+      tomorrow: tomorrowChecked,
+      yesterday: yesterdayChecked,
+      nextBusinessDay: nextBusinessDayChecked,
+      previousBusinessDay: previousBusinessDayChecked,
+      specifiedDay: specifiedDayChecked,
+      template: templateChecked,
+      syntax: syntaxChecked
     });
+    await saveSyntaxSetting(selectedSyntax);
+    await saveAllDayEventIncludedSetting(alldayEventIncludedChecked);
 
     setTimeout(() => {
       saved = false;
@@ -46,65 +76,74 @@
   <header class="header">
     <h1 class="title">{$_("option_header_text.message")}</h1>
     <Button on:click={onSaveButtonClick}>
-      {saved ? "(｡•̀ω-)b" : $_("option_save_button_text.message")}
+      {saved ? "( ¯꒳¯)b✧︎" : $_("option_save_button_text.message")}
     </Button>
   </header>
   <div id="template-setting" class="group">
-    {#await templateTextPromise then templateText}
-      <h2 class="template-setting__label group__title">{$_("option_template_title.message")}</h2>
-      <textarea class="template-setting__textarea" placeholder={$_("option_template_placeholder.message")}
-        >{templateText}</textarea>
-      <a
-        class="template-setting__usage-link"
-        href={$_("option_template_usage_url.message")}
-        target="_blank"
-        rel="noopener noreferrer">{$_("option_template_usage.message")}</a>
-    {/await}
+    <h2 class="template-setting__label group__title">{$_("option_template_title.message")}</h2>
+    <textarea
+      class="template-setting__textarea"
+      placeholder={$_("option_template_placeholder.message")}
+      bind:value={templateText} />
+    <a
+      class="template-setting__usage-link"
+      href={$_("option_template_usage_url.message")}
+      target="_blank"
+      rel="noopener noreferrer">{$_("option_template_usage.message")}</a>
   </div>
   <fieldset id="context-menu-setting" class="group">
-    {#await contextMenuDisplayPromise then display}
-      <legend class="group__title">{$_("option_context_menu_title.message")}</legend>
-      <Checkbox label={$_("option_context_menu_today.message")} name="context-menu-setting" checked={display.today} />
-      <Checkbox
-        label={$_("option_context_menu_tomorrow.message")}
-        name="context-menu-setting"
-        checked={display.tomorrow} />
-      <Checkbox
-        label={$_("option_context_menu_yesterday.message")}
-        name="context-menu-setting"
-        checked={display.yesterday} />
-      <Checkbox
-        label={$_("option_context_menu_next_business_day.message")}
-        name="context-menu-setting"
-        checked={display.nextBusinessDay} />
-      <Checkbox
-        label={$_("option_context_menu_previous_business_day.message")}
-        name="context-menu-setting"
-        checked={display.previousBusinessDay} />
-      <Checkbox
-        label={$_("option_context_menu_specified_day.message")}
-        name="context-menu-setting"
-        checked={display.specifiedDay} />
-      <Checkbox
-        label={$_("option_context_menu_template.message")}
-        name="context-menu-setting"
-        checked={display.template} />
-      <Checkbox label={$_("option_context_menu_syntax.message")} name="context-menu-setting" checked={display.syntax} />
-    {/await}
+    <legend class="group__title">{$_("option_context_menu_title.message")}</legend>
+    <Checkbox label={$_("option_context_menu_today.message")} name="context-menu-setting" bind:checked={todayChecked} />
+    <Checkbox
+      label={$_("option_context_menu_tomorrow.message")}
+      name="context-menu-setting"
+      bind:checked={tomorrowChecked} />
+    <Checkbox
+      label={$_("option_context_menu_yesterday.message")}
+      name="context-menu-setting"
+      bind:checked={yesterdayChecked} />
+    <Checkbox
+      label={$_("option_context_menu_next_business_day.message")}
+      name="context-menu-setting"
+      bind:checked={nextBusinessDayChecked} />
+    <Checkbox
+      label={$_("option_context_menu_previous_business_day.message")}
+      name="context-menu-setting"
+      bind:checked={previousBusinessDayChecked} />
+    <Checkbox
+      label={$_("option_context_menu_specified_day.message")}
+      name="context-menu-setting"
+      bind:checked={specifiedDayChecked} />
+    <Checkbox
+      label={$_("option_context_menu_template.message")}
+      name="context-menu-setting"
+      bind:checked={templateChecked} />
+    <Checkbox
+      label={$_("option_context_menu_syntax.message")}
+      name="context-menu-setting"
+      bind:checked={syntaxChecked} />
   </fieldset>
   <fieldset id="syntax-setting" class="group">
-    {#await syntaxPromise then syntax}
-      <legend class="group__title">{$_("option_syntax_title.message")}</legend>
-      <Radio label={$_("option_syntax_html.message")} name="syntax-setting" checked={syntax === "html"} />
-      <Radio label={$_("option_syntax_markdown.message")} name="syntax-setting" checked={syntax === "markdown"} />
-      <Radio label={$_("option_syntax_plane_text.message")} name="syntax-setting" checked={syntax === "planeText"} />
-    {/await}
+    <legend class="group__title">{$_("option_syntax_title.message")}</legend>
+    <Radio
+      value={"html"}
+      bind:selected={selectedSyntax}
+      label={$_("option_syntax_html.message")}
+      name="syntax-setting" />
+    <Radio
+      value={"markdown"}
+      bind:selected={selectedSyntax}
+      label={$_("option_syntax_markdown.message")}
+      name="syntax-setting" />
+    <Radio
+      value={"planeText"}
+      bind:selected={selectedSyntax}
+      label={$_("option_syntax_plane_text.message")}
+      name="syntax-setting" />
   </fieldset>
   <fieldset id="allday-events-shown-setting" class="group">
-    {#await allDayEventIncludedPromise then allDayEventIncluded}
-      <legend class="group__title">{$_("option_all_day_title.message")}</legend>
-      <Checkbox label={$_("option_all_day_shown.message")} checked={allDayEventIncluded} />
-    {/await}
+    <legend class="group__title">{$_("option_all_day_title.message")}</legend>
+    <Checkbox label={$_("option_all_day_shown.message")} bind:checked={alldayEventIncludedChecked} />
   </fieldset>
 </main>
 

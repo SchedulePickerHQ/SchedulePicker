@@ -11,14 +11,14 @@ type StorageValue = {
     syntax: boolean;
   };
   TEMPLATE_TEXT: string;
-  ALLDAY_EVENTS_INCLUDED: boolean;
+  ALLDAY_EVENT_INCLUDED: boolean;
 };
 
 const STORAGE_KEY = {
   SYNTAX: "syntax",
   CONTEXT_MENU_DISPLAYED: "contextMenuDisplayed",
   TEMPLATE_TEXT: "templateText",
-  ALLDAY_EVENTS_INCLUDED: "alldayEventsIncluded"
+  ALLDAY_EVENT_INCLUDED: "alldayEventsIncluded"
 } as const;
 
 const STORAGE_INIT_VALUE: StorageValue = {
@@ -34,7 +34,7 @@ const STORAGE_INIT_VALUE: StorageValue = {
     syntax: true
   },
   TEMPLATE_TEXT: "",
-  ALLDAY_EVENTS_INCLUDED: true
+  ALLDAY_EVENT_INCLUDED: true
 };
 
 // 記法の設定
@@ -66,8 +66,6 @@ export const loadContextMenuDisplaySettings = async (): Promise<StorageValue["CO
     return STORAGE_INIT_VALUE.CONTEXT_MENU_DISPLAYED;
   }
 
-  console.log(item[STORAGE_KEY.CONTEXT_MENU_DISPLAYED]);
-
   return item[STORAGE_KEY.CONTEXT_MENU_DISPLAYED] as StorageValue["CONTEXT_MENU_DISPLAYED"];
 };
 
@@ -89,16 +87,16 @@ export const loadTemplateText = async (): Promise<StorageValue["TEMPLATE_TEXT"]>
 
 // 終日の予定を含めるかどうかの設定
 
-export const saveAllDayEventIncludedSetting = async (shown: StorageValue["ALLDAY_EVENTS_INCLUDED"]) => {
-  await chrome.storage.sync.set({ [STORAGE_KEY.ALLDAY_EVENTS_INCLUDED]: shown });
+export const saveAllDayEventIncludedSetting = async (shown: StorageValue["ALLDAY_EVENT_INCLUDED"]) => {
+  await chrome.storage.sync.set({ [STORAGE_KEY.ALLDAY_EVENT_INCLUDED]: shown });
 };
 
-export const loadAllDayEventIncludedSetting = async (): Promise<StorageValue["ALLDAY_EVENTS_INCLUDED"]> => {
-  const item = await chrome.storage.sync.get(STORAGE_KEY.ALLDAY_EVENTS_INCLUDED);
+export const loadAllDayEventIncludedSetting = async (): Promise<StorageValue["ALLDAY_EVENT_INCLUDED"]> => {
+  const item = await chrome.storage.sync.get(STORAGE_KEY.ALLDAY_EVENT_INCLUDED);
 
   if (Object.keys(item).length === 0) {
-    return STORAGE_INIT_VALUE.ALLDAY_EVENTS_INCLUDED;
+    return STORAGE_INIT_VALUE.ALLDAY_EVENT_INCLUDED;
   }
 
-  return item[STORAGE_KEY.ALLDAY_EVENTS_INCLUDED] as StorageValue["ALLDAY_EVENTS_INCLUDED"];
+  return item[STORAGE_KEY.ALLDAY_EVENT_INCLUDED] as StorageValue["ALLDAY_EVENT_INCLUDED"];
 };

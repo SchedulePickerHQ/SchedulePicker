@@ -5,7 +5,7 @@
 </script>
 
 <label>
-  <input type="checkbox" {name} {checked} />
+  <input type="checkbox" {name} bind:group={name} bind:checked />
   <span class="text">{label}</span>
 </label>
 
