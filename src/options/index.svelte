@@ -6,6 +6,8 @@
   import Button from "./Button.svelte";
   import Checkbox from "./Checkbox.svelte";
   import Radio from "./Radio.svelte";
+
+  let saved = false;
 </script>
 
 <main lang={$_("option_lang.message")}>
@@ -13,8 +15,15 @@
     <h1 class="title">{$_("option_header_text.message")}</h1>
     <Button
       on:click={() => {
-        console.log("saved");
-      }}>{$_("option_save_button_text.message")}</Button>
+        if (saved) return;
+        saved = true;
+
+        setTimeout(() => {
+          saved = false;
+        }, 500);
+      }}>
+      {saved ? "(｡•̀ω-)b" : $_("option_save_button_text.message")}
+    </Button>
   </header>
   <div id="template-setting" class="group">
     <h2 class="template-setting__label group__title">{$_("option_template_title.message")}</h2>
