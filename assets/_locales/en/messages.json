@@ -54,7 +54,7 @@
     },
     "option_template_usage": { "message": "Usage of template" },
     "option_template_usage_url": {
-        "message": "https://github.com/SchedulePicker/SchedulePicker3/wiki/English#templates"
+        "message": "https://github.com/SchedulePickerHQ/SchedulePicker/wiki/English#templates"
     },
     "prompt_specified_date_description": {
         "message": "Please input date what you want to get events.\nExample: 2021/09/19"

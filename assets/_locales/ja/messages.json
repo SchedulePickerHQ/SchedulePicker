@@ -54,7 +54,7 @@
     },
     "option_template_usage": { "message": "テンプレートの使い方" },
     "option_template_usage_url": {
-        "message": "https://github.com/SchedulePicker/SchedulePicker3/wiki/日本語#テンプレート"
+        "message": "https://github.com/SchedulePickerHQ/SchedulePicker/wiki/日本語#テンプレート"
     },
     "prompt_specified_date_description": { "message": "取得したい予定の日付を入力してください。\n例: 2021/09/19" }
 }
