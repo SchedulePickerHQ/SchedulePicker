@@ -4,6 +4,7 @@
   import { onMount } from "svelte";
   import { _ } from "svelte-i18n";
 
+  import { buildContextMenu } from "~menu/builder";
   import {
     loadContextMenuDisplaySettings,
     loadPeriodEventIncludedSetting,
@@ -65,6 +66,8 @@
     });
     await saveSyntaxSetting(selectedSyntax);
     await savePeriodEventIncludedSetting(periodEventIncludedChecked);
+
+    await buildContextMenu();
 
     setTimeout(() => {
       saved = false;
