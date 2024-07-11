@@ -4,7 +4,8 @@ export const insertTextAtCursorPosition = (text: string) => {
   const targetEl = document.activeElement;
 
   if (!(targetEl instanceof HTMLElement)) {
-    throw new Error("Active element is not an HTMLElement.");
+    alert("Active element is not a HTMLElement.");
+    return;
   }
 
   if (isTextareaElement(targetEl) || isInputElement(targetEl)) {
