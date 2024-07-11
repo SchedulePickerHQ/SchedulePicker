@@ -1,6 +1,6 @@
 import { getNextBusinessDateTime, getPreviousBusinessDateTime } from "~schedule/businessDateTime";
 import { getUserEvents } from "~schedule/events";
-import { loadAllDayEventIncludedSetting, loadSyntaxSetting, loadTemplateText } from "~storage";
+import { loadPeriodEventIncludedSetting, loadSyntaxSetting, loadTemplateText } from "~storage";
 import { SyntaxGeneratorFactory } from "~syntax/factory";
 import { convertToEndOfDay, convertToStartOfDay, dateTime, getDayOfWeek } from "~utils/datetime";
 import { insertTextAtCursorPosition } from "~utils/insertion";
@@ -76,7 +76,7 @@ const replaceSpecialDayCharacterToDate = async (text: string): Promise<string> =
 };
 
 const replaceSpecialEventsCharacterToUserEvents = async (text: string): Promise<string> => {
-  const alldayEventIncluded = await loadAllDayEventIncludedSetting();
+  const periodEventIncluded = await loadPeriodEventIncludedSetting();
   const syntax = await loadSyntaxSetting();
   const generator = new SyntaxGeneratorFactory().create(syntax);
 
@@ -84,7 +84,7 @@ const replaceSpecialEventsCharacterToUserEvents = async (text: string): Promise<
     const now = dateTime();
     const startTime = convertToStartOfDay(now);
     const endTime = convertToEndOfDay(now);
-    const events = await getUserEvents(location.hostname, { startTime, endTime, alldayEventIncluded });
+    const events = await getUserEvents(location.hostname, { startTime, endTime, periodEventIncluded });
     text = text.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS, generator.createEvents(location.hostname, events));
   }
 
@@ -92,7 +92,7 @@ const replaceSpecialEventsCharacterToUserEvents = async (text: string): Promise<
     const tomorrow = dateTime().add(1, "day");
     const startTime = convertToStartOfDay(tomorrow);
     const endTime = convertToEndOfDay(tomorrow);
-    const events = await getUserEvents(location.hostname, { startTime, endTime, alldayEventIncluded });
+    const events = await getUserEvents(location.hostname, { startTime, endTime, periodEventIncluded });
     text = text.replaceAll(
       SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS,
       generator.createEvents(location.hostname, events)
@@ -103,7 +103,7 @@ const replaceSpecialEventsCharacterToUserEvents = async (text: string): Promise<
     const yesterday = dateTime().subtract(1, "day");
     const startTime = convertToStartOfDay(yesterday);
     const endTime = convertToEndOfDay(yesterday);
-    const events = await getUserEvents(location.hostname, { startTime, endTime, alldayEventIncluded });
+    const events = await getUserEvents(location.hostname, { startTime, endTime, periodEventIncluded });
     text = text.replaceAll(
       SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS,
       generator.createEvents(location.hostname, events)
@@ -114,7 +114,7 @@ const replaceSpecialEventsCharacterToUserEvents = async (text: string): Promise<
     const nextBusinessDay = await getNextBusinessDateTime(location.hostname);
     const startTime = convertToStartOfDay(nextBusinessDay);
     const endTime = convertToEndOfDay(nextBusinessDay);
-    const events = await getUserEvents(location.hostname, { startTime, endTime, alldayEventIncluded });
+    const events = await getUserEvents(location.hostname, { startTime, endTime, periodEventIncluded });
     text = text.replaceAll(
       SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS,
       generator.createEvents(location.hostname, events)
@@ -125,7 +125,7 @@ const replaceSpecialEventsCharacterToUserEvents = async (text: string): Promise<
     const previousBusinessDay = await getPreviousBusinessDateTime(location.hostname);
     const startTime = convertToStartOfDay(previousBusinessDay);
     const endTime = convertToEndOfDay(previousBusinessDay);
-    const events = await getUserEvents(location.hostname, { startTime, endTime, alldayEventIncluded });
+    const events = await getUserEvents(location.hostname, { startTime, endTime, periodEventIncluded });
     text = text.replaceAll(
       SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS,
       generator.createEvents(location.hostname, events)

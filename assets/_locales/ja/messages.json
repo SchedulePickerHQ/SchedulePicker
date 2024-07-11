@@ -46,8 +46,8 @@
     "option_syntax_html": { "message": "HTML" },
     "option_syntax_markdown": { "message": "Markdown" },
     "option_syntax_plane_text": { "message": "Plane Text" },
-    "option_all_day_title": { "message": "終日予定の表示" },
-    "option_all_day_shown": { "message": "終日予定を表示する" },
+    "option_filter_settings_title": { "message": "フィルター設定" },
+    "option_period_event_included": { "message": "期間予定を含める" },
     "option_template_title": { "message": "テンプレート" },
     "option_template_placeholder": {
         "message": "■{%TODAY%}の予定\n{%TODAY_EVENTS%}\n\n■学んだこと\n\n■所感"

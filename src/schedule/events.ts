@@ -5,7 +5,7 @@ import { getScheduleEvents, type ScheduleEvent } from "./api/garoon";
 type UserEventsQuery = {
   startTime: DateTime;
   endTime: DateTime;
-  alldayEventIncluded: boolean;
+  periodEventIncluded: boolean;
 };
 
 export type UserEvent = {
@@ -29,7 +29,7 @@ export const getUserEvents = async (hostname: string, query: UserEventsQuery): P
   });
 
   return events
-    .filter((event) => (query.alldayEventIncluded ? true : !event.isAllDay))
+    .filter((event) => (query.periodEventIncluded ? true : event.eventType !== "ALL_DAY"))
     .map((event) => convertToUserEvent(event, query.startTime, query.endTime))
     .sort(sortByTime);
 };

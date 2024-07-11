@@ -11,14 +11,14 @@ type StorageValue = {
     syntax: boolean;
   };
   TEMPLATE_TEXT: string;
-  ALLDAY_EVENT_INCLUDED: boolean;
+  PERIOD_EVENT_INCLUDED: boolean;
 };
 
 const STORAGE_KEY = {
   SYNTAX: "syntax",
   CONTEXT_MENU_DISPLAYED: "contextMenuDisplayed",
   TEMPLATE_TEXT: "templateText",
-  ALLDAY_EVENT_INCLUDED: "alldayEventsIncluded"
+  PERIOD_EVENT_INCLUDED: "periodEventIncluded"
 } as const;
 
 const STORAGE_INIT_VALUE: StorageValue = {
@@ -34,7 +34,7 @@ const STORAGE_INIT_VALUE: StorageValue = {
     syntax: true
   },
   TEMPLATE_TEXT: "",
-  ALLDAY_EVENT_INCLUDED: true
+  PERIOD_EVENT_INCLUDED: false
 };
 
 // 記法の設定
@@ -85,18 +85,18 @@ export const loadTemplateText = async (): Promise<StorageValue["TEMPLATE_TEXT"]>
   return item[STORAGE_KEY.TEMPLATE_TEXT] as StorageValue["TEMPLATE_TEXT"];
 };
 
-// 終日の予定を含めるかどうかの設定
+// 期間予定を含めるかどうかの設定
 
-export const saveAllDayEventIncludedSetting = async (shown: StorageValue["ALLDAY_EVENT_INCLUDED"]) => {
-  await chrome.storage.sync.set({ [STORAGE_KEY.ALLDAY_EVENT_INCLUDED]: shown });
+export const savePeriodEventIncludedSetting = async (shown: StorageValue["PERIOD_EVENT_INCLUDED"]) => {
+  await chrome.storage.sync.set({ [STORAGE_KEY.PERIOD_EVENT_INCLUDED]: shown });
 };
 
-export const loadAllDayEventIncludedSetting = async (): Promise<StorageValue["ALLDAY_EVENT_INCLUDED"]> => {
-  const item = await chrome.storage.sync.get(STORAGE_KEY.ALLDAY_EVENT_INCLUDED);
+export const loadPeriodEventIncludedSetting = async (): Promise<StorageValue["PERIOD_EVENT_INCLUDED"]> => {
+  const item = await chrome.storage.sync.get(STORAGE_KEY.PERIOD_EVENT_INCLUDED);
 
   if (Object.keys(item).length === 0) {
-    return STORAGE_INIT_VALUE.ALLDAY_EVENT_INCLUDED;
+    return STORAGE_INIT_VALUE.PERIOD_EVENT_INCLUDED;
   }
 
-  return item[STORAGE_KEY.ALLDAY_EVENT_INCLUDED] as StorageValue["ALLDAY_EVENT_INCLUDED"];
+  return item[STORAGE_KEY.PERIOD_EVENT_INCLUDED] as StorageValue["PERIOD_EVENT_INCLUDED"];
 };

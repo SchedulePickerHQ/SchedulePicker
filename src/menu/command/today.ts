@@ -1,5 +1,5 @@
 import { getUserEvents } from "~schedule/events";
-import { loadAllDayEventIncludedSetting, loadSyntaxSetting } from "~storage";
+import { loadPeriodEventIncludedSetting, loadSyntaxSetting } from "~storage";
 import { SyntaxGeneratorFactory } from "~syntax/factory";
 import { convertToEndOfDay, convertToStartOfDay, dateTime } from "~utils/datetime";
 import { insertTextAtCursorPosition } from "~utils/insertion";
@@ -11,7 +11,7 @@ export class TodayCommand implements Command {
     const now = dateTime();
     const startTime = convertToStartOfDay(now);
     const endTime = convertToEndOfDay(now);
-    const alldayEventIncluded = await loadAllDayEventIncludedSetting();
+    const periodEventIncluded = await loadPeriodEventIncludedSetting();
     const syntax = await loadSyntaxSetting();
     const generator = new SyntaxGeneratorFactory().create(syntax);
 
@@ -21,7 +21,7 @@ export class TodayCommand implements Command {
       const events = await getUserEvents(location.hostname, {
         startTime,
         endTime,
-        alldayEventIncluded
+        periodEventIncluded
       });
 
       const text =

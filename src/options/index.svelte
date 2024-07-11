@@ -5,12 +5,12 @@
   import { _ } from "svelte-i18n";
 
   import {
-    loadAllDayEventIncludedSetting,
     loadContextMenuDisplaySettings,
+    loadPeriodEventIncludedSetting,
     loadSyntaxSetting,
     loadTemplateText,
-    saveAllDayEventIncludedSetting,
     saveContextMenuDisplaySettings,
+    savePeriodEventIncludedSetting,
     saveSyntaxSetting,
     saveTemplateText
   } from "~storage";
@@ -30,7 +30,7 @@
   let templateChecked: boolean;
   let syntaxChecked: boolean;
   let selectedSyntax: "html" | "markdown" | "planeText";
-  let alldayEventIncludedChecked: boolean;
+  let periodEventIncludedChecked: boolean;
 
   onMount(async () => {
     templateText = await loadTemplateText();
@@ -45,7 +45,7 @@
     templateChecked = contextMenuDisplaySettings.template;
     syntaxChecked = contextMenuDisplaySettings.syntax;
     selectedSyntax = await loadSyntaxSetting();
-    alldayEventIncludedChecked = await loadAllDayEventIncludedSetting();
+    periodEventIncludedChecked = await loadPeriodEventIncludedSetting();
   });
 
   let onSaveButtonClick = async () => {
@@ -64,7 +64,7 @@
       syntax: syntaxChecked
     });
     await saveSyntaxSetting(selectedSyntax);
-    await saveAllDayEventIncludedSetting(alldayEventIncludedChecked);
+    await savePeriodEventIncludedSetting(periodEventIncludedChecked);
 
     setTimeout(() => {
       saved = false;
@@ -141,9 +141,9 @@
       label={$_("option_syntax_plane_text.message")}
       name="syntax-setting" />
   </fieldset>
-  <fieldset id="allday-events-shown-setting" class="group">
-    <legend class="group__title">{$_("option_all_day_title.message")}</legend>
-    <Checkbox label={$_("option_all_day_shown.message")} bind:checked={alldayEventIncludedChecked} />
+  <fieldset id="filter-setting" class="group">
+    <legend class="group__title">{$_("option_filter_settings_title.message")}</legend>
+    <Checkbox label={$_("option_period_event_included.message")} bind:checked={periodEventIncludedChecked} />
   </fieldset>
 </main>
 

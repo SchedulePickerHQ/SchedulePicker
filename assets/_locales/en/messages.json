@@ -46,8 +46,8 @@
     "option_syntax_html": { "message": "HTML" },
     "option_syntax_markdown": { "message": "Markdown" },
     "option_syntax_plane_text": { "message": "Plane Text" },
-    "option_all_day_title": { "message": "Display all-day events" },
-    "option_all_day_shown": { "message": "Show all-day events" },
+    "option_filter_settings_title": { "message": "Filter settings" },
+    "option_period_event_included": { "message": "Include all day events" },
     "option_template_title": { "message": "Template" },
     "option_template_placeholder": {
         "message": "■Schedule for {%TODAY%}\n{%TODAY_EVENTS%}\n\n■I learned it\n\n■Impressions"
