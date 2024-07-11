@@ -1,76 +1,49 @@
 {
-  "name": "schedulepicker3",
-  "version": "1.0.0",
-  "description": "",
+  "name": "schedule-picker",
+  "displayName": "__MSG_ext_name__",
+  "version": "4.0.0",
+  "description": "__MSG_ext_description__",
+  "author": "kuroppe1819",
+  "homepage": "https://github.com/SchedulePickerHQ/SchedulePicker",
   "scripts": {
-    "create-manifest:chrome": "\\cp static/chrome_manifest.json static/manifest.json",
-    "create-manifest:firefox": "\\cp static/firefox_manifest.json static/manifest.json",
-    "build": "run-s build:* -- --no-content-hash --no-source-maps --no-cache --detailed-report 0",
-    "build:chrome": "npm run create-manifest:chrome && cross-env BROWSER_ENV=chrome parcel build static/manifest.json --dist-dir dist/chrome --no-cache",
-    "build:firefox": "npm run create-manifest:firefox && cross-env BROWSER_ENV=firefox parcel build static/manifest.json --dist-dir dist/firefox --no-cache",
-    "watch:chrome": "npm run create-manifest:chrome && cross-env BROWSER_ENV=chrome parcel watch static/manifest.json --dist-dir dist/chrome",
-    "watch:firefox": "npm run create-manifest:firefox && cross-env BROWSER_ENV=firefox parcel watch static/manifest.json --dist-dir dist/firefox",
-    "lint": "run-p lint:*",
-    "lint-fix": "run-p 'lint:* -- --fix'",
-    "lint:js": "xo",
-    "test": "jest",
-    "test-ci": "TZ=Asia/Tokyo jest",
-    "format": "prettier --loglevel warn --write .",
-    "prepare": "husky install",
-    "pack": "./tools/build.sh"
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/SchedulePicker/SchedulePicker3.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SchedulePicker/SchedulePicker3/issues"
-  },
-  "homepage": "https://github.com/SchedulePicker/SchedulePicker3#readme",
-  "browserslist": [
-    "last 1 Chrome version",
-    "last 1 Firefox version"
-  ],
   "dependencies": {
-    "dayjs": "^1.11.3",
-    "dompurify": "^2.3.8",
+    "dayjs": "^1.11.11",
+    "dompurify": "^3.1.6",
     "garoon-soap": "^0.1.12",
-    "nanoid": "^4.0.0",
-    "reset-css": "^5.0.1",
-    "webextension-polyfill": "^0.9.0"
+    "plasmo": "0.88.0",
+    "svelte": "^4.2.18",
+    "svelte-i18n": "^4.0.0",
+    "svelte-preprocess": "^6.0.1"
   },
   "devDependencies": {
-    "@parcel/config-webextension": "2.5.0",
-    "@parcel/transformer-image": "2.5.0",
-    "@parcel/transformer-sass": "2.5.0",
-    "@swc/core": "^1.2.203",
-    "@swc/jest": "^0.2.21",
-    "@types/dompurify": "^2.3.3",
-    "@types/jest": "^28.1.1",
-    "@types/webextension-polyfill": "^0.9.0",
-    "buffer": "^6.0.3",
-    "cross-env": "^7.0.3",
-    "husky": "^8.0.1",
-    "jest": "^28.1.1",
-    "jest-environment-jsdom": "^28.1.1",
-    "lint-staged": "^13.0.2",
-    "mockdate": "^3.0.5",
-    "npm-run-all": "^4.1.5",
-    "parcel": "^2.6.0",
-    "prettier": "^2.7.1",
-    "process": "^0.11.10",
-    "stream-browserify": "^3.0.0",
-    "timers-browserify": "^2.0.12",
-    "typescript": "^4.7.3",
-    "web-ext-types": "^3.2.1",
-    "xo": "^0.50.0"
+    "@ianvs/prettier-plugin-sort-imports": "4.1.1",
+    "@types/chrome": "0.0.258",
+    "@types/node": "20.11.5",
+    "prettier": "3.2.4",
+    "typescript": "5.3.3"
   },
-  "lint-staged": {
-    "*.{js,scss,md,ts,tsx}": [
-      "prettier --write",
-      "xo --fix"
-    ]
+  "manifest": {
+    "default_locale": "ja",
+    "permissions": [
+      "background",
+      "contextMenus",
+      "storage"
+    ],
+    "host_permissions": [
+      "https://*.cybozu.com/*",
+      "https://*.cybozu-dev.com/*",
+      "https://*.kintone.com/*",
+      "https://*.kintone-dev.com/*",
+      "https://*.cybozu.cn/*",
+      "https://*.cybozu-dev.cn/*"
+    ],
+    "options_ui": {
+      "page": "options.html",
+      "open_in_tab": false
+    }
   }
 }

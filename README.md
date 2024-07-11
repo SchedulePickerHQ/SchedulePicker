@@ -1,61 +1,33 @@
-# SchedulePicker3
-
-<div align="center">
-    <img src="https://github.com/SchedulePicker/SchedulePicker3/blob/main/static/icons/logo_128.png" alt="SchedulePicker" width="96" height="96" />
-  </a>
-</div>
-
-<div align="center">
-  <img alt="ci" src="https://github.com/SchedulePicker/SchedulePicker3/actions/workflows/ci.yml/badge.svg"/>
-  <a href="https://github.com/SchedulePicker/SchedulePicker3/blob/main/LICENSE">
-    <img alt="GitHub license" src="https://img.shields.io/github/license/SchedulePicker/SchedulePicker3">
-  </a>
-</div>
-
-SchedulePicker is browser extension what can easily insert schedule events of the Garoon to a textarea. Please read [wiki](https://github.com/SchedulePicker/SchedulePicker3/wiki) if you want to know it usage.
+This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
 ## Getting Started
 
+First, run the development server:
+
+```bash
+pnpm dev
+# or
+npm run dev
 ```
-cd SchedulePicker3
-npm install
-npm run watch:(chrome|firefox)
+
+Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
+
+You can start editing the popup by modifying `popup.tsx`. It should auto-update as you make changes. To add an options page, simply add a `options.tsx` file to the root of the project, with a react component default exported. Likewise to add a content page, add a `content.ts` file to the root of the project, importing some module and do some logic, then reload the extension on your browser.
+
+For further guidance, [visit our Documentation](https://docs.plasmo.com/)
+
+## Making production build
+
+Run the following:
+
+```bash
+pnpm build
+# or
+npm run build
 ```
 
-## Development scripts
+This should create a production bundle for your extension, ready to be zipped and published to the stores.
 
-#### `npm run build`
+## Submit to the webstores
 
-> It generate package of this extensions.
-
-- `npm run build:chrome` - package is generated to `dist/chrome`.
-- `npm run build:firefox` - package is generated to `dist/firefox`.
-
-#### `npm run watch`
-
-> Runtime detection of code changes.
-
-- `npm run watch:chrome` - script for chrome.
-- `npm run watch:firefox` - script for firefox.
-
-#### `npm run lint`
-
-> Boolean check if code conforms to linting rules - uses xo
-
-#### `npm run test`
-
-> Boolean check if unit tests all pass - uses jest
-
-- `npm run test -- --watch` - will run core tests in watch-mode
-
-#### `npm run pack`
-
-> Generate a zip file for distribution
-
-## LICENSE
-
-[MIT](LICENSE)
-
-## Disclaimer
-
-This OSS is my own personal work and does not have any relationship with Cybozu, Inc. or any other organization which I belong to.
+The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!

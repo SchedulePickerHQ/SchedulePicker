@@ -1,0 +1,60 @@
+{
+    "ext_name": { "message": "SchedulePicker" },
+    "ext_description": { "message": "Garoonの予定をテキストエリアに簡単に貼り付けることができます。" },
+    "day_of_week_0": { "message": "日" },
+    "day_of_week_1": { "message": "月" },
+    "day_of_week_2": { "message": "火" },
+    "day_of_week_3": { "message": "水" },
+    "day_of_week_4": { "message": "木" },
+    "day_of_week_5": { "message": "金" },
+    "day_of_week_6": { "message": "土" },
+    "context_menu_today": { "message": "今日の予定" },
+    "context_menu_tomorrow": { "message": "明日の予定" },
+    "context_menu_yesterday": { "message": "昨日の予定" },
+    "context_menu_next_business_day": { "message": "翌営業日の予定" },
+    "context_menu_previous_business_day": { "message": "前営業日の予定" },
+    "context_menu_specified_day": { "message": "指定日の予定" },
+    "context_menu_template": { "message": "テンプレート" },
+    "context_menu_settings": { "message": "設定" },
+    "context_menu_html": { "message": "HTML" },
+    "context_menu_markdown": { "message": "Markdown" },
+    "context_menu_plane_text": { "message": "Plane Text" },
+    "error_invalid_date_format": {
+        "message": "'$inputted$'は無効な日付フォーマットです。",
+        "placeholders": { "inputted": { "content": "$1", "example": "無効な日付フォーマット" } }
+    },
+    "error_get_events": {
+        "message": "エラーが発生しました。ブラウザを更新してもう一度試してください。"
+    },
+    "event_title": {
+        "message": "$date$ の予定",
+        "placeholders": { "date": { "content": "$1", "example": "2021-09-19" } }
+    },
+    "option_lang": { "message": "ja" },
+    "option_header_text": { "message": "設定" },
+    "option_save_button_text": { "message": "保存" },
+    "option_context_menu_title": { "message": "メニューの表示" },
+    "option_context_menu_today": { "message": "今日の予定" },
+    "option_context_menu_tomorrow": { "message": "明日の予定" },
+    "option_context_menu_yesterday": { "message": "昨日の予定" },
+    "option_context_menu_next_business_day": { "message": "翌営業日の予定" },
+    "option_context_menu_previous_business_day": { "message": "前営業日の予定" },
+    "option_context_menu_specified_day": { "message": "指定日の予定" },
+    "option_context_menu_template": { "message": "テンプレート" },
+    "option_context_menu_syntax": { "message": "記法" },
+    "option_syntax_title": { "message": "記法" },
+    "option_syntax_html": { "message": "HTML" },
+    "option_syntax_markdown": { "message": "Markdown" },
+    "option_syntax_plane_text": { "message": "Plane Text" },
+    "option_filter_settings_title": { "message": "フィルター設定" },
+    "option_period_event_included": { "message": "期間予定を含める" },
+    "option_template_title": { "message": "テンプレート" },
+    "option_template_placeholder": {
+        "message": "■{%TODAY%}の予定\n{%TODAY_EVENTS%}\n\n■学んだこと\n\n■所感"
+    },
+    "option_template_usage": { "message": "テンプレートの使い方" },
+    "option_template_usage_url": {
+        "message": "https://github.com/SchedulePickerHQ/SchedulePicker/wiki/日本語#テンプレート"
+    },
+    "prompt_specified_date_description": { "message": "取得したい予定の日付を入力してください。\n例: 2021/09/19" }
+}
