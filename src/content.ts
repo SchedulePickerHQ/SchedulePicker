@@ -1,3 +1,5 @@
+import type { PlasmoCSConfig } from "plasmo";
+
 import { TodayCommand } from "~/menu/command/today";
 import { CONTEXT_MENU_ID } from "~menu/builder";
 import { HTMLCommand } from "~menu/command/html";
@@ -12,6 +14,17 @@ import { TomorrowCommand } from "~menu/command/tomorrow";
 import { YesterdayCommand } from "~menu/command/yesterday";
 import { ContextMenuController } from "~menu/controller";
 import { MESSAGE_CONTEXT, sendBuildContextMenu, type MessageContext } from "~messages";
+
+export const config: PlasmoCSConfig = {
+  matches: [
+    "https://*.cybozu.com/*",
+    "https://*.cybozu-dev.com/*",
+    "https://*.kintone.com/*",
+    "https://*.kintone-dev.com/*",
+    "https://*.cybozu.cn/*",
+    "https://*.cybozu-dev.cn/*"
+  ]
+};
 
 (async () => {
   await sendBuildContextMenu();
