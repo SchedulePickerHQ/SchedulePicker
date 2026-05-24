@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "dayjs": "1.11.11",
-    "dompurify": "3.1.6",
+    "dompurify": "3.4.3",
     "garoon-soap": "0.1.12",
     "plasmo": "0.88.0",
     "svelte": "4.2.18",
