@@ -1,7 +1,7 @@
 <script lang="ts">
-  export let label: string = "";
-  export let name: string = "";
-  export let checked: boolean = false;
+export let label: string = "";
+export let name: string = "";
+export let checked: boolean = false;
 </script>
 
 <label>

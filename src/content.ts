@@ -13,39 +13,70 @@ import { TemplateCommand } from "~menu/command/template";
 import { TomorrowCommand } from "~menu/command/tomorrow";
 import { YesterdayCommand } from "~menu/command/yesterday";
 import { ContextMenuController } from "~menu/controller";
-import { MESSAGE_CONTEXT, sendBuildContextMenu, type MessageContext } from "~messages";
+import {
+	MESSAGE_CONTEXT,
+	type MessageContext,
+	sendBuildContextMenu,
+} from "~messages";
 
 export const config: PlasmoCSConfig = {
-  matches: [
-    "https://*.cybozu.com/*",
-    "https://*.cybozu-dev.com/*",
-    "https://*.kintone.com/*",
-    "https://*.kintone-dev.com/*",
-    "https://*.cybozu.cn/*",
-    "https://*.cybozu-dev.cn/*"
-  ]
+	matches: [
+		"https://*.cybozu.com/*",
+		"https://*.cybozu-dev.com/*",
+		"https://*.kintone.com/*",
+		"https://*.kintone-dev.com/*",
+		"https://*.cybozu.cn/*",
+		"https://*.cybozu-dev.cn/*",
+	],
 };
 
 (async () => {
-  await sendBuildContextMenu();
+	await sendBuildContextMenu();
 })();
 
 const contextMenuController = new ContextMenuController();
 contextMenuController.setCommend(CONTEXT_MENU_ID.TODAY, new TodayCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.TOMORROW, new TomorrowCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.YESTERDAY, new YesterdayCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.NEXT_BUSINESS_DAY, new NextBusinessDayCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.PREVIOUS_BUSINESS_DAY, new PreviousBusinessDayCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.SPECIFIED_DAY, new SpecifiedDayCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.TEMPLATE, new TemplateCommand());
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.TOMORROW,
+	new TomorrowCommand(),
+);
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.YESTERDAY,
+	new YesterdayCommand(),
+);
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.NEXT_BUSINESS_DAY,
+	new NextBusinessDayCommand(),
+);
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.PREVIOUS_BUSINESS_DAY,
+	new PreviousBusinessDayCommand(),
+);
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.SPECIFIED_DAY,
+	new SpecifiedDayCommand(),
+);
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.TEMPLATE,
+	new TemplateCommand(),
+);
 contextMenuController.setCommend(CONTEXT_MENU_ID.HTML, new HTMLCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.MARKDOWN, new MarkdownCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.PLANE_TEXT, new PlaneTextCommand());
-contextMenuController.setCommend(CONTEXT_MENU_ID.SETTINGS, new SettingsCommand());
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.MARKDOWN,
+	new MarkdownCommand(),
+);
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.PLANE_TEXT,
+	new PlaneTextCommand(),
+);
+contextMenuController.setCommend(
+	CONTEXT_MENU_ID.SETTINGS,
+	new SettingsCommand(),
+);
 
 chrome.runtime.onMessage.addListener((message: MessageContext, _) => {
-  if (message.context === MESSAGE_CONTEXT.CONTEXT_MENU_CLICKED) {
-    const { info } = message;
-    contextMenuController.clicked(info.menuItemId.toString());
-  }
+	if (message.context === MESSAGE_CONTEXT.CONTEXT_MENU_CLICKED) {
+		const { info } = message;
+		contextMenuController.clicked(info.menuItemId.toString());
+	}
 });

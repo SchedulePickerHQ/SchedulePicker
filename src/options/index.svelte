@@ -1,78 +1,78 @@
 <script lang="ts">
-  import "./i18n";
+import "./i18n";
 
-  import { onMount } from "svelte";
-  import { _ } from "svelte-i18n";
+import { onMount } from "svelte";
+import { _ } from "svelte-i18n";
 
-  import { buildContextMenu } from "~menu/builder";
-  import {
-    loadContextMenuDisplaySettings,
-    loadPeriodEventIncludedSetting,
-    loadSyntaxSetting,
-    loadTemplateText,
-    saveContextMenuDisplaySettings,
-    savePeriodEventIncludedSetting,
-    saveSyntaxSetting,
-    saveTemplateText
-  } from "~storage";
+import { buildContextMenu } from "~menu/builder";
+import {
+	loadContextMenuDisplaySettings,
+	loadPeriodEventIncludedSetting,
+	loadSyntaxSetting,
+	loadTemplateText,
+	saveContextMenuDisplaySettings,
+	savePeriodEventIncludedSetting,
+	saveSyntaxSetting,
+	saveTemplateText,
+} from "~storage";
 
-  import Button from "./Button.svelte";
-  import Checkbox from "./Checkbox.svelte";
-  import Radio from "./Radio.svelte";
+import Button from "./Button.svelte";
+import Checkbox from "./Checkbox.svelte";
+import Radio from "./Radio.svelte";
 
-  let saved = false;
-  let templateText: string;
-  let todayChecked: boolean;
-  let tomorrowChecked: boolean;
-  let yesterdayChecked: boolean;
-  let nextBusinessDayChecked: boolean;
-  let previousBusinessDayChecked: boolean;
-  let specifiedDayChecked: boolean;
-  let templateChecked: boolean;
-  let syntaxChecked: boolean;
-  let selectedSyntax: "html" | "markdown" | "planeText";
-  let periodEventIncludedChecked: boolean;
+let saved = false;
+let templateText: string;
+let todayChecked: boolean;
+let tomorrowChecked: boolean;
+let yesterdayChecked: boolean;
+let nextBusinessDayChecked: boolean;
+let previousBusinessDayChecked: boolean;
+let specifiedDayChecked: boolean;
+let templateChecked: boolean;
+let syntaxChecked: boolean;
+let selectedSyntax: "html" | "markdown" | "planeText";
+let periodEventIncludedChecked: boolean;
 
-  onMount(async () => {
-    templateText = await loadTemplateText();
+onMount(async () => {
+	templateText = await loadTemplateText();
 
-    const contextMenuDisplaySettings = await loadContextMenuDisplaySettings();
-    todayChecked = contextMenuDisplaySettings.today;
-    tomorrowChecked = contextMenuDisplaySettings.tomorrow;
-    yesterdayChecked = contextMenuDisplaySettings.yesterday;
-    nextBusinessDayChecked = contextMenuDisplaySettings.nextBusinessDay;
-    previousBusinessDayChecked = contextMenuDisplaySettings.previousBusinessDay;
-    specifiedDayChecked = contextMenuDisplaySettings.specifiedDay;
-    templateChecked = contextMenuDisplaySettings.template;
-    syntaxChecked = contextMenuDisplaySettings.syntax;
-    selectedSyntax = await loadSyntaxSetting();
-    periodEventIncludedChecked = await loadPeriodEventIncludedSetting();
-  });
+	const contextMenuDisplaySettings = await loadContextMenuDisplaySettings();
+	todayChecked = contextMenuDisplaySettings.today;
+	tomorrowChecked = contextMenuDisplaySettings.tomorrow;
+	yesterdayChecked = contextMenuDisplaySettings.yesterday;
+	nextBusinessDayChecked = contextMenuDisplaySettings.nextBusinessDay;
+	previousBusinessDayChecked = contextMenuDisplaySettings.previousBusinessDay;
+	specifiedDayChecked = contextMenuDisplaySettings.specifiedDay;
+	templateChecked = contextMenuDisplaySettings.template;
+	syntaxChecked = contextMenuDisplaySettings.syntax;
+	selectedSyntax = await loadSyntaxSetting();
+	periodEventIncludedChecked = await loadPeriodEventIncludedSetting();
+});
 
-  let onSaveButtonClick = async () => {
-    if (saved) return;
-    saved = true;
+let onSaveButtonClick = async () => {
+	if (saved) return;
+	saved = true;
 
-    await saveTemplateText(templateText);
-    await saveContextMenuDisplaySettings({
-      today: todayChecked,
-      tomorrow: tomorrowChecked,
-      yesterday: yesterdayChecked,
-      nextBusinessDay: nextBusinessDayChecked,
-      previousBusinessDay: previousBusinessDayChecked,
-      specifiedDay: specifiedDayChecked,
-      template: templateChecked,
-      syntax: syntaxChecked
-    });
-    await saveSyntaxSetting(selectedSyntax);
-    await savePeriodEventIncludedSetting(periodEventIncludedChecked);
+	await saveTemplateText(templateText);
+	await saveContextMenuDisplaySettings({
+		today: todayChecked,
+		tomorrow: tomorrowChecked,
+		yesterday: yesterdayChecked,
+		nextBusinessDay: nextBusinessDayChecked,
+		previousBusinessDay: previousBusinessDayChecked,
+		specifiedDay: specifiedDayChecked,
+		template: templateChecked,
+		syntax: syntaxChecked,
+	});
+	await saveSyntaxSetting(selectedSyntax);
+	await savePeriodEventIncludedSetting(periodEventIncludedChecked);
 
-    await buildContextMenu();
+	await buildContextMenu();
 
-    setTimeout(() => {
-      saved = false;
-    }, 500);
-  };
+	setTimeout(() => {
+		saved = false;
+	}, 500);
+};
 </script>
 
 <main lang={$_("option_lang.message")}>
