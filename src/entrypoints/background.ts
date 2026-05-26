@@ -3,7 +3,7 @@ import {
 	MESSAGE_CONTEXT,
 	type MessageContext,
 	sendContextMenuClicked,
-} from "../utils/messages";
+} from "../utils/messaging";
 
 chrome.contextMenus.onClicked.addListener(
 	async (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => {

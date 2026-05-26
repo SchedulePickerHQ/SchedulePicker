@@ -1,6 +1,5 @@
-import { insertTextAtCursorPosition } from "../../insert/cursor";
-import { getUserEvents } from "../../insert/schedule/events";
-import { createSyntaxGenerator } from "../../insert/syntax/factory";
+import { getUserEvents } from "../../schedule/events";
+import { createFormatter } from "../../syntax/formatter";
 import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
@@ -9,6 +8,7 @@ import {
 	isValidDateFormat,
 } from "../../utils/datetime";
 import { loadPeriodEventSetting, loadSyntaxSetting } from "../../utils/storage";
+import { insertTextAtCursorPosition } from "../cursor";
 
 export class SpecifiedDayCommand implements Command {
 	async execute() {
@@ -31,7 +31,7 @@ export class SpecifiedDayCommand implements Command {
 		const endTime = convertToEndOfDay(specifiedDateTime);
 		const periodEventIncluded = await loadPeriodEventSetting();
 		const syntax = await loadSyntaxSetting();
-		const generator = createSyntaxGenerator(syntax);
+		const generator = createFormatter(syntax);
 
 		try {
 			document.body.style.cursor = "progress";

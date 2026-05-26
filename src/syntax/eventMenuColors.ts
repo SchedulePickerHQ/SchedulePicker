@@ -1,4 +1,4 @@
-export const getEventMenuColorCode = (eventMenu: string): string => {
+export const getEventMenuColor = (eventMenu: string): string => {
 	switch (eventMenu) {
 		case "打合 / Mtg":
 		case "通訳付き打合 / Interpreted MTG":

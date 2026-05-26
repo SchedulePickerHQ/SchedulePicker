@@ -1,21 +1,21 @@
+import { HtmlCommand } from "../insert/commands/html";
+import { MarkdownCommand } from "../insert/commands/markdown";
+import { NextBusinessDayCommand } from "../insert/commands/nextBusinessDay";
+import { PlainTextCommand } from "../insert/commands/plainText";
+import { PreviousBusinessDayCommand } from "../insert/commands/previousBusinessDay";
+import { SettingsCommand } from "../insert/commands/settings";
+import { SpecifiedDayCommand } from "../insert/commands/specifiedDay";
+import { TemplateCommand } from "../insert/commands/template";
+import { TodayCommand } from "../insert/commands/today";
+import { TomorrowCommand } from "../insert/commands/tomorrow";
+import { YesterdayCommand } from "../insert/commands/yesterday";
 import { CONTEXT_MENU_ID } from "../menu/builder";
-import { HtmlCommand } from "../menu/commands/html";
-import { MarkdownCommand } from "../menu/commands/markdown";
-import { NextBusinessDayCommand } from "../menu/commands/nextBusinessDay";
-import { PlainTextCommand } from "../menu/commands/plainText";
-import { PreviousBusinessDayCommand } from "../menu/commands/previousBusinessDay";
-import { SettingsCommand } from "../menu/commands/settings";
-import { SpecifiedDayCommand } from "../menu/commands/specifiedDay";
-import { TemplateCommand } from "../menu/commands/template";
-import { TodayCommand } from "../menu/commands/today";
-import { TomorrowCommand } from "../menu/commands/tomorrow";
-import { YesterdayCommand } from "../menu/commands/yesterday";
 import { ContextMenuController } from "../menu/controller";
 import {
 	MESSAGE_CONTEXT,
 	type MessageContext,
 	sendBuildContextMenu,
-} from "../utils/messages";
+} from "../utils/messaging";
 
 (async () => {
 	await sendBuildContextMenu();

@@ -1,10 +1,9 @@
-import { insertTextAtCursorPosition } from "../../insert/cursor";
 import {
-	getNextBusinessDateTime,
-	getPreviousBusinessDateTime,
-} from "../../insert/schedule/businessDateTime";
-import { getUserEvents } from "../../insert/schedule/events";
-import { createSyntaxGenerator } from "../../insert/syntax/factory";
+	getNextBusinessDay,
+	getPreviousBusinessDay,
+} from "../../schedule/businessDay";
+import { getUserEvents } from "../../schedule/events";
+import { createFormatter } from "../../syntax/formatter";
 import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
@@ -17,6 +16,7 @@ import {
 	loadSyntaxSetting,
 	loadTemplateText,
 } from "../../utils/storage";
+import { insertTextAtCursorPosition } from "../cursor";
 
 const TEMPLATE_PLACEHOLDER = {
 	TODAY: "{%TODAY%}",
@@ -74,15 +74,13 @@ const replaceDayPlaceholders = async (text: string): Promise<string> => {
 	}
 
 	if (text.includes(TEMPLATE_PLACEHOLDER.NEXT_BUSINESS_DAY)) {
-		const nextBusinessDay = await getNextBusinessDateTime(location.hostname);
+		const nextBusinessDay = await getNextBusinessDay(location.hostname);
 		const title = `${nextBusinessDay.format(DATE_FORMAT)} (${getDayOfWeek(nextBusinessDay)})`;
 		text = text.replaceAll(TEMPLATE_PLACEHOLDER.NEXT_BUSINESS_DAY, title);
 	}
 
 	if (text.includes(TEMPLATE_PLACEHOLDER.PREVIOUS_BUSINESS_DAY)) {
-		const previousBusinessDay = await getPreviousBusinessDateTime(
-			location.hostname,
-		);
+		const previousBusinessDay = await getPreviousBusinessDay(location.hostname);
 		const title = `${previousBusinessDay.format(DATE_FORMAT)} (${getDayOfWeek(previousBusinessDay)})`;
 		text = text.replaceAll(TEMPLATE_PLACEHOLDER.PREVIOUS_BUSINESS_DAY, title);
 	}
@@ -93,7 +91,7 @@ const replaceDayPlaceholders = async (text: string): Promise<string> => {
 const replaceEventPlaceholders = async (text: string): Promise<string> => {
 	const periodEventIncluded = await loadPeriodEventSetting();
 	const syntax = await loadSyntaxSetting();
-	const generator = createSyntaxGenerator(syntax);
+	const generator = createFormatter(syntax);
 
 	if (text.includes(TEMPLATE_PLACEHOLDER.TODAY_EVENTS)) {
 		const now = dateTime();
@@ -141,7 +139,7 @@ const replaceEventPlaceholders = async (text: string): Promise<string> => {
 	}
 
 	if (text.includes(TEMPLATE_PLACEHOLDER.NEXT_BUSINESS_DAY_EVENTS)) {
-		const nextBusinessDay = await getNextBusinessDateTime(location.hostname);
+		const nextBusinessDay = await getNextBusinessDay(location.hostname);
 		const startTime = convertToStartOfDay(nextBusinessDay);
 		const endTime = convertToEndOfDay(nextBusinessDay);
 		const events = await getUserEvents(location.hostname, {
@@ -156,9 +154,7 @@ const replaceEventPlaceholders = async (text: string): Promise<string> => {
 	}
 
 	if (text.includes(TEMPLATE_PLACEHOLDER.PREVIOUS_BUSINESS_DAY_EVENTS)) {
-		const previousBusinessDay = await getPreviousBusinessDateTime(
-			location.hostname,
-		);
+		const previousBusinessDay = await getPreviousBusinessDay(location.hostname);
 		const startTime = convertToStartOfDay(previousBusinessDay);
 		const endTime = convertToEndOfDay(previousBusinessDay);
 		const events = await getUserEvents(location.hostname, {

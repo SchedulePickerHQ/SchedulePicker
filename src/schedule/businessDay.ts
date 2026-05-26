@@ -1,8 +1,8 @@
-import { type DateTime, dateTime, getWeekIndex } from "../../utils/datetime";
+import { type DateTime, dateTime, getWeekIndex } from "../utils/datetime";
 
-import { getCalendarEvents } from "./garoon";
+import { getCalendarEvents } from "./api/garoon";
 
-export const getNextBusinessDateTime = async (
+export const getNextBusinessDay = async (
 	hostname: string,
 ): Promise<DateTime> => {
 	const publicHolidays = await getPublicHolidays(hostname);
@@ -19,7 +19,7 @@ export const getNextBusinessDateTime = async (
 	return nextDate;
 };
 
-export const getPreviousBusinessDateTime = async (
+export const getPreviousBusinessDay = async (
 	hostname: string,
 ): Promise<DateTime> => {
 	const publicHolidays = await getPublicHolidays(hostname);

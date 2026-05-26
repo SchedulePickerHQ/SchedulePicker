@@ -1,9 +1,9 @@
-import { type DateTime, getDayOfWeek } from "../../../utils/datetime";
 import type { UserEvent } from "../../schedule/events";
-import { getEventMenuColorCode } from "../eventMenuColors";
-import type { SyntaxGenerator } from "../interface";
+import { type DateTime, getDayOfWeek } from "../../utils/datetime";
+import { getEventMenuColor } from "../eventMenuColors";
+import type { Formatter } from "../formatter";
 
-export class HtmlSyntaxGenerator implements SyntaxGenerator {
+export class HtmlFormatter implements Formatter {
 	createTitle(dateTime: DateTime) {
 		return `<span>[ ${chrome.i18n.getMessage(
 			"event_title",
@@ -49,7 +49,7 @@ export class HtmlSyntaxGenerator implements SyntaxGenerator {
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `<span style="background-color: ${getEventMenuColorCode(
+		return `<span style="background-color: ${getEventMenuColor(
 			eventMenu,
 		)}; display: inline-block; padding: 2px; color: rgb(255, 255, 255); font-size: 12px; border-radius: 2px; line-height: 1.0;">${eventMenu}</span>`;
 	}

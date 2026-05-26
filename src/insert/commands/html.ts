@@ -1,10 +1,10 @@
 import type { Command } from "../../types";
-import { sendBuildContextMenu } from "../../utils/messages";
+import { sendBuildContextMenu } from "../../utils/messaging";
 import { saveSyntaxSetting } from "../../utils/storage";
 
-export class PlainTextCommand implements Command {
+export class HtmlCommand implements Command {
 	async execute() {
-		await saveSyntaxSetting("plainText");
+		await saveSyntaxSetting("html");
 		await sendBuildContextMenu();
 	}
 }

@@ -1,22 +1,19 @@
-import { insertTextAtCursorPosition } from "../../insert/cursor";
-import { getUserEvents } from "../../insert/schedule/events";
-import { createSyntaxGenerator } from "../../insert/syntax/factory";
+import { getPreviousBusinessDay } from "../../schedule/businessDay";
+import { getUserEvents } from "../../schedule/events";
+import { createFormatter } from "../../syntax/formatter";
 import type { Command } from "../../types";
-import {
-	convertToEndOfDay,
-	convertToStartOfDay,
-	dateTime,
-} from "../../utils/datetime";
+import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
 import { loadPeriodEventSetting, loadSyntaxSetting } from "../../utils/storage";
+import { insertTextAtCursorPosition } from "../cursor";
 
-export class TodayCommand implements Command {
+export class PreviousBusinessDayCommand implements Command {
 	async execute() {
-		const now = dateTime();
-		const startTime = convertToStartOfDay(now);
-		const endTime = convertToEndOfDay(now);
+		const previousBusinessDay = await getPreviousBusinessDay(location.hostname);
+		const startTime = convertToStartOfDay(previousBusinessDay);
+		const endTime = convertToEndOfDay(previousBusinessDay);
 		const periodEventIncluded = await loadPeriodEventSetting();
 		const syntax = await loadSyntaxSetting();
-		const generator = createSyntaxGenerator(syntax);
+		const generator = createFormatter(syntax);
 
 		try {
 			document.body.style.cursor = "progress";
@@ -28,7 +25,7 @@ export class TodayCommand implements Command {
 			});
 
 			const text =
-				generator.createTitle(now) +
+				generator.createTitle(previousBusinessDay) +
 				generator.getNewLine() +
 				generator.createEvents(location.hostname, events);
 

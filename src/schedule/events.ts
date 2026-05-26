@@ -3,9 +3,9 @@ import {
 	convertToStartOfDay,
 	type DateTime,
 	dateTime,
-} from "../../utils/datetime";
+} from "../utils/datetime";
 
-import { getScheduleEvents, type ScheduleEvent } from "./garoon";
+import { getScheduleEvents, type ScheduleEvent } from "./api/garoon";
 
 type UserEventsQuery = {
 	startTime: DateTime;

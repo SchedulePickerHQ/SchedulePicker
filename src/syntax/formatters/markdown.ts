@@ -1,9 +1,9 @@
-import { type DateTime, getDayOfWeek } from "../../../utils/datetime";
 import type { UserEvent } from "../../schedule/events";
-import { getEventMenuColorCode } from "../eventMenuColors";
-import type { SyntaxGenerator } from "../interface";
+import { type DateTime, getDayOfWeek } from "../../utils/datetime";
+import { getEventMenuColor } from "../eventMenuColors";
+import type { Formatter } from "../formatter";
 
-export class MarkdownSyntaxGenerator implements SyntaxGenerator {
+export class MarkdownFormatter implements Formatter {
 	createTitle(dateTime: DateTime) {
 		return `[ ${chrome.i18n.getMessage("event_title", `${dateTime.format("YYYY/MM/DD")} (${getDayOfWeek(dateTime)})`)} ]`;
 	}
@@ -46,7 +46,7 @@ export class MarkdownSyntaxGenerator implements SyntaxGenerator {
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `<span style="color: ${getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
+		return `<span style="color: ${getEventMenuColor(eventMenu)};">[${eventMenu}]</span>`;
 	}
 
 	private createSubject(hostname: string, eventId: string, subject: string) {

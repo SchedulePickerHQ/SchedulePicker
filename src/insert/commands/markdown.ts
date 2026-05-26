@@ -1,10 +1,10 @@
 import type { Command } from "../../types";
-import { sendBuildContextMenu } from "../../utils/messages";
+import { sendBuildContextMenu } from "../../utils/messaging";
 import { saveSyntaxSetting } from "../../utils/storage";
 
-export class HtmlCommand implements Command {
+export class MarkdownCommand implements Command {
 	async execute() {
-		await saveSyntaxSetting("html");
+		await saveSyntaxSetting("markdown");
 		await sendBuildContextMenu();
 	}
 }
