@@ -11,6 +11,6 @@
     "skipLibCheck": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["./**/*.ts", "./**/*.svelte"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

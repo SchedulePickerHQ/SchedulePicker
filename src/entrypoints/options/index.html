@@ -2,9 +2,226 @@
 <html>
 <head>
   <meta charset="UTF-8" />
+  <style>
+    :root {
+      --primary-color: #00acc1;
+      --border-color: #788087;
+      --text-color: #1f2c37;
+    }
+
+    main {
+      width: 560px;
+      height: 100%;
+      margin: 24px;
+      padding: 24px;
+      background-color: white;
+      font-size: 14px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 8px;
+      margin-bottom: 24px;
+    }
+
+    .title {
+      display: inline-block;
+      font-size: 28px;
+      font-weight: normal;
+      margin: 0;
+    }
+
+    .group {
+      border: none;
+      padding: 0;
+      margin-bottom: 32px;
+    }
+
+    .group__title {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .template-setting__label {
+      display: block;
+      font-size: 20px;
+      font-weight: normal;
+    }
+
+    .template-setting__textarea {
+      width: 100%;
+      height: 280px;
+      padding: 8px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+
+    .template-setting__usage-link {
+      color: var(--primary-color);
+    }
+
+    .save-button {
+      width: 80px;
+      height: 32px;
+      border-radius: 999px;
+      border: 2px solid var(--primary-color);
+      box-sizing: border-box;
+      background-color: var(--primary-color);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    label.checkbox,
+    label.radio {
+      display: inline-flex;
+      align-items: center;
+      margin: 8px 8px 8px 2px;
+      cursor: pointer;
+    }
+
+    label .text {
+      margin-left: 4px;
+      color: var(--text-color);
+    }
+
+    input[type="checkbox"] {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"]:before {
+      content: "";
+      position: absolute;
+      box-sizing: border-box;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 2px solid var(--border-color);
+      border-radius: 4px;
+    }
+
+    input[type="checkbox"]:checked:before {
+      border: 2px solid var(--primary-color);
+    }
+
+    input[type="checkbox"]:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-55%, -95%) rotate(45deg);
+      width: calc(20px * 0.4);
+      height: calc(20px * 0.6);
+      background-color: transparent;
+      box-shadow: 3px 3px 0px 0px var(--primary-color);
+      opacity: 0;
+    }
+
+    input[type="checkbox"]:checked:after {
+      opacity: 1;
+      animation: checkbox-toggle 0.2s ease both;
+    }
+
+    input[type="radio"] {
+      position: relative;
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    input[type="radio"]:before {
+      content: "";
+      position: absolute;
+      box-sizing: border-box;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border: 2px solid var(--border-color);
+      border-radius: 999px;
+    }
+
+    input[type="radio"]:checked:before {
+      border: 2px solid var(--primary-color);
+    }
+
+    input[type="radio"]:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      box-sizing: border-box;
+      transform-origin: 50% 50%;
+      transform: translate(-50%, -50%);
+      width: calc(20px * 0.5);
+      height: calc(20px * 0.5);
+      background-color: var(--primary-color);
+      border-radius: 999px;
+      opacity: 0;
+    }
+
+    input[type="radio"]:checked:after {
+      opacity: 1;
+      animation: radio-toggle 0.2s ease both;
+    }
+
+    @keyframes checkbox-toggle {
+      0% { opacity: 0; transform: translate(-55%, -95%) scale(0) rotate(45deg); }
+      70% { opacity: 1; transform: translate(-55%, -95%) scale(1.1) rotate(45deg); }
+      100% { transform: translate(-55%, -95%) scale(1) rotate(45deg); }
+    }
+
+    @keyframes radio-toggle {
+      0% { opacity: 0; }
+      70% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-  <div id="app"></div>
-  <script type="module" src="./main.ts"></script>
+  <main>
+    <header class="header">
+      <h1 class="title" data-i18n="option_header_text"></h1>
+      <button id="save-button" class="save-button" data-i18n="option_save_button_text"></button>
+    </header>
+    <div id="template-setting" class="group">
+      <h2 class="template-setting__label group__title" data-i18n="option_template_title"></h2>
+      <textarea id="template-text" class="template-setting__textarea" data-i18n-placeholder="option_template_placeholder"></textarea>
+      <a class="template-setting__usage-link" data-i18n-href="option_template_usage_url" data-i18n="option_template_usage" target="_blank" rel="noopener noreferrer"></a>
+    </div>
+    <fieldset id="context-menu-setting" class="group">
+      <legend class="group__title" data-i18n="option_context_menu_title"></legend>
+      <label class="checkbox"><input type="checkbox" name="today" /><span class="text" data-i18n="option_context_menu_today"></span></label>
+      <label class="checkbox"><input type="checkbox" name="tomorrow" /><span class="text" data-i18n="option_context_menu_tomorrow"></span></label>
+      <label class="checkbox"><input type="checkbox" name="yesterday" /><span class="text" data-i18n="option_context_menu_yesterday"></span></label>
+      <label class="checkbox"><input type="checkbox" name="nextBusinessDay" /><span class="text" data-i18n="option_context_menu_next_business_day"></span></label>
+      <label class="checkbox"><input type="checkbox" name="previousBusinessDay" /><span class="text" data-i18n="option_context_menu_previous_business_day"></span></label>
+      <label class="checkbox"><input type="checkbox" name="specifiedDay" /><span class="text" data-i18n="option_context_menu_specified_day"></span></label>
+      <label class="checkbox"><input type="checkbox" name="template" /><span class="text" data-i18n="option_context_menu_template"></span></label>
+      <label class="checkbox"><input type="checkbox" name="syntax" /><span class="text" data-i18n="option_context_menu_syntax"></span></label>
+    </fieldset>
+    <fieldset id="syntax-setting" class="group">
+      <legend class="group__title" data-i18n="option_syntax_title"></legend>
+      <label class="radio"><input type="radio" name="syntax-setting" value="html" /><span class="text" data-i18n="option_syntax_html"></span></label>
+      <label class="radio"><input type="radio" name="syntax-setting" value="markdown" /><span class="text" data-i18n="option_syntax_markdown"></span></label>
+      <label class="radio"><input type="radio" name="syntax-setting" value="plainText" /><span class="text" data-i18n="option_syntax_plane_text"></span></label>
+    </fieldset>
+    <fieldset id="filter-setting" class="group">
+      <legend class="group__title" data-i18n="option_filter_settings_title"></legend>
+      <label class="checkbox"><input type="checkbox" name="periodEventIncluded" /><span class="text" data-i18n="option_period_event_included"></span></label>
+    </fieldset>
+  </main>
+  <script src="assets/options.js"></script>
 </body>
 </html>

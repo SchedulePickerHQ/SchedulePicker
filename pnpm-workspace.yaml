@@ -1,8 +1,6 @@
 strictDepBuilds: true
 allowBuilds:
-  es5-ext: false
   esbuild: true
-  svelte-preprocess: false
 minimumReleaseAge: 10080
 trustPolicy: no-downgrade
 blockExoticSubdeps: true

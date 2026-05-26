@@ -6,24 +6,19 @@
   "type": "module",
   "packageManager": "pnpm@11.2.2",
   "scripts": {
-    "build": "tsx scripts/build.ts",
+    "build": "node --no-warnings=ExperimentalWarning --experimental-strip-types scripts/build.ts",
     "check": "biome check .",
     "check:fix": "biome check --fix ."
   },
   "dependencies": {
     "dayjs": "1.11.11",
     "dompurify": "3.4.3",
-    "garoon-soap": "0.1.12",
-    "svelte": "4.2.18",
-    "svelte-i18n": "4.0.0",
-    "svelte-preprocess": "6.0.1"
+    "garoon-soap": "0.1.12"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
-    "@sveltejs/vite-plugin-svelte": "3.1.1",
     "@types/chrome": "0.0.258",
     "@types/node": "20.11.5",
-    "tsx": "4.19.4",
     "typescript": "5.3.3",
     "vite": "5.4.19"
   }
