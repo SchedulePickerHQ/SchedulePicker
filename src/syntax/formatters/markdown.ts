@@ -1,6 +1,6 @@
 import type { UserEvent } from "../../schedule/events";
 import { type DateTime, getDayOfWeek } from "../../utils/datetime";
-import { getEventMenuEmoji } from "../eventMenuEmoji";
+import { getEventMenuColor } from "../eventMenuEmoji";
 import type { Formatter } from "../formatter";
 
 export class MarkdownFormatter implements Formatter {
@@ -46,7 +46,7 @@ export class MarkdownFormatter implements Formatter {
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `${getEventMenuEmoji(eventMenu)}${eventMenu}`;
+		return `<span style="background-color: ${getEventMenuColor(eventMenu)};">&nbsp;&nbsp;&nbsp;</span> ${eventMenu}`;
 	}
 
 	private createSubject(hostname: string, eventId: string, subject: string) {
