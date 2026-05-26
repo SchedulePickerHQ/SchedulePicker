@@ -17,8 +17,7 @@ export class TemplateCommand implements Command {
 			const withEvents = await replaceEventPlaceholders(withDays, this.deps);
 
 			this.deps.insertText(withEvents);
-		} catch (e) {
-			console.error(e);
+		} catch {
 			this.deps.env.showError("error_get_events");
 		} finally {
 			this.deps.env.setCursor("auto");

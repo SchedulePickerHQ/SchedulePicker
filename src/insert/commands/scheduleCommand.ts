@@ -28,8 +28,7 @@ export class ScheduleCommand implements Command {
 				formatter.createEvents(this.deps.env.hostname, events);
 
 			this.deps.insertText(text);
-		} catch (e) {
-			console.error(e);
+		} catch {
 			this.deps.env.showError("error_get_events");
 		} finally {
 			this.deps.env.setCursor("auto");
