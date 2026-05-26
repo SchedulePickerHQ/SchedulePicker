@@ -7,6 +7,8 @@
   "packageManager": "pnpm@11.2.2",
   "scripts": {
     "build": "node --no-warnings=ExperimentalWarning --experimental-strip-types scripts/build.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "check": "biome check .",
     "check:fix": "biome check --fix ."
   },
@@ -20,6 +22,7 @@
     "@types/chrome": "0.0.258",
     "@types/node": "20.11.5",
     "typescript": "5.3.3",
-    "vite": "5.4.19"
+    "vite": "5.4.19",
+    "vitest": "3.2.4"
   }
 }
