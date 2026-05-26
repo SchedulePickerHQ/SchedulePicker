@@ -46,7 +46,7 @@ export class MarkdownFormatter implements Formatter {
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `<span style="color: ${getEventMenuColor(eventMenu)};">[${eventMenu}]</span>`;
+		return `<span style="background-color: ${getEventMenuColor(eventMenu)};">[${eventMenu}]</span>`;
 	}
 
 	private createSubject(hostname: string, eventId: string, subject: string) {

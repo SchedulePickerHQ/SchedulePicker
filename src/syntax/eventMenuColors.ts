@@ -1,90 +1,66 @@
+const MENU_COLORS: Record<string, string> = {
+	"打合 / Mtg": "#e9f1fb",
+	"通訳付き打合 / Interpreted MTG": "#e9f1fb",
+	"会議 / Conf.": "#e5ecf3",
+	"往来訪(Web) / Web mtg w. guests": "#ebeff2",
+	"来訪 / Mtg outside ORG": "#edf6fe",
+	"往訪 / Mtg w. guests": "#fef2f5",
+	"出張 / Work trip": "#f8e6f5",
+	"休み / Leave": "#feebeb",
+	"複業 / Parallel job": "#feebeb",
+	"リモートワーク / Remote": "#fef2e5",
+	"ウルトラワーク / Ultrawork": "#fef2e5",
+	"出社 / In office": "#fef2e5",
+	"勉強会 / Learning": "#efefd9",
+	"説明会 / Briefing": "#f0edfb",
+	"面接 / Interview": "#f0edfb",
+	"通訳付き面接 / Interpreted Interview": "#f0edfb",
+	"セミナー / Seminar": "#fcfae5",
+	"フェア / Fair": "#fcfae5",
+	"取材／講演 / Media; Lecture": "#fcfae5",
+	"誕生日会 / BD Party": "#e7f4f4",
+	"イベン10": "#e7f4f4",
+	"仕事Bar": "#e7f4f4",
+	"部活動": "#e7f4f4",
+	"懇親会 / Social": "#e7f4f4",
+	"社内イベント / Org event": "#e7f4f4",
+	"通訳付きイベント / Interpreted Event": "#e7f4f4",
+	"タスク / Task": "#f2f2f2",
+	"その他 / Other": "#f2f2f2",
+	"人事研修 / HR train.": "#efefd9",
+	"終日": "#fef2e6",
+};
+
+// 過去に対応していたメニュー名から現在のメニュー名へのマッピング
+const LEGACY_MENU_MAPPING: Record<string, string> = {
+	"打合": "打合 / Mtg",
+	"会議": "会議 / Conf.",
+	"往来訪(Web)": "往来訪(Web) / Web mtg w. guests",
+	"来訪": "来訪 / Mtg outside ORG",
+	"往訪": "往訪 / Mtg w. guests",
+	"出張": "出張 / Work trip",
+	"休み": "休み / Leave",
+	"複業": "複業 / Parallel job",
+	"ウルトラワーク": "ウルトラワーク / Ultrawork",
+	"リモートワーク": "リモートワーク / Remote",
+	"出社": "出社 / In office",
+	"勉強会": "勉強会 / Learning",
+	"説明会": "説明会 / Briefing",
+	"面接": "面接 / Interview",
+	"フェア": "フェア / Fair",
+	"セミナー": "セミナー / Seminar",
+	"取材/講演": "取材／講演 / Media; Lecture",
+	"懇親会": "懇親会 / Social",
+	"社内イベント": "社内イベント / Org event",
+	"タスク": "タスク / Task",
+	"その他": "その他 / Other",
+	"【履歴】来訪": "来訪 / Mtg outside ORG",
+	"【履歴】往訪": "往訪 / Mtg w. guests",
+};
+
+const DEFAULT_COLOR = "#e5f7f9";
+
 export const getEventMenuColor = (eventMenu: string): string => {
-	switch (eventMenu) {
-		case "打合 / Mtg":
-		case "通訳付き打合 / Interpreted MTG":
-			return "#3182dc";
-		case "会議 / Conf.":
-			return "#00508a";
-		case "往来訪(Web) / Web mtg w. guests":
-			return "#556b81";
-		case "来訪 / Mtg outside ORG":
-			return "#57b3ed";
-		case "往訪 / Mtg w. guests":
-			return "#f194a7";
-		case "出張 / Work trip":
-			return "#c242aa";
-		case "休み / Leave":
-		case "複業 / Parallel job":
-			return "#f44848";
-		case "リモートワーク / Remote":
-		case "ウルトラワーク / Ultrawork":
-		case "出社 / In office":
-			return "#ef9201";
-		case "勉強会 / Learning":
-			return "#646600";
-		case "説明会 / Briefing":
-		case "面接 / Interview":
-		case "通訳付き面接 / Interpreted Interview":
-			return "#725bce";
-		case "セミナー / Seminar":
-		case "フェア / Fair":
-		case "取材／講演 / Media; Lecture":
-			return "#dfc506";
-		case "誕生日会 / BD Party":
-		case "イベン10":
-		case "仕事Bar":
-		case "部活動":
-		case "懇親会 / Social":
-		case "社内イベント / Org event":
-		case "通訳付きイベント / Interpreted Event":
-			return "#158084";
-		case "タスク / Task":
-		case "その他 / Other":
-			return "#999999";
-		case "人事研修 / HR train.":
-			return "#646600";
-		case "終日":
-			return "#fb8c00";
-		// 過去に対応していたメニューの分岐 ここから
-		case "打合":
-			return "#3182dc";
-		case "会議":
-			return "#00508a";
-		case "往来訪(Web)":
-			return "#556b81";
-		case "来訪":
-			return "#57b3ed";
-		case "往訪":
-			return "#f194a7";
-		case "出張":
-			return "#c242aa";
-		case "休み":
-		case "複業":
-			return "#f44848";
-		case "ウルトラワーク":
-		case "リモートワーク":
-		case "出社":
-			return "#ef9201";
-		case "勉強会":
-			return "#646600";
-		case "説明会":
-		case "面接":
-			return "#725bce";
-		case "フェア":
-		case "セミナー":
-		case "取材/講演":
-			return "#dfc506";
-		case "懇親会":
-		case "社内イベント":
-			return "#158084";
-		case "タスク":
-		case "その他":
-			return "#999";
-		case "【履歴】来訪":
-		case "【履歴】往訪":
-			return "#873e0e";
-		// 過去に対応していたメニューの分岐 ここまで
-		default:
-			return "#00acc1"; // 個人設定で追加したメニューの配色
-	}
+	const normalized = LEGACY_MENU_MAPPING[eventMenu] ?? eventMenu;
+	return MENU_COLORS[normalized] ?? DEFAULT_COLOR;
 };
