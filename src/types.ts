@@ -1,5 +1,5 @@
 export type ValueOf<T> = T[keyof T];
 
 export interface Command {
-	execute(): void;
+	execute(): Promise<void>;
 }

@@ -8,6 +8,6 @@ export class ContextMenuController {
 	}
 
 	handleClick(id: string) {
-		this.commands.get(id)?.execute();
+		this.commands.get(id)?.execute().catch(console.error);
 	}
 }

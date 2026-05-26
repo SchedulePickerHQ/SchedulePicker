@@ -6,5 +6,3 @@ trustPolicy: no-downgrade
 blockExoticSubdeps: true
 verifyDepsBeforeRun: install
 saveExact: true
-overrides:
-  rollup: "4.60.4"
