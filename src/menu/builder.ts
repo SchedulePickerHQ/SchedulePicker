@@ -1,4 +1,8 @@
-import { loadContextMenuDisplaySettings, loadSyntaxSetting } from "~storage";
+import type { TypeOfValues } from "../types";
+import {
+	loadContextMenuDisplaySettings,
+	loadSyntaxSetting,
+} from "../utils/storage";
 
 // https://developer.chrome.com/docs/extensions/reference/contextMenus/
 type ContextMenuItem = {
@@ -24,7 +28,7 @@ export const CONTEXT_MENU_ID = {
 	SETTINGS: "SETTINGS",
 	HTML: "HTML",
 	MARKDOWN: "MARKDOWN",
-	PLANE_TEXT: "PLANE_TEXT",
+	PLAIN_TEXT: "PLAIN_TEXT",
 } as const;
 
 export class ContextMenuBuilder {
@@ -144,9 +148,9 @@ export class ContextMenuBuilder {
 		);
 	}
 
-	addPlaneText({ checked = false }) {
+	addPlainText({ checked = false }) {
 		return this.addMenuItem(
-			CONTEXT_MENU_ID.PLANE_TEXT,
+			CONTEXT_MENU_ID.PLAIN_TEXT,
 			chrome.i18n.getMessage("context_menu_plane_text"),
 			"radio",
 			{
@@ -197,7 +201,7 @@ export const buildContextMenu = async () => {
 		const syntax = await loadSyntaxSetting();
 		builder.addHtml({ checked: syntax === "html" });
 		builder.addMarkdown({ checked: syntax === "markdown" });
-		builder.addPlaneText({ checked: syntax === "planeText" });
+		builder.addPlainText({ checked: syntax === "plainText" });
 	}
 
 	builder.addSettings();

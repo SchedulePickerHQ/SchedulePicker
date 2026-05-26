@@ -1,20 +1,22 @@
-import { getUserEvents } from "~schedule/events";
-import { loadPeriodEventIncludedSetting, loadSyntaxSetting } from "~storage";
-import { SyntaxGeneratorFactory } from "~syntax/factory";
+import { getUserEvents } from "../../schedule/events";
+import { SyntaxGeneratorFactory } from "../../syntax/factory";
+import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
 	convertToStartOfDay,
 	dateTime,
-} from "~utils/datetime";
-import { insertTextAtCursorPosition } from "~utils/insertion";
+} from "../../utils/datetime";
+import { insertTextAtCursorPosition } from "../../utils/insertion";
+import {
+	loadPeriodEventIncludedSetting,
+	loadSyntaxSetting,
+} from "../../utils/storage";
 
-import type { Command } from "../../utils/interface";
-
-export class TodayCommand implements Command {
+export class YesterdayCommand implements Command {
 	async execute() {
-		const now = dateTime();
-		const startTime = convertToStartOfDay(now);
-		const endTime = convertToEndOfDay(now);
+		const yesterday = dateTime().subtract(1, "day");
+		const startTime = convertToStartOfDay(yesterday);
+		const endTime = convertToEndOfDay(yesterday);
 		const periodEventIncluded = await loadPeriodEventIncludedSetting();
 		const syntax = await loadSyntaxSetting();
 		const generator = new SyntaxGeneratorFactory().create(syntax);
@@ -29,7 +31,7 @@ export class TodayCommand implements Command {
 			});
 
 			const text =
-				generator.createTitle(now) +
+				generator.createTitle(yesterday) +
 				generator.getNewLine() +
 				generator.createEvents(location.hostname, events);
 

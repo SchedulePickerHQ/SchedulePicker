@@ -1,6 +1,5 @@
-import { sendOpenSettingsPage } from "~messages";
-
-import type { Command } from "../../utils/interface";
+import type { Command } from "../../types";
+import { sendOpenSettingsPage } from "../../utils/messages";
 
 export class SettingsCommand implements Command {
 	async execute() {

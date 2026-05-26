@@ -1,9 +1,9 @@
-import type { Command } from "../utils/interface";
+import type { Command } from "../types";
 
 export class ContextMenuController {
 	private commands = new Map<string, Command>();
 
-	setCommend(id: string, command: Command) {
+	setCommand(id: string, command: Command) {
 		this.commands.set(id, command);
 	}
 

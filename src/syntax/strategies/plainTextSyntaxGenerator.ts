@@ -1,8 +1,8 @@
-import type { UserEvent } from "~schedule/events";
-import type { SyntaxGenerator } from "~syntax/interface";
-import { type DateTime, getDayOfWeek } from "~utils/datetime";
+import type { UserEvent } from "../../schedule/events";
+import { type DateTime, getDayOfWeek } from "../../utils/datetime";
+import type { SyntaxGenerator } from "../interface";
 
-export class PlaneTextSyntaxGenerator implements SyntaxGenerator {
+export class PlainTextSyntaxGenerator implements SyntaxGenerator {
 	createTitle(dateTime: DateTime) {
 		return `[ ${chrome.i18n.getMessage("event_title", `${dateTime.format("YYYY/MM/DD")} (${getDayOfWeek(dateTime)})`)} ]`;
 	}

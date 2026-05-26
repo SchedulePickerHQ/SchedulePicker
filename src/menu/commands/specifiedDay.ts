@@ -1,15 +1,17 @@
-import { getUserEvents } from "~schedule/events";
-import { loadPeriodEventIncludedSetting, loadSyntaxSetting } from "~storage";
-import { SyntaxGeneratorFactory } from "~syntax/factory";
+import { getUserEvents } from "../../schedule/events";
+import { SyntaxGeneratorFactory } from "../../syntax/factory";
+import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
 	convertToStartOfDay,
 	dateTime,
 	isValidDateFormat,
-} from "~utils/datetime";
-import { insertTextAtCursorPosition } from "~utils/insertion";
-
-import type { Command } from "../../utils/interface";
+} from "../../utils/datetime";
+import { insertTextAtCursorPosition } from "../../utils/insertion";
+import {
+	loadPeriodEventIncludedSetting,
+	loadSyntaxSetting,
+} from "../../utils/storage";
 
 export class SpecifiedDayCommand implements Command {
 	async execute() {

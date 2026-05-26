@@ -1,12 +1,7 @@
 strictDepBuilds: true
 allowBuilds:
-  "@parcel/watcher": true
-  "@swc/core": true
   es5-ext: false
   esbuild: true
-  lmdb: true
-  msgpackr-extract: true
-  sharp: true
   svelte-preprocess: false
 minimumReleaseAge: 10080
 trustPolicy: no-downgrade
@@ -14,7 +9,4 @@ blockExoticSubdeps: true
 verifyDepsBeforeRun: install
 saveExact: true
 overrides:
-  graphql: "16.14.0"
-  chokidar: "4.0.1"
   rollup: "4.60.4"
-  semver: "7.7.2"

@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import type { TypeOfValues } from "../types";
 
 dayjs.extend(utc);
 

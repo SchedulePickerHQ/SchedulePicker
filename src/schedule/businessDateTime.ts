@@ -1,4 +1,4 @@
-import { type DateTime, dateTime, getWeekIndex } from "~utils/datetime";
+import { type DateTime, dateTime, getWeekIndex } from "../utils/datetime";
 
 import { getCalendarEvents } from "./api/garoon";
 

@@ -1,23 +1,22 @@
 import {
 	getNextBusinessDateTime,
 	getPreviousBusinessDateTime,
-} from "~schedule/businessDateTime";
-import { getUserEvents } from "~schedule/events";
-import {
-	loadPeriodEventIncludedSetting,
-	loadSyntaxSetting,
-	loadTemplateText,
-} from "~storage";
-import { SyntaxGeneratorFactory } from "~syntax/factory";
+} from "../../schedule/businessDateTime";
+import { getUserEvents } from "../../schedule/events";
+import { SyntaxGeneratorFactory } from "../../syntax/factory";
+import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
 	convertToStartOfDay,
 	dateTime,
 	getDayOfWeek,
-} from "~utils/datetime";
-import { insertTextAtCursorPosition } from "~utils/insertion";
-
-import type { Command } from "../../utils/interface";
+} from "../../utils/datetime";
+import { insertTextAtCursorPosition } from "../../utils/insertion";
+import {
+	loadPeriodEventIncludedSetting,
+	loadSyntaxSetting,
+	loadTemplateText,
+} from "../../utils/storage";
 
 const SPECIAL_TEMPLATE_CHARACTER = {
 	TODAY: "{%TODAY%}",

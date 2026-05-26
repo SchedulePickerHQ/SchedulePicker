@@ -1,15 +1,12 @@
 {
   "name": "schedule-picker",
-  "displayName": "__MSG_ext_name__",
   "version": "4.0.0",
-  "description": "__MSG_ext_description__",
   "author": "kuroppe1819",
   "homepage": "https://github.com/SchedulePickerHQ/SchedulePicker",
+  "type": "module",
   "packageManager": "pnpm@11.2.2",
   "scripts": {
-    "dev": "plasmo dev",
-    "build": "plasmo build",
-    "package": "plasmo package",
+    "build": "tsx scripts/build.ts",
     "check": "biome check .",
     "check:fix": "biome check --fix ."
   },
@@ -17,32 +14,17 @@
     "dayjs": "1.11.11",
     "dompurify": "3.4.3",
     "garoon-soap": "0.1.12",
-    "plasmo": "0.88.0",
     "svelte": "4.2.18",
     "svelte-i18n": "4.0.0",
     "svelte-preprocess": "6.0.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.15",
+    "@sveltejs/vite-plugin-svelte": "3.1.1",
     "@types/chrome": "0.0.258",
     "@types/node": "20.11.5",
-    "@biomejs/biome": "2.4.15",
-    "typescript": "5.3.3"
-  },
-  "manifest": {
-    "default_locale": "en",
-    "permissions": [
-      "background",
-      "contextMenus",
-      "storage"
-    ],
-    "host_permissions": [
-      "https://*.cybozu.com/*",
-      "https://*.kintone.com/*",
-      "https://*.cybozu.cn/*"
-    ],
-    "options_ui": {
-      "page": "options.html",
-      "open_in_tab": false
-    }
+    "tsx": "4.19.4",
+    "typescript": "5.3.3",
+    "vite": "5.4.19"
   }
 }

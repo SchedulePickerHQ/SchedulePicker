@@ -3,8 +3,7 @@ import "./i18n";
 
 import { onMount } from "svelte";
 import { _ } from "svelte-i18n";
-
-import { buildContextMenu } from "~menu/builder";
+import { buildContextMenu } from "../../menu/builder";
 import {
 	loadContextMenuDisplaySettings,
 	loadPeriodEventIncludedSetting,
@@ -14,7 +13,7 @@ import {
 	savePeriodEventIncludedSetting,
 	saveSyntaxSetting,
 	saveTemplateText,
-} from "~storage";
+} from "../../utils/storage";
 
 import Button from "./Button.svelte";
 import Checkbox from "./Checkbox.svelte";
@@ -30,7 +29,7 @@ let previousBusinessDayChecked: boolean;
 let specifiedDayChecked: boolean;
 let templateChecked: boolean;
 let syntaxChecked: boolean;
-let selectedSyntax: "html" | "markdown" | "planeText";
+let selectedSyntax: "html" | "markdown" | "plainText";
 let periodEventIncludedChecked: boolean;
 
 onMount(async () => {
@@ -139,7 +138,7 @@ let onSaveButtonClick = async () => {
       label={$_("option_syntax_markdown.message")}
       name="syntax-setting" />
     <Radio
-      value={"planeText"}
+      value={"plainText"}
       bind:selected={selectedSyntax}
       label={$_("option_syntax_plane_text.message")}
       name="syntax-setting" />

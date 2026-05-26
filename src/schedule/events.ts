@@ -3,7 +3,7 @@ import {
 	convertToStartOfDay,
 	type DateTime,
 	dateTime,
-} from "~utils/datetime";
+} from "../utils/datetime";
 
 import { getScheduleEvents, type ScheduleEvent } from "./api/garoon";
 

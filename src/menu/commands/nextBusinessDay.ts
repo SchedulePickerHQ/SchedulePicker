@@ -1,11 +1,13 @@
-import { getNextBusinessDateTime } from "~schedule/businessDateTime";
-import { getUserEvents } from "~schedule/events";
-import { loadPeriodEventIncludedSetting, loadSyntaxSetting } from "~storage";
-import { SyntaxGeneratorFactory } from "~syntax/factory";
-import { convertToEndOfDay, convertToStartOfDay } from "~utils/datetime";
-import { insertTextAtCursorPosition } from "~utils/insertion";
-
-import type { Command } from "../../utils/interface";
+import { getNextBusinessDateTime } from "../../schedule/businessDateTime";
+import { getUserEvents } from "../../schedule/events";
+import { SyntaxGeneratorFactory } from "../../syntax/factory";
+import type { Command } from "../../types";
+import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
+import { insertTextAtCursorPosition } from "../../utils/insertion";
+import {
+	loadPeriodEventIncludedSetting,
+	loadSyntaxSetting,
+} from "../../utils/storage";
 
 export class NextBusinessDayCommand implements Command {
 	async execute() {

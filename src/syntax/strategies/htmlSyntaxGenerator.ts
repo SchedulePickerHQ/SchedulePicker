@@ -1,7 +1,7 @@
-import type { UserEvent } from "~schedule/events";
-import { getEventMenuColorCode } from "~syntax/eventMenuColors";
-import type { SyntaxGenerator } from "~syntax/interface";
-import { type DateTime, getDayOfWeek } from "~utils/datetime";
+import type { UserEvent } from "../../schedule/events";
+import { type DateTime, getDayOfWeek } from "../../utils/datetime";
+import { getEventMenuColorCode } from "../eventMenuColors";
+import type { SyntaxGenerator } from "../interface";
 
 export class HtmlSyntaxGenerator implements SyntaxGenerator {
 	createTitle(dateTime: DateTime) {
