@@ -4,7 +4,7 @@ import {
 	getPreviousBusinessDateTime,
 } from "../../insert/schedule/businessDateTime";
 import { getUserEvents } from "../../insert/schedule/events";
-import { SyntaxGeneratorFactory } from "../../insert/syntax/factory";
+import { createSyntaxGenerator } from "../../insert/syntax/factory";
 import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
@@ -100,7 +100,7 @@ const replaceSpecialEventsCharacterToUserEvents = async (
 ): Promise<string> => {
 	const periodEventIncluded = await loadPeriodEventIncludedSetting();
 	const syntax = await loadSyntaxSetting();
-	const generator = new SyntaxGeneratorFactory().create(syntax);
+	const generator = createSyntaxGenerator(syntax);
 
 	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS)) {
 		const now = dateTime();

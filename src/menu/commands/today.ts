@@ -1,6 +1,6 @@
 import { insertTextAtCursorPosition } from "../../insert/cursor";
 import { getUserEvents } from "../../insert/schedule/events";
-import { SyntaxGeneratorFactory } from "../../insert/syntax/factory";
+import { createSyntaxGenerator } from "../../insert/syntax/factory";
 import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
@@ -19,7 +19,7 @@ export class TodayCommand implements Command {
 		const endTime = convertToEndOfDay(now);
 		const periodEventIncluded = await loadPeriodEventIncludedSetting();
 		const syntax = await loadSyntaxSetting();
-		const generator = new SyntaxGeneratorFactory().create(syntax);
+		const generator = createSyntaxGenerator(syntax);
 
 		try {
 			document.body.style.cursor = "progress";
