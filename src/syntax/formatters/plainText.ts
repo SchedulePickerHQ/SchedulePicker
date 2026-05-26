@@ -1,5 +1,6 @@
 import type { UserEvent } from "../../schedule/events";
 import { type DateTime, getDayOfWeek } from "../../utils/datetime";
+import { getEventMenuEmoji } from "../eventMenuEmoji";
 import type { Formatter } from "../formatter";
 
 export class PlainTextFormatter implements Formatter {
@@ -45,6 +46,6 @@ export class PlainTextFormatter implements Formatter {
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `[${eventMenu}]`;
+		return `[${getEventMenuEmoji(eventMenu)}${eventMenu}]`;
 	}
 }
