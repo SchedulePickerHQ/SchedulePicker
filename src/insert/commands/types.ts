@@ -24,6 +24,8 @@ export interface ScheduleDeps {
 	insertText: (text: string) => void;
 }
 
+export type SpecifiedDayDeps = Omit<ScheduleDeps, "resolveDate">;
+
 export interface SyntaxDeps {
 	saveSyntaxSetting: (syntax: SyntaxType) => Promise<void>;
 	sendBuildContextMenu: () => Promise<void>;

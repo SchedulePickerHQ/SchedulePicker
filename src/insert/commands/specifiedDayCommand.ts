@@ -1,9 +1,7 @@
 import type { Command } from "../../types";
 import { dateTime, isValidDateFormat } from "../../utils/datetime";
 import { ScheduleCommand } from "./scheduleCommand";
-import type { ScheduleDeps } from "./types";
-
-type SpecifiedDayDeps = Omit<ScheduleDeps, "resolveDate">;
+import type { SpecifiedDayDeps } from "./types";
 
 export class SpecifiedDayCommand implements Command {
 	constructor(private deps: SpecifiedDayDeps) {}
