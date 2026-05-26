@@ -7,17 +7,14 @@ import {
 	convertToStartOfDay,
 	dateTime,
 } from "../../utils/datetime";
-import {
-	loadPeriodEventIncludedSetting,
-	loadSyntaxSetting,
-} from "../../utils/storage";
+import { loadPeriodEventSetting, loadSyntaxSetting } from "../../utils/storage";
 
 export class TomorrowCommand implements Command {
 	async execute() {
 		const tomorrow = dateTime().add(1, "day");
 		const startTime = convertToStartOfDay(tomorrow);
 		const endTime = convertToEndOfDay(tomorrow);
-		const periodEventIncluded = await loadPeriodEventIncludedSetting();
+		const periodEventIncluded = await loadPeriodEventSetting();
 		const syntax = await loadSyntaxSetting();
 		const generator = createSyntaxGenerator(syntax);
 

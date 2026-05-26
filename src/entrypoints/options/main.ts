@@ -1,26 +1,26 @@
 import { buildContextMenu } from "../../menu/builder";
 import {
 	loadContextMenuDisplaySettings,
-	loadPeriodEventIncludedSetting,
+	loadPeriodEventSetting,
 	loadSyntaxSetting,
 	loadTemplateText,
 	saveContextMenuDisplaySettings,
-	savePeriodEventIncludedSetting,
+	savePeriodEventSetting,
 	saveSyntaxSetting,
 	saveTemplateText,
 } from "../../utils/storage";
 
-function $<T extends HTMLElement>(selector: string): T {
+function querySelector<T extends HTMLElement>(selector: string): T {
 	const el = document.querySelector<T>(selector);
 	if (!el) throw new Error(`Element not found: ${selector}`);
 	return el;
 }
 
 const checkbox = (name: string): HTMLInputElement =>
-	$(`input[type="checkbox"][name="${name}"]`);
+	querySelector(`input[type="checkbox"][name="${name}"]`);
 
 const radio = (value: string): HTMLInputElement =>
-	$(`input[type="radio"][value="${value}"]`);
+	querySelector(`input[type="radio"][value="${value}"]`);
 
 function applyI18n() {
 	for (const el of document.querySelectorAll("[data-i18n]")) {
@@ -45,7 +45,8 @@ function applyI18n() {
 }
 
 async function loadSettings() {
-	$<HTMLTextAreaElement>("#template-text").value = await loadTemplateText();
+	querySelector<HTMLTextAreaElement>("#template-text").value =
+		await loadTemplateText();
 
 	const display = await loadContextMenuDisplaySettings();
 	checkbox("today").checked = display.today;
@@ -59,12 +60,13 @@ async function loadSettings() {
 
 	radio(await loadSyntaxSetting()).checked = true;
 
-	checkbox("periodEventIncluded").checked =
-		await loadPeriodEventIncludedSetting();
+	checkbox("periodEventIncluded").checked = await loadPeriodEventSetting();
 }
 
 async function saveSettings() {
-	await saveTemplateText($<HTMLTextAreaElement>("#template-text").value);
+	await saveTemplateText(
+		querySelector<HTMLTextAreaElement>("#template-text").value,
+	);
 	await saveContextMenuDisplaySettings({
 		today: checkbox("today").checked,
 		tomorrow: checkbox("tomorrow").checked,
@@ -76,33 +78,35 @@ async function saveSettings() {
 		syntax: checkbox("syntax").checked,
 	});
 
-	const selectedSyntax = $<HTMLInputElement>(
+	const selectedSyntax = querySelector<HTMLInputElement>(
 		'input[name="syntax-setting"]:checked',
 	);
 	await saveSyntaxSetting(
 		selectedSyntax.value as "html" | "markdown" | "plainText",
 	);
 
-	await savePeriodEventIncludedSetting(checkbox("periodEventIncluded").checked);
+	await savePeriodEventSetting(checkbox("periodEventIncluded").checked);
 
 	await buildContextMenu();
 }
 
-async function init() {
+async function initSettingsPage() {
 	applyI18n();
 	await loadSettings();
 
 	let saved = false;
-	const button = $("#save-button");
-	button.addEventListener("click", async () => {
+	const saveButton = querySelector("#save-button");
+	saveButton.addEventListener("click", async () => {
 		if (saved) return;
 		saved = true;
 
 		try {
 			await saveSettings();
-			button.textContent = "( ¯꒳¯)b✧︎";
+			saveButton.textContent = "( ¯꒳¯)b✧︎";
 			setTimeout(() => {
-				button.textContent = chrome.i18n.getMessage("option_save_button_text");
+				saveButton.textContent = chrome.i18n.getMessage(
+					"option_save_button_text",
+				);
 				saved = false;
 			}, 500);
 		} catch (e) {
@@ -112,4 +116,4 @@ async function init() {
 	});
 }
 
-init().catch(console.error);
+initSettingsPage().catch(console.error);

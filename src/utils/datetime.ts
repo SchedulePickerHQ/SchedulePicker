@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import type { TypeOfValues } from "../types";
+import type { ValueOf } from "../types";
 
 dayjs.extend(utc);
 
@@ -24,7 +24,7 @@ const WEEK = {
 
 type Week = keyof typeof WEEK;
 
-export const getWeekIndex = (week: Week): TypeOfValues<Week> => WEEK[week];
+export const getWeekIndex = (week: Week): ValueOf<typeof WEEK> => WEEK[week];
 
 export const getDayOfWeek = (arg: DateTime) =>
 	chrome.i18n.getMessage(`day_of_week_${arg.day()}`);

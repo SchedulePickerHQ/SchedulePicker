@@ -13,12 +13,12 @@ import {
 	getDayOfWeek,
 } from "../../utils/datetime";
 import {
-	loadPeriodEventIncludedSetting,
+	loadPeriodEventSetting,
 	loadSyntaxSetting,
 	loadTemplateText,
 } from "../../utils/storage";
 
-const SPECIAL_TEMPLATE_CHARACTER = {
+const TEMPLATE_PLACEHOLDER = {
 	TODAY: "{%TODAY%}",
 	TOMORROW: "{%TOMORROW%}",
 	YESTERDAY: "{%YESTERDAY%}",
@@ -41,8 +41,8 @@ export class TemplateCommand implements Command {
 			document.body.style.cursor = "progress";
 
 			insertTextAtCursorPosition(
-				await replaceSpecialEventsCharacterToUserEvents(
-					await replaceSpecialDayCharacterToDate(templateText),
+				await replaceEventPlaceholders(
+					await replaceDayPlaceholders(templateText),
 				),
 			);
 		} catch (e) {
@@ -54,55 +54,48 @@ export class TemplateCommand implements Command {
 	}
 }
 
-const replaceSpecialDayCharacterToDate = async (
-	text: string,
-): Promise<string> => {
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.TODAY)) {
+const replaceDayPlaceholders = async (text: string): Promise<string> => {
+	if (text.includes(TEMPLATE_PLACEHOLDER.TODAY)) {
 		const today = dateTime();
 		const title = `${today.format(DATE_FORMAT)} (${getDayOfWeek(today)})`;
-		text = text.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TODAY, title);
+		text = text.replaceAll(TEMPLATE_PLACEHOLDER.TODAY, title);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.TOMORROW)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.TOMORROW)) {
 		const tomorrow = dateTime().add(1, "day");
 		const title = `${tomorrow.format(DATE_FORMAT)} (${getDayOfWeek(tomorrow)})`;
-		text = text.replaceAll(SPECIAL_TEMPLATE_CHARACTER.TOMORROW, title);
+		text = text.replaceAll(TEMPLATE_PLACEHOLDER.TOMORROW, title);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.YESTERDAY)) {
 		const yesterday = dateTime().subtract(1, "day");
 		const title = `${yesterday.format(DATE_FORMAT)} (${getDayOfWeek(yesterday)})`;
-		text = text.replaceAll(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY, title);
+		text = text.replaceAll(TEMPLATE_PLACEHOLDER.YESTERDAY, title);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.NEXT_BUSINESS_DAY)) {
 		const nextBusinessDay = await getNextBusinessDateTime(location.hostname);
 		const title = `${nextBusinessDay.format(DATE_FORMAT)} (${getDayOfWeek(nextBusinessDay)})`;
-		text = text.replaceAll(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY, title);
+		text = text.replaceAll(TEMPLATE_PLACEHOLDER.NEXT_BUSINESS_DAY, title);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.PREVIOUS_BUSINESS_DAY)) {
 		const previousBusinessDay = await getPreviousBusinessDateTime(
 			location.hostname,
 		);
 		const title = `${previousBusinessDay.format(DATE_FORMAT)} (${getDayOfWeek(previousBusinessDay)})`;
-		text = text.replaceAll(
-			SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY,
-			title,
-		);
+		text = text.replaceAll(TEMPLATE_PLACEHOLDER.PREVIOUS_BUSINESS_DAY, title);
 	}
 
 	return text;
 };
 
-const replaceSpecialEventsCharacterToUserEvents = async (
-	text: string,
-): Promise<string> => {
-	const periodEventIncluded = await loadPeriodEventIncludedSetting();
+const replaceEventPlaceholders = async (text: string): Promise<string> => {
+	const periodEventIncluded = await loadPeriodEventSetting();
 	const syntax = await loadSyntaxSetting();
 	const generator = createSyntaxGenerator(syntax);
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.TODAY_EVENTS)) {
 		const now = dateTime();
 		const startTime = convertToStartOfDay(now);
 		const endTime = convertToEndOfDay(now);
@@ -112,12 +105,12 @@ const replaceSpecialEventsCharacterToUserEvents = async (
 			periodEventIncluded,
 		});
 		text = text.replaceAll(
-			SPECIAL_TEMPLATE_CHARACTER.TODAY_EVENTS,
+			TEMPLATE_PLACEHOLDER.TODAY_EVENTS,
 			generator.createEvents(location.hostname, events),
 		);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.TOMORROW_EVENTS)) {
 		const tomorrow = dateTime().add(1, "day");
 		const startTime = convertToStartOfDay(tomorrow);
 		const endTime = convertToEndOfDay(tomorrow);
@@ -127,12 +120,12 @@ const replaceSpecialEventsCharacterToUserEvents = async (
 			periodEventIncluded,
 		});
 		text = text.replaceAll(
-			SPECIAL_TEMPLATE_CHARACTER.TOMORROW_EVENTS,
+			TEMPLATE_PLACEHOLDER.TOMORROW_EVENTS,
 			generator.createEvents(location.hostname, events),
 		);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.YESTERDAY_EVENTS)) {
 		const yesterday = dateTime().subtract(1, "day");
 		const startTime = convertToStartOfDay(yesterday);
 		const endTime = convertToEndOfDay(yesterday);
@@ -142,12 +135,12 @@ const replaceSpecialEventsCharacterToUserEvents = async (
 			periodEventIncluded,
 		});
 		text = text.replaceAll(
-			SPECIAL_TEMPLATE_CHARACTER.YESTERDAY_EVENTS,
+			TEMPLATE_PLACEHOLDER.YESTERDAY_EVENTS,
 			generator.createEvents(location.hostname, events),
 		);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.NEXT_BUSINESS_DAY_EVENTS)) {
 		const nextBusinessDay = await getNextBusinessDateTime(location.hostname);
 		const startTime = convertToStartOfDay(nextBusinessDay);
 		const endTime = convertToEndOfDay(nextBusinessDay);
@@ -157,12 +150,12 @@ const replaceSpecialEventsCharacterToUserEvents = async (
 			periodEventIncluded,
 		});
 		text = text.replaceAll(
-			SPECIAL_TEMPLATE_CHARACTER.NEXT_BUSINESS_DAY_EVENTS,
+			TEMPLATE_PLACEHOLDER.NEXT_BUSINESS_DAY_EVENTS,
 			generator.createEvents(location.hostname, events),
 		);
 	}
 
-	if (text.includes(SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS)) {
+	if (text.includes(TEMPLATE_PLACEHOLDER.PREVIOUS_BUSINESS_DAY_EVENTS)) {
 		const previousBusinessDay = await getPreviousBusinessDateTime(
 			location.hostname,
 		);
@@ -174,7 +167,7 @@ const replaceSpecialEventsCharacterToUserEvents = async (
 			periodEventIncluded,
 		});
 		text = text.replaceAll(
-			SPECIAL_TEMPLATE_CHARACTER.PREVIOUS_BUSINESS_DAY_EVENTS,
+			TEMPLATE_PLACEHOLDER.PREVIOUS_BUSINESS_DAY_EVENTS,
 			generator.createEvents(location.hostname, events),
 		);
 	}

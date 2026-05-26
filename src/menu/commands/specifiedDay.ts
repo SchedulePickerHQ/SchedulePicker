@@ -8,10 +8,7 @@ import {
 	dateTime,
 	isValidDateFormat,
 } from "../../utils/datetime";
-import {
-	loadPeriodEventIncludedSetting,
-	loadSyntaxSetting,
-} from "../../utils/storage";
+import { loadPeriodEventSetting, loadSyntaxSetting } from "../../utils/storage";
 
 export class SpecifiedDayCommand implements Command {
 	async execute() {
@@ -32,7 +29,7 @@ export class SpecifiedDayCommand implements Command {
 		const specifiedDateTime = dateTime(promptResult);
 		const startTime = convertToStartOfDay(specifiedDateTime);
 		const endTime = convertToEndOfDay(specifiedDateTime);
-		const periodEventIncluded = await loadPeriodEventIncludedSetting();
+		const periodEventIncluded = await loadPeriodEventSetting();
 		const syntax = await loadSyntaxSetting();
 		const generator = createSyntaxGenerator(syntax);
 

@@ -4,17 +4,14 @@ import { getUserEvents } from "../../insert/schedule/events";
 import { createSyntaxGenerator } from "../../insert/syntax/factory";
 import type { Command } from "../../types";
 import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
-import {
-	loadPeriodEventIncludedSetting,
-	loadSyntaxSetting,
-} from "../../utils/storage";
+import { loadPeriodEventSetting, loadSyntaxSetting } from "../../utils/storage";
 
 export class NextBusinessDayCommand implements Command {
 	async execute() {
 		const nextBusinessDay = await getNextBusinessDateTime(location.hostname);
 		const startTime = convertToStartOfDay(nextBusinessDay);
 		const endTime = convertToEndOfDay(nextBusinessDay);
-		const periodEventIncluded = await loadPeriodEventIncludedSetting();
+		const periodEventIncluded = await loadPeriodEventSetting();
 		const syntax = await loadSyntaxSetting();
 		const generator = createSyntaxGenerator(syntax);
 

@@ -1,5 +1,5 @@
 import { CONTEXT_MENU_ID } from "../menu/builder";
-import { HTMLCommand } from "../menu/commands/html";
+import { HtmlCommand } from "../menu/commands/html";
 import { MarkdownCommand } from "../menu/commands/markdown";
 import { NextBusinessDayCommand } from "../menu/commands/nextBusinessDay";
 import { PlainTextCommand } from "../menu/commands/plainText";
@@ -47,7 +47,7 @@ contextMenuController.setCommand(
 	CONTEXT_MENU_ID.TEMPLATE,
 	new TemplateCommand(),
 );
-contextMenuController.setCommand(CONTEXT_MENU_ID.HTML, new HTMLCommand());
+contextMenuController.setCommand(CONTEXT_MENU_ID.HTML, new HtmlCommand());
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.MARKDOWN,
 	new MarkdownCommand(),
@@ -64,6 +64,6 @@ contextMenuController.setCommand(
 chrome.runtime.onMessage.addListener((message: MessageContext, _) => {
 	if (message.context === MESSAGE_CONTEXT.CONTEXT_MENU_CLICKED) {
 		const { info } = message;
-		contextMenuController.clicked(info.menuItemId.toString());
+		contextMenuController.handleClick(info.menuItemId.toString());
 	}
 });

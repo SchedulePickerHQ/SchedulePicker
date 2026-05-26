@@ -1,4 +1,4 @@
-import type { TypeOfValues } from "../types";
+import type { ValueOf } from "../types";
 import {
 	loadContextMenuDisplaySettings,
 	loadSyntaxSetting,
@@ -14,7 +14,7 @@ type ContextMenuItem = {
 	contexts: "editable"[];
 };
 
-export type ContextMenuId = TypeOfValues<typeof CONTEXT_MENU_ID>;
+export type ContextMenuId = ValueOf<typeof CONTEXT_MENU_ID>;
 
 export const CONTEXT_MENU_ID = {
 	ROOT: "ROOT",
@@ -79,7 +79,7 @@ export class ContextMenuBuilder {
 		);
 	}
 
-	addYesterDay() {
+	addYesterday() {
 		return this.addMenuItem(
 			CONTEXT_MENU_ID.YESTERDAY,
 			chrome.i18n.getMessage("context_menu_yesterday"),
@@ -178,7 +178,7 @@ export const buildContextMenu = async () => {
 	}
 
 	if (contextMenuDisplaySettings.yesterday) {
-		builder.addYesterDay();
+		builder.addYesterday();
 	}
 
 	if (contextMenuDisplaySettings.nextBusinessDay) {

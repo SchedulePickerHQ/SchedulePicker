@@ -125,13 +125,13 @@ export const loadTemplateText = async (): Promise<
 
 // 期間予定を含めるかどうかの設定
 
-export const savePeriodEventIncludedSetting = async (
+export const savePeriodEventSetting = async (
 	shown: StorageValue["PERIOD_EVENT_INCLUDED"],
 ) => {
 	await chrome.storage.sync.set({ [STORAGE_KEY.PERIOD_EVENT_INCLUDED]: shown });
 };
 
-export const loadPeriodEventIncludedSetting = async (): Promise<
+export const loadPeriodEventSetting = async (): Promise<
 	StorageValue["PERIOD_EVENT_INCLUDED"]
 > => {
 	const item = await chrome.storage.sync.get(STORAGE_KEY.PERIOD_EVENT_INCLUDED);
