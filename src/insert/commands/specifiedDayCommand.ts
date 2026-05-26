@@ -1,10 +1,6 @@
 import type { Command } from "../../types";
-import {
-	convertToEndOfDay,
-	convertToStartOfDay,
-	dateTime,
-	isValidDateFormat,
-} from "../../utils/datetime";
+import { dateTime, isValidDateFormat } from "../../utils/datetime";
+import { ScheduleCommand } from "./scheduleCommand";
 import type { ScheduleDeps } from "./types";
 
 type SpecifiedDayDeps = Omit<ScheduleDeps, "resolveDate">;
@@ -27,33 +23,10 @@ export class SpecifiedDayCommand implements Command {
 			return;
 		}
 
-		const specifiedDateTime = dateTime(promptResult);
-		const startTime = convertToStartOfDay(specifiedDateTime);
-		const endTime = convertToEndOfDay(specifiedDateTime);
-		const periodEventIncluded = await this.deps.loadPeriodEventSetting();
-		const syntax = await this.deps.loadSyntaxSetting();
-		const formatter = this.deps.createFormatter(syntax);
-
-		try {
-			this.deps.env.setCursor("progress");
-
-			const events = await this.deps.getUserEvents(this.deps.env.hostname, {
-				startTime,
-				endTime,
-				periodEventIncluded,
-			});
-
-			const text =
-				formatter.createTitle(specifiedDateTime) +
-				formatter.getNewLine() +
-				formatter.createEvents(this.deps.env.hostname, events);
-
-			this.deps.insertText(text);
-		} catch (e) {
-			console.error(e);
-			this.deps.env.showError("error_get_events");
-		} finally {
-			this.deps.env.setCursor("auto");
-		}
+		const scheduleCommand = new ScheduleCommand({
+			...this.deps,
+			resolveDate: () => dateTime(promptResult),
+		});
+		await scheduleCommand.execute();
 	}
 }

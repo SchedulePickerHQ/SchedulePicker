@@ -57,7 +57,9 @@ describe("SpecifiedDayCommand", () => {
 	});
 
 	it("shows error for invalid date format", async () => {
-		const env = createMockBrowserApi({ prompt: vi.fn().mockReturnValue("bad") });
+		const env = createMockBrowserApi({
+			prompt: vi.fn().mockReturnValue("bad"),
+		});
 		const deps = createMockDeps({ env });
 		await new SpecifiedDayCommand(deps).execute();
 		expect(env.showError).toHaveBeenCalled();
