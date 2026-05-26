@@ -102,7 +102,7 @@ async function initSettingsPage() {
 
 		try {
 			await saveSettings();
-			saveButton.textContent = "( ¯꒳¯)b✧︎";
+			saveButton.textContent = "✓";
 			setTimeout(() => {
 				saveButton.textContent = chrome.i18n.getMessage(
 					"option_save_button_text",
