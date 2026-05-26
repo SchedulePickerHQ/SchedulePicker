@@ -18,7 +18,7 @@
     "context_menu_settings": { "message": "設定" },
     "context_menu_html": { "message": "HTML" },
     "context_menu_markdown": { "message": "Markdown" },
-    "context_menu_plane_text": { "message": "Plane Text" },
+    "context_menu_plain_text": { "message": "Plain Text" },
     "error_invalid_date_format": {
         "message": "'$inputted$'は無効な日付フォーマットです。",
         "placeholders": { "inputted": { "content": "$1", "example": "無効な日付フォーマット" } }
@@ -45,7 +45,7 @@
     "option_syntax_title": { "message": "記法" },
     "option_syntax_html": { "message": "HTML" },
     "option_syntax_markdown": { "message": "Markdown" },
-    "option_syntax_plane_text": { "message": "Plane Text" },
+    "option_syntax_plain_text": { "message": "Plain Text" },
     "option_filter_settings_title": { "message": "フィルター設定" },
     "option_period_event_included": { "message": "期間予定を含める" },
     "option_template_title": { "message": "テンプレート" },

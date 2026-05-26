@@ -1,14 +1,11 @@
+import { type DateTime, getDayOfWeek } from "../../../utils/datetime";
 import type { UserEvent } from "../../schedule/events";
-import { type DateTime, getDayOfWeek } from "../../utils/datetime";
 import { getEventMenuColorCode } from "../eventMenuColors";
 import type { SyntaxGenerator } from "../interface";
 
-export class HtmlSyntaxGenerator implements SyntaxGenerator {
+export class MarkdownSyntaxGenerator implements SyntaxGenerator {
 	createTitle(dateTime: DateTime) {
-		return `<span>[ ${chrome.i18n.getMessage(
-			"event_title",
-			`${dateTime.format("YYYY/MM/DD")} (${getDayOfWeek(dateTime)})`,
-		)} ]</span>`;
+		return `[ ${chrome.i18n.getMessage("event_title", `${dateTime.format("YYYY/MM/DD")} (${getDayOfWeek(dateTime)})`)} ]`;
 	}
 
 	createEvents(hostname: string, events: UserEvent[]) {
@@ -21,7 +18,7 @@ export class HtmlSyntaxGenerator implements SyntaxGenerator {
 	}
 
 	getNewLine() {
-		return "<br>";
+		return "\n";
 	}
 
 	private createEvent(hostname: string, event: UserEvent) {
@@ -30,8 +27,8 @@ export class HtmlSyntaxGenerator implements SyntaxGenerator {
 		const eventMenu =
 			event.eventMenu === "" ? null : this.createEventMenu(event.eventMenu);
 		return eventMenu === null
-			? `<span>${timeRange} ${subject}</span>`
-			: `<span>${timeRange} ${eventMenu} ${subject}</span>`;
+			? `${timeRange} ${subject}`
+			: `${timeRange} ${eventMenu} ${subject}`;
 	}
 
 	private createTimeRange(event: UserEvent) {
@@ -45,16 +42,14 @@ export class HtmlSyntaxGenerator implements SyntaxGenerator {
 		const end = event.isContinuingToTomorrow
 			? "--------"
 			: event.endTime.format("HH:mm");
-		return `<span>${start}-${end}</span>`;
+		return `${start}-${end}`;
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `<span style="background-color: ${getEventMenuColorCode(
-			eventMenu,
-		)}; display: inline-block; padding: 2px; color: rgb(255, 255, 255); font-size: 12px; border-radius: 2px; line-height: 1.0;">${eventMenu}</span>`;
+		return `<span style="color: ${getEventMenuColorCode(eventMenu)};">[${eventMenu}]</span>`;
 	}
 
 	private createSubject(hostname: string, eventId: string, subject: string) {
-		return `<a href="https://${hostname}/g/schedule/view.csp?event=${eventId}">${subject}</a>`;
+		return `[${subject}](https://${hostname}/g/schedule/view.csp?event=${eventId})`;
 	}
 }

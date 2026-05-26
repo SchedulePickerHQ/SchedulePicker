@@ -1,9 +1,10 @@
+import { insertTextAtCursorPosition } from "../../insert/cursor";
 import {
 	getNextBusinessDateTime,
 	getPreviousBusinessDateTime,
-} from "../../schedule/businessDateTime";
-import { getUserEvents } from "../../schedule/events";
-import { SyntaxGeneratorFactory } from "../../syntax/factory";
+} from "../../insert/schedule/businessDateTime";
+import { getUserEvents } from "../../insert/schedule/events";
+import { SyntaxGeneratorFactory } from "../../insert/syntax/factory";
 import type { Command } from "../../types";
 import {
 	convertToEndOfDay,
@@ -11,7 +12,6 @@ import {
 	dateTime,
 	getDayOfWeek,
 } from "../../utils/datetime";
-import { insertTextAtCursorPosition } from "../../utils/insertion";
 import {
 	loadPeriodEventIncludedSetting,
 	loadSyntaxSetting,

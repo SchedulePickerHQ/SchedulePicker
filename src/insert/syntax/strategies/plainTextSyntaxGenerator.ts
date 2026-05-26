@@ -1,5 +1,5 @@
+import { type DateTime, getDayOfWeek } from "../../../utils/datetime";
 import type { UserEvent } from "../../schedule/events";
-import { type DateTime, getDayOfWeek } from "../../utils/datetime";
 import type { SyntaxGenerator } from "../interface";
 
 export class PlainTextSyntaxGenerator implements SyntaxGenerator {

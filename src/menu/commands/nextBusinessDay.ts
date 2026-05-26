@@ -1,9 +1,9 @@
-import { getNextBusinessDateTime } from "../../schedule/businessDateTime";
-import { getUserEvents } from "../../schedule/events";
-import { SyntaxGeneratorFactory } from "../../syntax/factory";
+import { insertTextAtCursorPosition } from "../../insert/cursor";
+import { getNextBusinessDateTime } from "../../insert/schedule/businessDateTime";
+import { getUserEvents } from "../../insert/schedule/events";
+import { SyntaxGeneratorFactory } from "../../insert/syntax/factory";
 import type { Command } from "../../types";
 import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
-import { insertTextAtCursorPosition } from "../../utils/insertion";
 import {
 	loadPeriodEventIncludedSetting,
 	loadSyntaxSetting,

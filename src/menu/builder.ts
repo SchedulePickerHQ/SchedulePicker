@@ -151,7 +151,7 @@ export class ContextMenuBuilder {
 	addPlainText({ checked = false }) {
 		return this.addMenuItem(
 			CONTEXT_MENU_ID.PLAIN_TEXT,
-			chrome.i18n.getMessage("context_menu_plane_text"),
+			chrome.i18n.getMessage("context_menu_plain_text"),
 			"radio",
 			{
 				checked,

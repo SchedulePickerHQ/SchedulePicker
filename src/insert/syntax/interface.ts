@@ -1,5 +1,5 @@
+import type { DateTime } from "../../utils/datetime";
 import type { UserEvent } from "../schedule/events";
-import type { DateTime } from "../utils/datetime";
 
 export interface SyntaxGenerator {
 	createTitle(dateTime: DateTime): string;

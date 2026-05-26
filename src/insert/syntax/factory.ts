@@ -1,4 +1,4 @@
-import type { Factory } from "../types";
+import type { Factory } from "../../types";
 
 import type { SyntaxGenerator } from "./interface";
 import { HtmlSyntaxGenerator } from "./strategies/htmlSyntaxGenerator";
