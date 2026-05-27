@@ -10,7 +10,11 @@ chrome.contextMenus.onClicked.addListener(
 		if (tab?.id === undefined) {
 			return;
 		}
-		await sendContextMenuClicked(tab.id, info, tab);
+		try {
+			await sendContextMenuClicked(tab.id, info, tab);
+		} catch {
+			// content script が未ロードのタブでは接続できないため無視する
+		}
 	},
 );
 
