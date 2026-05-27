@@ -27,6 +27,7 @@ export const CONTEXT_MENU_ID = {
 	TEMPLATE: "TEMPLATE",
 	SETTINGS: "SETTINGS",
 	HTML: "HTML",
+	EXPERIMENTAL_HTML: "EXPERIMENTAL_HTML",
 	MARKDOWN: "MARKDOWN",
 	PLAIN_TEXT: "PLAIN_TEXT",
 } as const;
@@ -137,6 +138,15 @@ export class ContextMenuBuilder {
 		);
 	}
 
+	addExperimentalHtml({ checked = false }) {
+		return this.addMenuItem(
+			CONTEXT_MENU_ID.EXPERIMENTAL_HTML,
+			chrome.i18n.getMessage("context_menu_experimental_html"),
+			"radio",
+			{ checked },
+		);
+	}
+
 	addMarkdown({ checked = false }) {
 		return this.addMenuItem(
 			CONTEXT_MENU_ID.MARKDOWN,
@@ -200,6 +210,7 @@ export const buildContextMenu = async () => {
 	if (contextMenuDisplaySettings.syntax) {
 		const syntax = await loadSyntaxSetting();
 		builder.addHtml({ checked: syntax === "html" });
+		builder.addExperimentalHtml({ checked: syntax === "experimental-html" });
 		builder.addMarkdown({ checked: syntax === "markdown" });
 		builder.addPlainText({ checked: syntax === "plainText" });
 	}

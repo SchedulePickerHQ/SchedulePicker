@@ -3,7 +3,7 @@ import { type DateTime, getDayOfWeek } from "../../utils/datetime";
 import { getEventMenuColor } from "../eventMenuEmoji";
 import type { Formatter } from "../formatter";
 
-export class HtmlFormatter implements Formatter {
+export class ExperimentalHtmlFormatter implements Formatter {
 	createTitle(dateTime: DateTime) {
 		return `<span>[ ${chrome.i18n.getMessage(
 			"event_title",
@@ -49,7 +49,7 @@ export class HtmlFormatter implements Formatter {
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `<span style="background-color: ${getEventMenuColor(eventMenu)}; display: inline-block; padding: 2px; color: rgb(255, 255, 255); font-size: 12px; border-radius: 2px; line-height: 1.0;">${eventMenu}</span>`;
+		return `<span style="background-color: ${getEventMenuColor(eventMenu)};">&nbsp;&nbsp;&nbsp;</span> ${eventMenu}`;
 	}
 
 	private createSubject(hostname: string, eventId: string, subject: string) {

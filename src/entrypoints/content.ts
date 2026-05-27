@@ -101,6 +101,13 @@ contextMenuController.setCommand(
 	new SyntaxCommand("html", { saveSyntaxSetting, sendBuildContextMenu }),
 );
 contextMenuController.setCommand(
+	CONTEXT_MENU_ID.EXPERIMENTAL_HTML,
+	new SyntaxCommand("experimental-html", {
+		saveSyntaxSetting,
+		sendBuildContextMenu,
+	}),
+);
+contextMenuController.setCommand(
 	CONTEXT_MENU_ID.MARKDOWN,
 	new SyntaxCommand("markdown", { saveSyntaxSetting, sendBuildContextMenu }),
 );

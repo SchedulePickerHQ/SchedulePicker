@@ -1,3 +1,4 @@
+import type { SyntaxType } from "../../insert/commands/types";
 import { buildContextMenu } from "../../menu/builder";
 import {
 	loadContextMenuDisplaySettings,
@@ -81,9 +82,7 @@ async function saveSettings() {
 	const selectedSyntax = querySelector<HTMLInputElement>(
 		'input[name="syntax-setting"]:checked',
 	);
-	await saveSyntaxSetting(
-		selectedSyntax.value as "html" | "markdown" | "plainText",
-	);
+	await saveSyntaxSetting(selectedSyntax.value as SyntaxType);
 
 	await savePeriodEventSetting(checkbox("periodEventIncluded").checked);
 

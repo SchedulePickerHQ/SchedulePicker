@@ -1,5 +1,7 @@
+import type { SyntaxType } from "../insert/commands/types";
 import type { UserEvent } from "../schedule/events";
 import type { DateTime } from "../utils/datetime";
+import { ExperimentalHtmlFormatter } from "./formatters/experimentalHtml";
 import { HtmlFormatter } from "./formatters/html";
 import { MarkdownFormatter } from "./formatters/markdown";
 import { PlainTextFormatter } from "./formatters/plainText";
@@ -10,12 +12,12 @@ export interface Formatter {
 	getNewLine(): string;
 }
 
-export function createFormatter(
-	syntax: "html" | "markdown" | "plainText",
-): Formatter {
+export function createFormatter(syntax: SyntaxType): Formatter {
 	switch (syntax) {
 		case "html":
 			return new HtmlFormatter();
+		case "experimental-html":
+			return new ExperimentalHtmlFormatter();
 		case "markdown":
 			return new MarkdownFormatter();
 		case "plainText":

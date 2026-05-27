@@ -1,5 +1,7 @@
+import type { SyntaxType } from "../insert/commands/types";
+
 type StorageValue = {
-	SYNTAX: "html" | "markdown" | "plainText";
+	SYNTAX: SyntaxType;
 	CONTEXT_MENU_DISPLAYED: {
 		today: boolean;
 		tomorrow: boolean;
@@ -39,6 +41,7 @@ const STORAGE_INIT_VALUE: StorageValue = {
 
 const VALID_SYNTAX_VALUES: StorageValue["SYNTAX"][] = [
 	"html",
+	"experimental-html",
 	"markdown",
 	"plainText",
 ];
