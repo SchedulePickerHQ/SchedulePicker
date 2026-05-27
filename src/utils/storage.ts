@@ -1,3 +1,6 @@
+// chrome.storage.sync は内部的に値を JSON でシリアライズ/デシリアライズするため、
+// localStorage と異なり boolean や object がそのままの型で復元される。
+// 各 load 関数の typeof チェックはストレージ破損や過去バージョンとの互換のための防御的バリデーション。
 import type { SyntaxType } from "../insert/commands/types";
 
 type StorageValue = {
