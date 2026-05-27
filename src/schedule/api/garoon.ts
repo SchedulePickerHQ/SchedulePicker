@@ -1,6 +1,3 @@
-import GaroonSoap from "garoon-soap";
-import type { BaseGetCalendarEventType } from "garoon-soap/dist/type/base";
-
 type ScheduleEventsParameters = {
 	rangeStart?: string;
 	rangeEnd?: string;
@@ -75,7 +72,46 @@ export const getScheduleEvents = async (
 };
 
 // カレンダーのイベントを取得する https://developer.cybozu.io/hc/ja/articles/202288574
+export type CalendarEvent = {
+	date: string;
+	type: string;
+};
+
+// garoon-soap が使用していた固定値を踏襲
+const SOAP_EXPIRES = new Date(Date.UTC(2037, 7, 12, 14, 45, 0)).toISOString();
+
 export const getCalendarEvents = async (
 	hostname: string,
-): Promise<BaseGetCalendarEventType[]> =>
-	new GaroonSoap(`https://${hostname}/g/`).base.getCalendarEvents();
+): Promise<CalendarEvent[]> => {
+	const now = new Date().toISOString();
+	const body = `<?xml version="1.0" encoding="UTF-8"?>\
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">\
+<soap:Header>\
+<Action>BaseGetCalendarEvents</Action>\
+<Timestamp><Created>${now}</Created><Expires>${SOAP_EXPIRES}</Expires></Timestamp>\
+</soap:Header>\
+<soap:Body><BaseGetCalendarEvents><parameters></parameters></BaseGetCalendarEvents></soap:Body>\
+</soap:Envelope>`;
+
+	const res = await fetch(`https://${hostname}/g/cbpapi/base/api`, {
+		method: "POST",
+		headers: { "Content-Type": "text/xml; charset=UTF-8" },
+		body,
+	});
+
+	if (!res.ok) {
+		throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+	}
+
+	const xml = await res.text();
+	const doc = new DOMParser().parseFromString(xml, "text/xml");
+
+	if (doc.getElementsByTagName("parsererror").length > 0) {
+		throw new Error("Invalid XML response");
+	}
+
+	return Array.from(doc.getElementsByTagName("calendar_event")).map((node) => ({
+		date: node.getAttribute("date") ?? "",
+		type: node.getAttribute("type") ?? "",
+	}));
+};

@@ -40,7 +40,7 @@ const getPublicHolidays = async (hostname: string): Promise<DateTime[]> => {
 	const calendarEvents = await getCalendarEvents(hostname);
 	const publicHolidays = calendarEvents
 		.filter((event) => event.type === "public_holiday")
-		.map((holidayEvent) => dateTime(holidayEvent.date as unknown as string)); // TODO: ドキュメントに記載されている型が間違っているので修正PRを投げる
+		.map((holidayEvent) => dateTime(holidayEvent.date));
 	return insertionSort(publicHolidays); // 一部のデータが昇順で並んでいないため、挿入ソートする
 };
 

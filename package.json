@@ -14,8 +14,7 @@
   },
   "dependencies": {
     "dayjs": "1.11.11",
-    "dompurify": "3.4.3",
-    "garoon-soap": "0.1.12"
+    "dompurify": "3.4.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",

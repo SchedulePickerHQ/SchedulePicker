@@ -15,6 +15,7 @@ describe("TemplateCommand", () => {
 	});
 
 	it("shows error and resets cursor on failure", async () => {
+		vi.spyOn(console, "error").mockImplementation(() => {});
 		const deps = createMockTemplateDeps({
 			loadTemplateText: vi.fn().mockRejectedValue(new Error("fail")),
 		});

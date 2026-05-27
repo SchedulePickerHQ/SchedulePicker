@@ -37,6 +37,7 @@ describe("ScheduleCommand", () => {
 	});
 
 	it("shows error on failure", async () => {
+		vi.spyOn(console, "error").mockImplementation(() => {});
 		const deps = createMockScheduleDeps({
 			getUserEvents: vi.fn().mockRejectedValue(new Error("fail")),
 		});
@@ -45,6 +46,7 @@ describe("ScheduleCommand", () => {
 	});
 
 	it("resets cursor even on error", async () => {
+		vi.spyOn(console, "error").mockImplementation(() => {});
 		const deps = createMockScheduleDeps({
 			getUserEvents: vi.fn().mockRejectedValue(new Error("fail")),
 		});
