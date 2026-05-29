@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { describe, expect, it, vi } from "vitest";
+import { GetEventsError } from "../../schedule/events";
 import { ScheduleCommand } from "./scheduleCommand";
 import { createMockScheduleDeps } from "./testHelpers";
 
@@ -26,7 +27,7 @@ describe("ScheduleCommand", () => {
 	it("formats output with title + newline + events", async () => {
 		const deps = createMockScheduleDeps();
 		await new ScheduleCommand(deps).execute();
-		expect(deps.insertText).toHaveBeenCalledWith("[Title]\nevent1\nevent2");
+		expect(deps.paste).toHaveBeenCalledWith("[Title]\nevent1\nevent2", "html");
 	});
 
 	it("sets cursor to progress then auto", async () => {
@@ -39,7 +40,7 @@ describe("ScheduleCommand", () => {
 	it("shows error on failure", async () => {
 		vi.spyOn(console, "error").mockImplementation(() => {});
 		const deps = createMockScheduleDeps({
-			getUserEvents: vi.fn().mockRejectedValue(new Error("fail")),
+			getUserEvents: vi.fn().mockRejectedValue(new GetEventsError("fail")),
 		});
 		await new ScheduleCommand(deps).execute();
 		expect(deps.env.showError).toHaveBeenCalledWith("error_get_events");
@@ -48,7 +49,7 @@ describe("ScheduleCommand", () => {
 	it("resets cursor even on error", async () => {
 		vi.spyOn(console, "error").mockImplementation(() => {});
 		const deps = createMockScheduleDeps({
-			getUserEvents: vi.fn().mockRejectedValue(new Error("fail")),
+			getUserEvents: vi.fn().mockRejectedValue(new GetEventsError("fail")),
 		});
 		await new ScheduleCommand(deps).execute();
 		const calls = vi.mocked(deps.env.setCursor).mock.calls;

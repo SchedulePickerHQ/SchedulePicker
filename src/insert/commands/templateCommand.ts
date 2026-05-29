@@ -3,6 +3,7 @@ import {
 	replaceDayPlaceholders,
 	replaceEventPlaceholders,
 } from "./templateReplacer";
+import { handleCommandError } from "./handleCommandError";
 import type { TemplateDeps } from "./types";
 
 export class TemplateCommand implements Command {
@@ -13,13 +14,13 @@ export class TemplateCommand implements Command {
 			this.deps.env.setCursor("progress");
 
 			const templateText = await this.deps.loadTemplateText();
+			const syntax = await this.deps.loadSyntaxSetting();
 			const withDays = await replaceDayPlaceholders(templateText, this.deps);
 			const withEvents = await replaceEventPlaceholders(withDays, this.deps);
 
-			this.deps.insertText(withEvents);
+			this.deps.paste(withEvents, syntax);
 		} catch (e) {
-			console.error(e);
-			this.deps.env.showError("error_get_events");
+			handleCommandError(e, this.deps.env);
 		} finally {
 			this.deps.env.setCursor("auto");
 		}

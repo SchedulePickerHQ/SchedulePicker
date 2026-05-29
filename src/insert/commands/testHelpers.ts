@@ -35,7 +35,7 @@ export function createMockScheduleDeps(
 		loadSyntaxSetting: vi.fn().mockResolvedValue("html"),
 		createFormatter: vi.fn().mockReturnValue(createMockFormatter()),
 		getUserEvents: vi.fn().mockResolvedValue([]),
-		insertText: vi.fn(),
+		paste: vi.fn(),
 		...overrides,
 	};
 }
@@ -50,7 +50,7 @@ export function createMockTemplateDeps(
 		loadSyntaxSetting: vi.fn().mockResolvedValue("html"),
 		createFormatter: vi.fn().mockReturnValue(createMockFormatter()),
 		getUserEvents: vi.fn().mockResolvedValue([]),
-		insertText: vi.fn(),
+		paste: vi.fn(),
 		getNextBusinessDay: vi.fn().mockResolvedValue(dayjs("2025-01-16")),
 		getPreviousBusinessDay: vi.fn().mockResolvedValue(dayjs("2025-01-14")),
 		getDayOfWeek: vi.fn().mockReturnValue("Mon"),

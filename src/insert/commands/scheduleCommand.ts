@@ -1,5 +1,6 @@
 import type { Command } from "../../types";
 import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
+import { handleCommandError } from "./handleCommandError";
 import type { ScheduleDeps } from "./types";
 
 export class ScheduleCommand implements Command {
@@ -27,10 +28,9 @@ export class ScheduleCommand implements Command {
 				formatter.getNewLine() +
 				formatter.createEvents(this.deps.env.hostname, events);
 
-			this.deps.insertText(text);
+			this.deps.paste(text, syntax);
 		} catch (e) {
-			console.error(e);
-			this.deps.env.showError("error_get_events");
+			handleCommandError(e, this.deps.env);
 		} finally {
 			this.deps.env.setCursor("auto");
 		}

@@ -4,7 +4,7 @@ import { SpecifiedDayCommand } from "../insert/commands/specifiedDayCommand";
 import { SyntaxCommand } from "../insert/commands/syntaxCommand";
 import { TemplateCommand } from "../insert/commands/templateCommand";
 import type { ScheduleDeps } from "../insert/commands/types";
-import { insertTextAtCursorPosition } from "../insert/cursor";
+import { paste } from "../insert/paste";
 import { CONTEXT_MENU_ID } from "../menu/builder";
 import { ContextMenuController } from "../menu/controller";
 import {
@@ -43,7 +43,7 @@ const makeScheduleDeps = (
 	loadSyntaxSetting,
 	createFormatter,
 	getUserEvents,
-	insertText: insertTextAtCursorPosition,
+	paste,
 });
 
 const contextMenuController = new ContextMenuController();
@@ -78,7 +78,7 @@ contextMenuController.setCommand(
 		loadSyntaxSetting,
 		createFormatter,
 		getUserEvents,
-		insertText: insertTextAtCursorPosition,
+		paste,
 	}),
 );
 contextMenuController.setCommand(
@@ -90,7 +90,7 @@ contextMenuController.setCommand(
 		loadSyntaxSetting,
 		createFormatter,
 		getUserEvents,
-		insertText: insertTextAtCursorPosition,
+		paste,
 		getNextBusinessDay,
 		getPreviousBusinessDay,
 		getDayOfWeek,

@@ -7,6 +7,10 @@ import {
 
 import { getScheduleEvents, type ScheduleEvent } from "./api/garoon";
 
+export class GetEventsError extends Error {
+	name = "GetEventsError";
+}
+
 type UserEventsQuery = {
 	startTime: DateTime;
 	endTime: DateTime;
@@ -31,10 +35,15 @@ export const getUserEvents = async (
 	hostname: string,
 	query: UserEventsQuery,
 ): Promise<UserEvent[]> => {
-	const events = await getScheduleEvents(hostname, {
-		rangeStart: query.startTime.toISOString(),
-		rangeEnd: query.endTime.toISOString(),
-	});
+	let events: ScheduleEvent[];
+	try {
+		events = await getScheduleEvents(hostname, {
+			rangeStart: query.startTime.toISOString(),
+			rangeEnd: query.endTime.toISOString(),
+		});
+	} catch {
+		throw new GetEventsError();
+	}
 
 	return events
 		.filter((event) =>

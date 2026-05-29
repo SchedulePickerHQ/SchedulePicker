@@ -25,7 +25,7 @@ export interface ScheduleDeps {
 			periodEventIncluded: boolean;
 		},
 	) => Promise<UserEvent[]>;
-	insertText: (text: string) => void;
+	paste: (text: string, syntax: SyntaxType) => void;
 }
 
 export type SpecifiedDayDeps = Omit<ScheduleDeps, "resolveDate">;
@@ -42,7 +42,7 @@ export interface TemplateDeps {
 	loadSyntaxSetting: () => Promise<SyntaxType>;
 	createFormatter: (syntax: SyntaxType) => Formatter;
 	getUserEvents: ScheduleDeps["getUserEvents"];
-	insertText: (text: string) => void;
+	paste: (text: string, syntax: SyntaxType) => void;
 	getNextBusinessDay: (hostname: string) => Promise<DateTime>;
 	getPreviousBusinessDay: (hostname: string) => Promise<DateTime>;
 	getDayOfWeek: (date: DateTime) => string;

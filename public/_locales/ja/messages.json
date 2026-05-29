@@ -25,7 +25,13 @@
         "placeholders": { "inputted": { "content": "$1", "example": "無効な日付フォーマット" } }
     },
     "error_get_events": {
-        "message": "エラーが発生しました。ブラウザを更新してもう一度試してください。"
+        "message": "予定の取得に失敗しました。ブラウザを更新してもう一度試してください。"
+    },
+    "error_paste_failed": {
+        "message": "予定の貼り付けに失敗しました。入力欄にカーソルを置いてからもう一度試してください。"
+    },
+    "error_unknown": {
+        "message": "予期しないエラーが発生しました。ブラウザを更新してもう一度試してください。"
     },
     "event_title": {
         "message": "$date$ の予定",

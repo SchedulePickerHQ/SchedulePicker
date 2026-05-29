@@ -54,6 +54,6 @@ describe("SpecifiedDayCommand", () => {
 		const deps = createMockDeps({ env });
 		await new SpecifiedDayCommand(deps).execute();
 		expect(deps.getUserEvents).toHaveBeenCalled();
-		expect(deps.insertText).toHaveBeenCalled();
+		expect(deps.paste).toHaveBeenCalled();
 	});
 });
