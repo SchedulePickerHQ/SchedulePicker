@@ -69,10 +69,10 @@ describe("ScheduleCommand", () => {
 
 	it("uses decoration setting for formatter", async () => {
 		const deps = createMockScheduleDeps({
-			loadDecorationSetting: vi.fn().mockResolvedValue("minimal"),
+			loadDecorationSetting: vi.fn().mockResolvedValue("plain"),
 		});
 		await new ScheduleCommand(deps).execute();
-		expect(deps.createFormatter).toHaveBeenCalledWith("minimal");
+		expect(deps.createFormatter).toHaveBeenCalledWith("plain");
 	});
 
 	it("works with async date resolvers", async () => {

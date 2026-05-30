@@ -18,7 +18,6 @@
     "context_menu_settings": { "message": "設定" },
     "context_menu_decoration": { "message": "装飾" },
     "context_menu_styled": { "message": "あり" },
-    "context_menu_minimal": { "message": "控えめ" },
     "context_menu_plain": { "message": "なし" },
     "error_invalid_date_format": {
         "message": "'$inputted$'は無効な日付フォーマットです。",
@@ -50,7 +49,6 @@
     "option_context_menu_template": { "message": "テンプレート" },
     "option_decoration_title": { "message": "装飾" },
     "option_decoration_styled": { "message": "あり" },
-    "option_decoration_minimal": { "message": "控えめ" },
     "option_decoration_plain": { "message": "なし" },
     "option_filter_title": { "message": "フィルター" },
     "option_period_event_included": { "message": "期間予定を含める" },

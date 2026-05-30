@@ -12,9 +12,9 @@ function createMockDeps(): DecorationDeps {
 describe("DecorationCommand", () => {
 	it("saves the specified decoration setting", async () => {
 		const deps = createMockDeps();
-		const command = new DecorationCommand("minimal", deps);
+		const command = new DecorationCommand("styled", deps);
 		await command.execute();
-		expect(deps.saveDecorationSetting).toHaveBeenCalledWith("minimal");
+		expect(deps.saveDecorationSetting).toHaveBeenCalledWith("styled");
 	});
 
 	it("sends build context menu after saving", async () => {

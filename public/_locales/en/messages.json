@@ -18,7 +18,6 @@
     "context_menu_settings": { "message": "Settings" },
     "context_menu_decoration": { "message": "Decoration" },
     "context_menu_styled": { "message": "Styled" },
-    "context_menu_minimal": { "message": "Minimal" },
     "context_menu_plain": { "message": "Plain" },
     "error_invalid_date_format": {
         "message": "'$inputted$' is invalid date format.",
@@ -50,7 +49,6 @@
     "option_context_menu_template": { "message": "Template" },
     "option_decoration_title": { "message": "Decoration" },
     "option_decoration_styled": { "message": "Styled" },
-    "option_decoration_minimal": { "message": "Minimal" },
     "option_decoration_plain": { "message": "Plain" },
     "option_filter_title": { "message": "Filter" },
     "option_period_event_included": { "message": "Include all day events" },

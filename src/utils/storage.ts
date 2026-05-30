@@ -42,7 +42,6 @@ const STORAGE_INIT_VALUE: StorageValue = {
 
 const VALID_DECORATION_VALUES: StorageValue["DECORATION"][] = [
 	"styled",
-	"minimal",
 	"plain",
 ];
 

@@ -28,7 +28,6 @@ export const CONTEXT_MENU_ID = {
 	SETTINGS: "SETTINGS",
 	DECORATION: "DECORATION",
 	STYLED: "STYLED",
-	MINIMAL: "MINIMAL",
 	PLAIN: "PLAIN",
 } as const;
 
@@ -160,15 +159,6 @@ export class ContextMenuBuilder {
 		);
 	}
 
-	addMinimal({ checked = false }) {
-		return this.addMenuItem(
-			CONTEXT_MENU_ID.MINIMAL,
-			chrome.i18n.getMessage("context_menu_minimal"),
-			"radio",
-			{ checked, parentId: CONTEXT_MENU_ID.DECORATION },
-		);
-	}
-
 	addPlain({ checked = false }) {
 		return this.addMenuItem(
 			CONTEXT_MENU_ID.PLAIN,
@@ -221,7 +211,6 @@ export const buildContextMenu = async () => {
 	const decoration = await loadDecorationSetting();
 	builder.addDecoration();
 	builder.addStyled({ checked: decoration === "styled" });
-	builder.addMinimal({ checked: decoration === "minimal" });
 	builder.addPlain({ checked: decoration === "plain" });
 
 	builder.addSeparator();

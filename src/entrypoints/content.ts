@@ -101,13 +101,6 @@ contextMenuController.setCommand(
 	new DecorationCommand("styled", { saveDecorationSetting, sendBuildContextMenu }),
 );
 contextMenuController.setCommand(
-	CONTEXT_MENU_ID.MINIMAL,
-	new DecorationCommand("minimal", {
-		saveDecorationSetting,
-		sendBuildContextMenu,
-	}),
-);
-contextMenuController.setCommand(
 	CONTEXT_MENU_ID.PLAIN,
 	new DecorationCommand("plain", { saveDecorationSetting, sendBuildContextMenu }),
 );

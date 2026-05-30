@@ -5,7 +5,7 @@ import type { DateTime } from "../../utils/datetime";
 
 export type DateResolver = () => Promise<DateTime> | DateTime;
 
-export type DecorationType = "styled" | "minimal" | "plain";
+export type DecorationType = "styled" | "plain";
 
 export interface ScheduleDeps {
 	env: BrowserApi;
