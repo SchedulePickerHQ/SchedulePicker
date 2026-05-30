@@ -1,11 +1,11 @@
 import DOMPurify from "dompurify";
-import type { SyntaxType } from "./commands/types";
+import type { DecorationType } from "./commands/types";
 
 export class PasteError extends Error {
 	name = "PasteError";
 }
 
-export const paste = (text: string, syntax: SyntaxType) => {
+export const paste = (text: string, decoration: DecorationType) => {
 	const targetEl = document.activeElement;
 
 	if (!(targetEl instanceof HTMLElement)) {
@@ -13,7 +13,7 @@ export const paste = (text: string, syntax: SyntaxType) => {
 	}
 
 	const sanitized = DOMPurify.sanitize(text);
-	const mimeType = syntax === "plainText" ? "text/plain" : "text/html";
+	const mimeType = decoration === "plain" ? "text/plain" : "text/html";
 	const dataTransfer = new DataTransfer();
 	dataTransfer.setData(mimeType, sanitized);
 	const handled = !targetEl.dispatchEvent(

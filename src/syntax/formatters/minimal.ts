@@ -3,7 +3,7 @@ import { type DateTime, getDayOfWeek } from "../../utils/datetime";
 import { getEventMenuColor } from "../eventMenuEmoji";
 import type { Formatter } from "../formatter";
 
-export class ExperimentalHtmlFormatter implements Formatter {
+export class MinimalFormatter implements Formatter {
 	createTitle(dateTime: DateTime) {
 		return `<span>[ ${chrome.i18n.getMessage(
 			"event_title",

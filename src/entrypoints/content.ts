@@ -1,7 +1,7 @@
 import { ScheduleCommand } from "../insert/commands/scheduleCommand";
 import { SettingsCommand } from "../insert/commands/settingsCommand";
 import { SpecifiedDayCommand } from "../insert/commands/specifiedDayCommand";
-import { SyntaxCommand } from "../insert/commands/syntaxCommand";
+import { DecorationCommand } from "../insert/commands/decorationCommand";
 import { TemplateCommand } from "../insert/commands/templateCommand";
 import type { ScheduleDeps } from "../insert/commands/types";
 import { paste } from "../insert/paste";
@@ -23,9 +23,9 @@ import {
 } from "../utils/messaging";
 import {
 	loadPeriodEventSetting,
-	loadSyntaxSetting,
+	loadDecorationSetting,
 	loadTemplateText,
-	saveSyntaxSetting,
+	saveDecorationSetting,
 } from "../utils/storage";
 
 (async () => {
@@ -40,7 +40,7 @@ const makeScheduleDeps = (
 	env,
 	resolveDate,
 	loadPeriodEventSetting,
-	loadSyntaxSetting,
+	loadDecorationSetting,
 	createFormatter,
 	getUserEvents,
 	paste,
@@ -75,7 +75,7 @@ contextMenuController.setCommand(
 	new SpecifiedDayCommand({
 		env,
 		loadPeriodEventSetting,
-		loadSyntaxSetting,
+		loadDecorationSetting,
 		createFormatter,
 		getUserEvents,
 		paste,
@@ -87,7 +87,7 @@ contextMenuController.setCommand(
 		env,
 		loadTemplateText,
 		loadPeriodEventSetting,
-		loadSyntaxSetting,
+		loadDecorationSetting,
 		createFormatter,
 		getUserEvents,
 		paste,
@@ -97,23 +97,19 @@ contextMenuController.setCommand(
 	}),
 );
 contextMenuController.setCommand(
-	CONTEXT_MENU_ID.HTML,
-	new SyntaxCommand("html", { saveSyntaxSetting, sendBuildContextMenu }),
+	CONTEXT_MENU_ID.STYLED,
+	new DecorationCommand("styled", { saveDecorationSetting, sendBuildContextMenu }),
 );
 contextMenuController.setCommand(
-	CONTEXT_MENU_ID.EXPERIMENTAL_HTML,
-	new SyntaxCommand("experimental-html", {
-		saveSyntaxSetting,
+	CONTEXT_MENU_ID.MINIMAL,
+	new DecorationCommand("minimal", {
+		saveDecorationSetting,
 		sendBuildContextMenu,
 	}),
 );
 contextMenuController.setCommand(
-	CONTEXT_MENU_ID.MARKDOWN,
-	new SyntaxCommand("markdown", { saveSyntaxSetting, sendBuildContextMenu }),
-);
-contextMenuController.setCommand(
-	CONTEXT_MENU_ID.PLAIN_TEXT,
-	new SyntaxCommand("plainText", { saveSyntaxSetting, sendBuildContextMenu }),
+	CONTEXT_MENU_ID.PLAIN,
+	new DecorationCommand("plain", { saveDecorationSetting, sendBuildContextMenu }),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.SETTINGS,

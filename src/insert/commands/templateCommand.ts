@@ -14,11 +14,11 @@ export class TemplateCommand implements Command {
 			this.deps.env.setCursor("progress");
 
 			const templateText = await this.deps.loadTemplateText();
-			const syntax = await this.deps.loadSyntaxSetting();
+			const decoration = await this.deps.loadDecorationSetting();
 			const withDays = await replaceDayPlaceholders(templateText, this.deps);
 			const withEvents = await replaceEventPlaceholders(withDays, this.deps);
 
-			this.deps.paste(withEvents, syntax);
+			this.deps.paste(withEvents, decoration);
 		} catch (e) {
 			handleCommandError(e, this.deps.env);
 		} finally {

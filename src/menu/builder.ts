@@ -1,14 +1,14 @@
 import type { ValueOf } from "../types";
 import {
 	loadContextMenuDisplaySettings,
-	loadSyntaxSetting,
+	loadDecorationSetting,
 } from "../utils/storage";
 
 // https://developer.chrome.com/docs/extensions/reference/contextMenus/
 type ContextMenuItem = {
 	id: string;
 	title: string;
-	type: "normal" | "radio";
+	type: "normal" | "radio" | "separator";
 	checked?: boolean;
 	parentId?: string;
 	contexts: "editable"[];
@@ -26,10 +26,10 @@ export const CONTEXT_MENU_ID = {
 	SPECIFIED_DAY: "SPECIFIED_DAY",
 	TEMPLATE: "TEMPLATE",
 	SETTINGS: "SETTINGS",
-	HTML: "HTML",
-	EXPERIMENTAL_HTML: "EXPERIMENTAL_HTML",
-	MARKDOWN: "MARKDOWN",
-	PLAIN_TEXT: "PLAIN_TEXT",
+	DECORATION: "DECORATION",
+	STYLED: "STYLED",
+	MINIMAL: "MINIMAL",
+	PLAIN: "PLAIN",
 } as const;
 
 export class ContextMenuBuilder {
@@ -45,12 +45,27 @@ export class ContextMenuBuilder {
 		this.items = [root];
 	}
 
+	private separatorCount = 0;
+
+	addSeparator() {
+		this.separatorCount++;
+		this.items.push({
+			id: `SEPARATOR_${this.separatorCount}`,
+			title: "",
+			type: "separator",
+			parentId: CONTEXT_MENU_ID.ROOT,
+			contexts: ["editable"],
+		});
+		return this;
+	}
+
 	addMenuItem(
 		id: ContextMenuId,
 		title: string,
 		type: "normal" | "radio",
 		options?: {
 			checked?: boolean;
+			parentId?: string;
 		},
 	) {
 		this.items.push({
@@ -58,7 +73,7 @@ export class ContextMenuBuilder {
 			title,
 			type,
 			checked: options?.checked ?? false,
-			parentId: CONTEXT_MENU_ID.ROOT,
+			parentId: options?.parentId ?? CONTEXT_MENU_ID.ROOT,
 			contexts: ["editable"],
 		});
 		return this;
@@ -125,47 +140,41 @@ export class ContextMenuBuilder {
 			CONTEXT_MENU_ID.SETTINGS,
 			chrome.i18n.getMessage("context_menu_settings"),
 			"normal",
-			{},
 		);
 	}
 
-	addHtml({ checked = false }) {
+	addDecoration() {
 		return this.addMenuItem(
-			CONTEXT_MENU_ID.HTML,
-			chrome.i18n.getMessage("context_menu_html"),
-			"radio",
-			{ checked },
+			CONTEXT_MENU_ID.DECORATION,
+			chrome.i18n.getMessage("context_menu_decoration"),
+			"normal",
 		);
 	}
 
-	addExperimentalHtml({ checked = false }) {
+	addStyled({ checked = false }) {
 		return this.addMenuItem(
-			CONTEXT_MENU_ID.EXPERIMENTAL_HTML,
-			chrome.i18n.getMessage("context_menu_experimental_html"),
+			CONTEXT_MENU_ID.STYLED,
+			chrome.i18n.getMessage("context_menu_styled"),
 			"radio",
-			{ checked },
+			{ checked, parentId: CONTEXT_MENU_ID.DECORATION },
 		);
 	}
 
-	addMarkdown({ checked = false }) {
+	addMinimal({ checked = false }) {
 		return this.addMenuItem(
-			CONTEXT_MENU_ID.MARKDOWN,
-			chrome.i18n.getMessage("context_menu_markdown"),
+			CONTEXT_MENU_ID.MINIMAL,
+			chrome.i18n.getMessage("context_menu_minimal"),
 			"radio",
-			{
-				checked,
-			},
+			{ checked, parentId: CONTEXT_MENU_ID.DECORATION },
 		);
 	}
 
-	addPlainText({ checked = false }) {
+	addPlain({ checked = false }) {
 		return this.addMenuItem(
-			CONTEXT_MENU_ID.PLAIN_TEXT,
-			chrome.i18n.getMessage("context_menu_plain_text"),
+			CONTEXT_MENU_ID.PLAIN,
+			chrome.i18n.getMessage("context_menu_plain"),
 			"radio",
-			{
-				checked,
-			},
+			{ checked, parentId: CONTEXT_MENU_ID.DECORATION },
 		);
 	}
 
@@ -207,13 +216,15 @@ export const buildContextMenu = async () => {
 		builder.addTemplate();
 	}
 
-	if (contextMenuDisplaySettings.syntax) {
-		const syntax = await loadSyntaxSetting();
-		builder.addHtml({ checked: syntax === "html" });
-		builder.addExperimentalHtml({ checked: syntax === "experimental-html" });
-		builder.addMarkdown({ checked: syntax === "markdown" });
-		builder.addPlainText({ checked: syntax === "plainText" });
-	}
+	builder.addSeparator();
+
+	const decoration = await loadDecorationSetting();
+	builder.addDecoration();
+	builder.addStyled({ checked: decoration === "styled" });
+	builder.addMinimal({ checked: decoration === "minimal" });
+	builder.addPlain({ checked: decoration === "plain" });
+
+	builder.addSeparator();
 
 	builder.addSettings();
 

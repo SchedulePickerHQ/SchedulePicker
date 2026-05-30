@@ -73,8 +73,8 @@ export const replaceEventPlaceholders = async (
 	}
 
 	const periodEventIncluded = await deps.loadPeriodEventSetting();
-	const syntax = await deps.loadSyntaxSetting();
-	const formatter = deps.createFormatter(syntax);
+	const decoration = await deps.loadDecorationSetting();
+	const formatter = deps.createFormatter(decoration);
 
 	for (const { placeholder, getDate } of EVENT_ENTRIES) {
 		if (text.includes(placeholder)) {

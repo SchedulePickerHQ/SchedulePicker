@@ -11,8 +11,8 @@ export class ScheduleCommand implements Command {
 		const startTime = convertToStartOfDay(targetDate);
 		const endTime = convertToEndOfDay(targetDate);
 		const periodEventIncluded = await this.deps.loadPeriodEventSetting();
-		const syntax = await this.deps.loadSyntaxSetting();
-		const formatter = this.deps.createFormatter(syntax);
+		const decoration = await this.deps.loadDecorationSetting();
+		const formatter = this.deps.createFormatter(decoration);
 
 		try {
 			this.deps.env.setCursor("progress");
@@ -28,7 +28,7 @@ export class ScheduleCommand implements Command {
 				formatter.getNewLine() +
 				formatter.createEvents(this.deps.env.hostname, events);
 
-			this.deps.paste(text, syntax);
+			this.deps.paste(text, decoration);
 		} catch (e) {
 			handleCommandError(e, this.deps.env);
 		} finally {

@@ -27,7 +27,7 @@ describe("ScheduleCommand", () => {
 	it("formats output with title + newline + events", async () => {
 		const deps = createMockScheduleDeps();
 		await new ScheduleCommand(deps).execute();
-		expect(deps.paste).toHaveBeenCalledWith("[Title]\nevent1\nevent2", "html");
+		expect(deps.paste).toHaveBeenCalledWith("[Title]\nevent1\nevent2", "styled");
 	});
 
 	it("sets cursor to progress then auto", async () => {
@@ -67,12 +67,12 @@ describe("ScheduleCommand", () => {
 		);
 	});
 
-	it("uses syntax setting for formatter", async () => {
+	it("uses decoration setting for formatter", async () => {
 		const deps = createMockScheduleDeps({
-			loadSyntaxSetting: vi.fn().mockResolvedValue("markdown"),
+			loadDecorationSetting: vi.fn().mockResolvedValue("minimal"),
 		});
 		await new ScheduleCommand(deps).execute();
-		expect(deps.createFormatter).toHaveBeenCalledWith("markdown");
+		expect(deps.createFormatter).toHaveBeenCalledWith("minimal");
 	});
 
 	it("works with async date resolvers", async () => {

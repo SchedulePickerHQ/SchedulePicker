@@ -1,10 +1,14 @@
 import type { UserEvent } from "../../schedule/events";
 import { type DateTime, getDayOfWeek } from "../../utils/datetime";
+import { getEventMenuColor } from "../eventMenuEmoji";
 import type { Formatter } from "../formatter";
 
-export class PlainTextFormatter implements Formatter {
+export class StyledFormatter implements Formatter {
 	createTitle(dateTime: DateTime) {
-		return `[ ${chrome.i18n.getMessage("event_title", `${dateTime.format("YYYY/MM/DD")} (${getDayOfWeek(dateTime)})`)} ]`;
+		return `<span>[ ${chrome.i18n.getMessage(
+			"event_title",
+			`${dateTime.format("YYYY/MM/DD")} (${getDayOfWeek(dateTime)})`,
+		)} ]</span>`;
 	}
 
 	createEvents(hostname: string, events: UserEvent[]) {
@@ -17,17 +21,17 @@ export class PlainTextFormatter implements Formatter {
 	}
 
 	getNewLine() {
-		return "\n";
+		return "<br>";
 	}
 
-	private createEvent(_: string, event: UserEvent) {
+	private createEvent(hostname: string, event: UserEvent) {
 		const timeRange = this.createTimeRange(event);
-		const subject = event.subject;
+		const subject = this.createSubject(hostname, event.id, event.subject);
 		const eventMenu =
 			event.eventMenu === "" ? null : this.createEventMenu(event.eventMenu);
 		return eventMenu === null
-			? `${timeRange} ${subject}`
-			: `${timeRange} ${eventMenu} ${subject}`;
+			? `<span>${timeRange} ${subject}</span>`
+			: `<span>${timeRange} ${eventMenu} ${subject}</span>`;
 	}
 
 	private createTimeRange(event: UserEvent) {
@@ -41,10 +45,14 @@ export class PlainTextFormatter implements Formatter {
 		const end = event.isContinuingToTomorrow
 			? "--------"
 			: event.endTime.format("HH:mm");
-		return `${start}-${end}`;
+		return `<span>${start}-${end}</span>`;
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `[${eventMenu}]`;
+		return `<span style="background-color: ${getEventMenuColor(eventMenu)}; display: inline-block; padding: 2px; color: rgb(255, 255, 255); font-size: 12px; border-radius: 2px; line-height: 1.0;">${eventMenu}</span>`;
+	}
+
+	private createSubject(hostname: string, eventId: string, subject: string) {
+		return `<a href="https://${hostname}/g/schedule/view.csp?event=${eventId}">${subject}</a>`;
 	}
 }

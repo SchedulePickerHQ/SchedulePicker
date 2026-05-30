@@ -1,10 +1,10 @@
 // chrome.storage.sync は内部的に値を JSON でシリアライズ/デシリアライズするため、
 // localStorage と異なり boolean や object がそのままの型で復元される。
 // 各 load 関数の typeof チェックはストレージ破損や過去バージョンとの互換のための防御的バリデーション。
-import type { SyntaxType } from "../insert/commands/types";
+import type { DecorationType } from "../insert/commands/types";
 
 type StorageValue = {
-	SYNTAX: SyntaxType;
+	DECORATION: DecorationType;
 	CONTEXT_MENU_DISPLAYED: {
 		today: boolean;
 		tomorrow: boolean;
@@ -13,21 +13,20 @@ type StorageValue = {
 		previousBusinessDay: boolean;
 		specifiedDay: boolean;
 		template: boolean;
-		syntax: boolean;
 	};
 	TEMPLATE_TEXT: string;
 	PERIOD_EVENT_INCLUDED: boolean;
 };
 
 const STORAGE_KEY = {
-	SYNTAX: "syntax",
+	DECORATION: "decoration",
 	CONTEXT_MENU_DISPLAYED: "contextMenuDisplayed",
 	TEMPLATE_TEXT: "templateText",
 	PERIOD_EVENT_INCLUDED: "periodEventIncluded",
 } as const;
 
 const STORAGE_INIT_VALUE: StorageValue = {
-	SYNTAX: "html",
+	DECORATION: "styled",
 	CONTEXT_MENU_DISPLAYED: {
 		today: true,
 		tomorrow: false,
@@ -36,17 +35,15 @@ const STORAGE_INIT_VALUE: StorageValue = {
 		previousBusinessDay: false,
 		specifiedDay: false,
 		template: true,
-		syntax: true,
 	},
 	TEMPLATE_TEXT: "",
 	PERIOD_EVENT_INCLUDED: false,
 };
 
-const VALID_SYNTAX_VALUES: StorageValue["SYNTAX"][] = [
-	"html",
-	"experimental-html",
-	"markdown",
-	"plainText",
+const VALID_DECORATION_VALUES: StorageValue["DECORATION"][] = [
+	"styled",
+	"minimal",
+	"plain",
 ];
 
 const CONTEXT_MENU_DISPLAYED_KEYS: (keyof StorageValue["CONTEXT_MENU_DISPLAYED"])[] =
@@ -58,23 +55,22 @@ const CONTEXT_MENU_DISPLAYED_KEYS: (keyof StorageValue["CONTEXT_MENU_DISPLAYED"]
 		"previousBusinessDay",
 		"specifiedDay",
 		"template",
-		"syntax",
 	];
 
-// 記法の設定
+// 装飾の設定
 
-export const saveSyntaxSetting = async (syntax: StorageValue["SYNTAX"]) => {
-	await chrome.storage.sync.set({ [STORAGE_KEY.SYNTAX]: syntax });
+export const saveDecorationSetting = async (decoration: StorageValue["DECORATION"]) => {
+	await chrome.storage.sync.set({ [STORAGE_KEY.DECORATION]: decoration });
 };
 
-export const loadSyntaxSetting = async (): Promise<StorageValue["SYNTAX"]> => {
-	const item = await chrome.storage.sync.get(STORAGE_KEY.SYNTAX);
+export const loadDecorationSetting = async (): Promise<StorageValue["DECORATION"]> => {
+	const item = await chrome.storage.sync.get(STORAGE_KEY.DECORATION);
 	if (Object.keys(item).length === 0) {
-		return STORAGE_INIT_VALUE.SYNTAX;
+		return STORAGE_INIT_VALUE.DECORATION;
 	}
-	const raw = item[STORAGE_KEY.SYNTAX];
-	if (!VALID_SYNTAX_VALUES.includes(raw)) {
-		return STORAGE_INIT_VALUE.SYNTAX;
+	const raw = item[STORAGE_KEY.DECORATION];
+	if (!VALID_DECORATION_VALUES.includes(raw)) {
+		return STORAGE_INIT_VALUE.DECORATION;
 	}
 	return raw;
 };

@@ -1,10 +1,9 @@
-import type { SyntaxType } from "../insert/commands/types";
+import type { DecorationType } from "../insert/commands/types";
 import type { UserEvent } from "../schedule/events";
 import type { DateTime } from "../utils/datetime";
-import { ExperimentalHtmlFormatter } from "./formatters/experimentalHtml";
-import { HtmlFormatter } from "./formatters/html";
-import { MarkdownFormatter } from "./formatters/markdown";
-import { PlainTextFormatter } from "./formatters/plainText";
+import { MinimalFormatter } from "./formatters/minimal";
+import { PlainFormatter } from "./formatters/plain";
+import { StyledFormatter } from "./formatters/styled";
 
 export interface Formatter {
 	createTitle(dateTime: DateTime): string;
@@ -12,17 +11,15 @@ export interface Formatter {
 	getNewLine(): string;
 }
 
-export function createFormatter(syntax: SyntaxType): Formatter {
-	switch (syntax) {
-		case "html":
-			return new HtmlFormatter();
-		case "experimental-html":
-			return new ExperimentalHtmlFormatter();
-		case "markdown":
-			return new MarkdownFormatter();
-		case "plainText":
-			return new PlainTextFormatter();
+export function createFormatter(decoration: DecorationType): Formatter {
+	switch (decoration) {
+		case "styled":
+			return new StyledFormatter();
+		case "minimal":
+			return new MinimalFormatter();
+		case "plain":
+			return new PlainFormatter();
 		default:
-			throw new Error("Syntax is not implemented.");
+			throw new Error("Decoration is not implemented.");
 	}
 }

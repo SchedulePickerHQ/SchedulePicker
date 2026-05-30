@@ -1,40 +1,40 @@
 import { describe, expect, it, vi } from "vitest";
-import { SyntaxCommand } from "./syntaxCommand";
-import type { SyntaxDeps } from "./types";
+import { DecorationCommand } from "./decorationCommand";
+import type { DecorationDeps } from "./types";
 
-function createMockDeps(): SyntaxDeps {
+function createMockDeps(): DecorationDeps {
 	return {
-		saveSyntaxSetting: vi.fn().mockResolvedValue(undefined),
+		saveDecorationSetting: vi.fn().mockResolvedValue(undefined),
 		sendBuildContextMenu: vi.fn().mockResolvedValue(undefined),
 	};
 }
 
-describe("SyntaxCommand", () => {
-	it("saves the specified syntax setting", async () => {
+describe("DecorationCommand", () => {
+	it("saves the specified decoration setting", async () => {
 		const deps = createMockDeps();
-		const command = new SyntaxCommand("markdown", deps);
+		const command = new DecorationCommand("minimal", deps);
 		await command.execute();
-		expect(deps.saveSyntaxSetting).toHaveBeenCalledWith("markdown");
+		expect(deps.saveDecorationSetting).toHaveBeenCalledWith("minimal");
 	});
 
 	it("sends build context menu after saving", async () => {
 		const deps = createMockDeps();
-		const command = new SyntaxCommand("html", deps);
+		const command = new DecorationCommand("styled", deps);
 		await command.execute();
 		expect(deps.sendBuildContextMenu).toHaveBeenCalled();
 	});
 
 	it("calls save before rebuild", async () => {
 		const order: string[] = [];
-		const deps: SyntaxDeps = {
-			saveSyntaxSetting: vi.fn().mockImplementation(async () => {
+		const deps: DecorationDeps = {
+			saveDecorationSetting: vi.fn().mockImplementation(async () => {
 				order.push("save");
 			}),
 			sendBuildContextMenu: vi.fn().mockImplementation(async () => {
 				order.push("rebuild");
 			}),
 		};
-		const command = new SyntaxCommand("plainText", deps);
+		const command = new DecorationCommand("plain", deps);
 		await command.execute();
 		expect(order).toEqual(["save", "rebuild"]);
 	});

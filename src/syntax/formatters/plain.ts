@@ -1,9 +1,8 @@
 import type { UserEvent } from "../../schedule/events";
 import { type DateTime, getDayOfWeek } from "../../utils/datetime";
-import { getEventMenuColor } from "../eventMenuEmoji";
 import type { Formatter } from "../formatter";
 
-export class MarkdownFormatter implements Formatter {
+export class PlainFormatter implements Formatter {
 	createTitle(dateTime: DateTime) {
 		return `[ ${chrome.i18n.getMessage("event_title", `${dateTime.format("YYYY/MM/DD")} (${getDayOfWeek(dateTime)})`)} ]`;
 	}
@@ -21,9 +20,9 @@ export class MarkdownFormatter implements Formatter {
 		return "\n";
 	}
 
-	private createEvent(hostname: string, event: UserEvent) {
+	private createEvent(_: string, event: UserEvent) {
 		const timeRange = this.createTimeRange(event);
-		const subject = this.createSubject(hostname, event.id, event.subject);
+		const subject = event.subject;
 		const eventMenu =
 			event.eventMenu === "" ? null : this.createEventMenu(event.eventMenu);
 		return eventMenu === null
@@ -46,10 +45,6 @@ export class MarkdownFormatter implements Formatter {
 	}
 
 	private createEventMenu(eventMenu: string) {
-		return `<span style="background-color: ${getEventMenuColor(eventMenu)};">&nbsp;&nbsp;&nbsp;</span> ${eventMenu}`;
-	}
-
-	private createSubject(hostname: string, eventId: string, subject: string) {
-		return `[${subject}](https://${hostname}/g/schedule/view.csp?event=${eventId})`;
+		return `[${eventMenu}]`;
 	}
 }

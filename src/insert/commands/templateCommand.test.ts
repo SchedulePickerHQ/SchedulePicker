@@ -12,7 +12,7 @@ describe("TemplateCommand", () => {
 		expect(deps.loadTemplateText).toHaveBeenCalled();
 		expect(deps.paste).toHaveBeenCalledWith(
 			expect.stringContaining("Hello"),
-			"html",
+			"styled",
 		);
 	});
 

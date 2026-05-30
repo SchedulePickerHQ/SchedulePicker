@@ -1,13 +1,13 @@
-import type { SyntaxType } from "../../insert/commands/types";
+import type { DecorationType } from "../../insert/commands/types";
 import { buildContextMenu } from "../../menu/builder";
 import {
 	loadContextMenuDisplaySettings,
 	loadPeriodEventSetting,
-	loadSyntaxSetting,
+	loadDecorationSetting,
 	loadTemplateText,
 	saveContextMenuDisplaySettings,
 	savePeriodEventSetting,
-	saveSyntaxSetting,
+	saveDecorationSetting,
 	saveTemplateText,
 } from "../../utils/storage";
 
@@ -57,9 +57,8 @@ async function loadSettings() {
 	checkbox("previousBusinessDay").checked = display.previousBusinessDay;
 	checkbox("specifiedDay").checked = display.specifiedDay;
 	checkbox("template").checked = display.template;
-	checkbox("syntax").checked = display.syntax;
 
-	radio(await loadSyntaxSetting()).checked = true;
+	radio(await loadDecorationSetting()).checked = true;
 
 	checkbox("periodEventIncluded").checked = await loadPeriodEventSetting();
 }
@@ -76,13 +75,12 @@ async function saveSettings() {
 		previousBusinessDay: checkbox("previousBusinessDay").checked,
 		specifiedDay: checkbox("specifiedDay").checked,
 		template: checkbox("template").checked,
-		syntax: checkbox("syntax").checked,
 	});
 
-	const selectedSyntax = querySelector<HTMLInputElement>(
-		'input[name="syntax-setting"]:checked',
+	const selectedDecoration = querySelector<HTMLInputElement>(
+		'input[name="decoration-setting"]:checked',
 	);
-	await saveSyntaxSetting(selectedSyntax.value as SyntaxType);
+	await saveDecorationSetting(selectedDecoration.value as DecorationType);
 
 	await savePeriodEventSetting(checkbox("periodEventIncluded").checked);
 
