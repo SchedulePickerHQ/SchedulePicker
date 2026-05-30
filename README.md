@@ -1,21 +1,11 @@
-This is browser extension what can easily insert schedule events of the Garoon to a textarea. Please read [wiki](https://github.com/SchedulePickerHQ/SchedulePicker/wiki) if you want to know it usage.
+A browser extension that lets you insert Garoon schedule events into text areas. See the [wiki](https://github.com/SchedulePickerHQ/SchedulePicker/wiki) for usage.
 
-## Getting Started
-
-First, run the development server:
+## Development
 
 ```bash
-pnpm dev
-```
-
-Open your browser and load the appropriate development build. For example, if you are developing for the chrome browser, using manifest v3, use: `build/chrome-mv3-dev`.
-
-## Making production build
-
-Run the following:
-
-```bash
+pnpm install
 pnpm build
+pnpm test
 ```
 
 ## Disclaimer
