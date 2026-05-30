@@ -5,6 +5,14 @@ import {
 	sendContextMenuClicked,
 } from "../utils/messaging";
 
+// Service Worker 停止後はメニュー状態が失われるため、起動契機ごとに再構築する
+chrome.runtime.onInstalled.addListener(async () => {
+	await buildContextMenu();
+});
+chrome.runtime.onStartup.addListener(async () => {
+	await buildContextMenu();
+});
+
 chrome.contextMenus.onClicked.addListener(
 	async (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => {
 		if (tab?.id === undefined) {
