@@ -60,7 +60,6 @@ export const getEventMenuColor = (eventMenu: string): string => {
 		case "その他 / Other":
 		case "タスク":
 		case "その他":
-		case "終日":
 			return "#999999";
 		case "【履歴】来訪":
 		case "【履歴】往訪":
