@@ -19,12 +19,12 @@ export const paste = (content: PasteContent) => {
 	}
 
 	// text/html に積むものは経路を問わず必ず sanitize を通す
-	const html = DOMPurify.sanitize(content.html);
+	const sanitizedHtml = DOMPurify.sanitize(content.html);
 	const dataTransfer = new DataTransfer();
 	// text/plain も常に積む。textarea や、text/plain しか読まない貼り付けハンドラの
 	// ページでは text/html が読まれないため。
 	dataTransfer.setData("text/plain", content.plainText);
-	dataTransfer.setData("text/html", html);
+	dataTransfer.setData("text/html", sanitizedHtml);
 	const handled = !targetEl.dispatchEvent(
 		new ClipboardEvent("paste", {
 			clipboardData: dataTransfer,
@@ -67,7 +67,7 @@ export const paste = (content: PasteContent) => {
 		range.deleteContents();
 
 		const node = document.createElement("span");
-		node.innerHTML = html;
+		node.innerHTML = sanitizedHtml;
 		range.insertNode(node);
 
 		targetEl.focus();
