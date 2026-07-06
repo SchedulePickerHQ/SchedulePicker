@@ -17,7 +17,7 @@ export class TemplateCommand implements Command {
 			const templateText = await this.deps.loadTemplateText();
 			const decoration = await this.deps.loadDecorationSetting();
 			const formatter = this.deps.createFormatter(decoration);
-			const normalized = convertNewLines(templateText, formatter);
+			const normalized = convertNewLines(templateText, formatter.getNewLine());
 			const withDays = await replaceDayPlaceholders(normalized, this.deps);
 			const withEvents = await replaceEventPlaceholders(
 				withDays,
