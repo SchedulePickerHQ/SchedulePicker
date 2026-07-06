@@ -16,6 +16,22 @@ describe("TemplateCommand", () => {
 		);
 	});
 
+	it("converts template newlines to the formatter's newline", async () => {
+		const deps = createMockTemplateDeps({
+			loadTemplateText: vi.fn().mockResolvedValue("line1\nline2\nline3"),
+			createFormatter: vi.fn().mockReturnValue({
+				createTitle: vi.fn(),
+				createEvents: vi.fn(),
+				getNewLine: vi.fn().mockReturnValue("<br>"),
+			}),
+		});
+		await new TemplateCommand(deps).execute();
+		expect(deps.paste).toHaveBeenCalledWith(
+			"line1<br>line2<br>line3",
+			"styled",
+		);
+	});
+
 	it("shows error and resets cursor on failure", async () => {
 		vi.spyOn(console, "error").mockImplementation(() => {});
 		const deps = createMockTemplateDeps({
