@@ -1,20 +1,20 @@
+import { DecorationCommand } from "../insert/commands/decorationCommand";
 import { ScheduleCommand } from "../insert/commands/scheduleCommand";
 import { SettingsCommand } from "../insert/commands/settingsCommand";
 import { SpecifiedDayCommand } from "../insert/commands/specifiedDayCommand";
-import { DecorationCommand } from "../insert/commands/decorationCommand";
 import { TemplateCommand } from "../insert/commands/templateCommand";
 import type { ScheduleDeps } from "../insert/commands/types";
 import { paste } from "../insert/paste";
 import { CONTEXT_MENU_ID } from "../menu/builder";
 import { ContextMenuController } from "../menu/controller";
+import { buildPasteContent } from "../render/pasteContent";
 import {
 	getNextBusinessDay,
 	getPreviousBusinessDay,
 } from "../schedule/businessDay";
 import { getUserEvents } from "../schedule/events";
-import { createFormatter } from "../syntax/formatter";
 import { createBrowserApi } from "../utils/browser";
-import { dateTime, getDayOfWeek } from "../utils/datetime";
+import { dateTime } from "../utils/datetime";
 import {
 	MESSAGE_CONTEXT,
 	type MessageContext,
@@ -22,8 +22,8 @@ import {
 	sendOpenSettingsPage,
 } from "../utils/messaging";
 import {
-	loadPeriodEventSetting,
 	loadDecorationSetting,
+	loadPeriodEventSetting,
 	loadTemplateText,
 	saveDecorationSetting,
 } from "../utils/storage";
@@ -41,7 +41,7 @@ const makeScheduleDeps = (
 	resolveDate,
 	loadPeriodEventSetting,
 	loadDecorationSetting,
-	createFormatter,
+	buildPasteContent,
 	getUserEvents,
 	paste,
 });
@@ -76,7 +76,7 @@ contextMenuController.setCommand(
 		env,
 		loadPeriodEventSetting,
 		loadDecorationSetting,
-		createFormatter,
+		buildPasteContent,
 		getUserEvents,
 		paste,
 	}),
@@ -88,21 +88,26 @@ contextMenuController.setCommand(
 		loadTemplateText,
 		loadPeriodEventSetting,
 		loadDecorationSetting,
-		createFormatter,
+		buildPasteContent,
 		getUserEvents,
 		paste,
 		getNextBusinessDay,
 		getPreviousBusinessDay,
-		getDayOfWeek,
 	}),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.STYLED,
-	new DecorationCommand("styled", { saveDecorationSetting, sendBuildContextMenu }),
+	new DecorationCommand("styled", {
+		saveDecorationSetting,
+		sendBuildContextMenu,
+	}),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.PLAIN,
-	new DecorationCommand("plain", { saveDecorationSetting, sendBuildContextMenu }),
+	new DecorationCommand("plain", {
+		saveDecorationSetting,
+		sendBuildContextMenu,
+	}),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.SETTINGS,

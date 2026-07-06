@@ -1,3 +1,4 @@
+import type { Segment } from "../../render/segment";
 import type { Command } from "../../types";
 import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
 import { handleCommandError } from "./handleCommandError";
@@ -12,7 +13,6 @@ export class ScheduleCommand implements Command {
 		const endTime = convertToEndOfDay(targetDate);
 		const periodEventIncluded = await this.deps.loadPeriodEventSetting();
 		const decoration = await this.deps.loadDecorationSetting();
-		const formatter = this.deps.createFormatter(decoration);
 
 		try {
 			this.deps.env.setCursor("progress");
@@ -23,12 +23,19 @@ export class ScheduleCommand implements Command {
 				periodEventIncluded,
 			});
 
-			const text =
-				formatter.createTitle(targetDate) +
-				formatter.getNewLine() +
-				formatter.createEvents(this.deps.env.hostname, events);
+			const segments: Segment[] = [
+				{ type: "title", date: targetDate },
+				{ type: "text", value: "\n" },
+				{ type: "events", events },
+			];
 
-			this.deps.paste(text, decoration);
+			this.deps.paste(
+				this.deps.buildPasteContent(
+					decoration,
+					segments,
+					this.deps.env.hostname,
+				),
+			);
 		} catch (e) {
 			handleCommandError(e, this.deps.env);
 		} finally {

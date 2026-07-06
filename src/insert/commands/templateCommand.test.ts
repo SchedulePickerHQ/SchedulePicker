@@ -4,15 +4,32 @@ import { TemplateCommand } from "./templateCommand";
 import { createMockTemplateDeps } from "./testHelpers";
 
 describe("TemplateCommand", () => {
-	it("loads template and inserts replaced result", async () => {
+	it("parses template into segments and pastes the built content", async () => {
 		const deps = createMockTemplateDeps({
-			loadTemplateText: vi.fn().mockResolvedValue("Hello {%TODAY%}"),
+			loadTemplateText: vi.fn().mockResolvedValue("Hello\nWorld"),
 		});
 		await new TemplateCommand(deps).execute();
-		expect(deps.loadTemplateText).toHaveBeenCalled();
-		expect(deps.paste).toHaveBeenCalledWith(
-			expect.stringContaining("Hello"),
+		expect(deps.buildPasteContent).toHaveBeenCalledWith(
 			"styled",
+			[{ type: "text", value: "Hello\nWorld" }],
+			"example.cybozu.com",
+		);
+		expect(deps.paste).toHaveBeenCalledWith({
+			plainText: "plain",
+			html: "html",
+		});
+	});
+
+	it("passes the decoration setting to buildPasteContent", async () => {
+		const deps = createMockTemplateDeps({
+			loadTemplateText: vi.fn().mockResolvedValue("Hello"),
+			loadDecorationSetting: vi.fn().mockResolvedValue("plain"),
+		});
+		await new TemplateCommand(deps).execute();
+		expect(deps.buildPasteContent).toHaveBeenCalledWith(
+			"plain",
+			expect.anything(),
+			expect.any(String),
 		);
 	});
 
