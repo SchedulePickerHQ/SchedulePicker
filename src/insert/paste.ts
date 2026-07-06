@@ -15,13 +15,6 @@ const escapeHtml = (text: string) =>
 // 装飾付きになるのはこの仕組み）。ここでも DataTransfer に両方を積んで同じ挙動を再現する。
 // これにより装飾あり（styledHtml あり）は、リッチエディタでは装飾付き・textarea では
 // プレーンと、貼り付け先に応じて自動で切り替わる。
-//
-// 装飾なし（styledHtml 省略時）でも text/html を積むのはリッチエディタ対策。
-// リッチエディタは text/html を優先して読み、text/plain しか無いと、プレーンテキストを
-// 自前の段落構造へ変換する過程で連続改行を 1 つの区切りに正規化してしまい、空行が消える。
-// エスケープ + <br> 変換した HTML を渡せば改行構造を明示でき、見た目はプレーンのまま
-// 空行が保持される。text/plain の棚も常に積むのは、textarea や text/plain しか読まない
-// 貼り付けハンドラのページでは text/html が読まれないため。
 export const paste = (plainText: string, styledHtml?: string) => {
 	const targetEl = document.activeElement;
 
@@ -31,9 +24,16 @@ export const paste = (plainText: string, styledHtml?: string) => {
 
 	// text/html に積むものは経路を問わず必ず sanitize を通す
 	const html = DOMPurify.sanitize(
+		// 装飾なし（styledHtml 省略時）でも text/html を積むのはリッチエディタ対策。
+		// リッチエディタは text/html を優先して読み、text/plain しか無いと、プレーンテキストを
+		// 自前の段落構造へ変換する過程で連続改行を 1 つの区切りに正規化してしまい、空行が消える。
+		// エスケープ + <br> 変換した HTML なら改行構造を明示でき、見た目はプレーンのまま
+		// 空行が保持される。
 		styledHtml ?? escapeHtml(plainText).replaceAll("\n", "<br>"),
 	);
 	const dataTransfer = new DataTransfer();
+	// text/plain も常に積む。textarea や、text/plain しか読まない貼り付けハンドラの
+	// ページでは text/html が読まれないため。
 	dataTransfer.setData("text/plain", plainText);
 	dataTransfer.setData("text/html", html);
 	const handled = !targetEl.dispatchEvent(
