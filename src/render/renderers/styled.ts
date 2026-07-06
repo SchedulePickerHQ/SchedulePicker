@@ -1,9 +1,10 @@
 import type { UserEvent } from "../../schedule/events";
+import type { DateTime } from "../../utils/datetime";
+import { formatDateWithDayOfWeek } from "../../utils/datetime";
 import { escapeHtml, textToHtml } from "../escapeHtml";
 import { getEventMenuColor } from "../eventMenuColor";
 import type { Renderer } from "../renderer";
 import type { Segment } from "../segment";
-import { timeRangeText, titleText } from "./shared";
 
 export class StyledRenderer implements Renderer {
 	constructor(private hostname: string) {}
@@ -17,12 +18,16 @@ export class StyledRenderer implements Renderer {
 			case "text":
 				return textToHtml(segment.value);
 			case "title":
-				return `<span>${titleText(segment.date)}</span>`;
+				return this.renderTitle(segment.date);
 			case "events":
 				return segment.events
 					.map((event) => this.renderEvent(event))
 					.join("<br>");
 		}
+	}
+
+	private renderTitle(date: DateTime) {
+		return `<span>[ ${chrome.i18n.getMessage("event_title", formatDateWithDayOfWeek(date))} ]</span>`;
 	}
 
 	private renderEvent(event: UserEvent) {
@@ -36,10 +41,17 @@ export class StyledRenderer implements Renderer {
 	}
 
 	private renderTimeRange(event: UserEvent) {
-		const text = timeRangeText(event);
-		return text === null
-			? this.renderEventMenu("終日")
-			: `<span>${text}</span>`;
+		if (event.isAllDay) {
+			return this.renderEventMenu("終日");
+		}
+
+		const start = event.isContinuingFromYesterday
+			? "--------"
+			: event.startTime.format("HH:mm");
+		const end = event.isContinuingToTomorrow
+			? "--------"
+			: event.endTime.format("HH:mm");
+		return `<span>${start}-${end}</span>`;
 	}
 
 	private renderEventMenu(eventMenu: string) {
