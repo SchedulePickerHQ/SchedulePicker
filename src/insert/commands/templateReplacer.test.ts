@@ -1,9 +1,33 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
+	convertNewLines,
 	replaceDayPlaceholders,
 	replaceEventPlaceholders,
 } from "./templateReplacer";
 import { createMockFormatter, createMockTemplateDeps } from "./testHelpers";
+
+describe("convertNewLines", () => {
+	it("converts newlines to the formatter's newline", () => {
+		const formatter = createMockFormatter({
+			getNewLine: vi.fn().mockReturnValue("<br>"),
+		});
+		expect(convertNewLines("line1\nline2\nline3", formatter)).toBe(
+			"line1<br>line2<br>line3",
+		);
+	});
+
+	it("normalizes CRLF and CR as well", () => {
+		const formatter = createMockFormatter({
+			getNewLine: vi.fn().mockReturnValue("<br>"),
+		});
+		expect(convertNewLines("a\r\nb\rc", formatter)).toBe("a<br>b<br>c");
+	});
+
+	it("leaves text unchanged for plain newline", () => {
+		const formatter = createMockFormatter();
+		expect(convertNewLines("line1\nline2", formatter)).toBe("line1\nline2");
+	});
+});
 
 describe("replaceDayPlaceholders", () => {
 	it("replaces {%TODAY%} with formatted date", async () => {

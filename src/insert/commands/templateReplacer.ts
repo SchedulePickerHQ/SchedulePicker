@@ -51,6 +51,12 @@ const EVENT_ENTRIES: DateEntry[] = [
 	},
 ];
 
+// テンプレート本文はユーザー入力の生テキストなので、装飾あり（text/html 貼り付け）では
+// 改行がそのままだと空白に潰れてしまう。formatter の改行表現に変換してから使う。
+// \r は textarea 経由なら混入しないはずだが、保険として正規化しておく。
+export const convertNewLines = (text: string, formatter: Formatter): string =>
+	text.replace(/\r\n|\r|\n/g, formatter.getNewLine());
+
 export const replaceDayPlaceholders = async (
 	text: string,
 	deps: TemplateDeps,

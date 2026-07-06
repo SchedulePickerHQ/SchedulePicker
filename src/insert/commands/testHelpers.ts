@@ -22,7 +22,6 @@ export function createMockFormatter(overrides?: Partial<Formatter>): Formatter {
 		createTitle: vi.fn().mockReturnValue("[Title]"),
 		createEvents: vi.fn().mockReturnValue("event1\nevent2"),
 		getNewLine: vi.fn().mockReturnValue("\n"),
-		formatRawText: vi.fn().mockImplementation((text: string) => text),
 		...overrides,
 	};
 }

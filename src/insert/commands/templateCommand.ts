@@ -1,6 +1,7 @@
 import type { Command } from "../../types";
 import { handleCommandError } from "./handleCommandError";
 import {
+	convertNewLines,
 	replaceDayPlaceholders,
 	replaceEventPlaceholders,
 } from "./templateReplacer";
@@ -16,7 +17,7 @@ export class TemplateCommand implements Command {
 			const templateText = await this.deps.loadTemplateText();
 			const decoration = await this.deps.loadDecorationSetting();
 			const formatter = this.deps.createFormatter(decoration);
-			const normalized = formatter.formatRawText(templateText);
+			const normalized = convertNewLines(templateText, formatter);
 			const withDays = await replaceDayPlaceholders(normalized, this.deps);
 			const withEvents = await replaceEventPlaceholders(
 				withDays,

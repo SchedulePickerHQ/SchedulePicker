@@ -20,10 +20,6 @@ export class PlainFormatter implements Formatter {
 		return "\n";
 	}
 
-	formatRawText(text: string) {
-		return text;
-	}
-
 	private createEvent(_: string, event: UserEvent) {
 		const timeRange = this.createTimeRange(event);
 		const subject = event.subject;

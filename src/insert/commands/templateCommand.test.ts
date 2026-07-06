@@ -16,18 +16,15 @@ describe("TemplateCommand", () => {
 		);
 	});
 
-	it("converts template text via the formatter before pasting", async () => {
+	it("converts template newlines to the formatter's newline", async () => {
 		const formatter = createMockFormatter({
-			formatRawText: vi
-				.fn()
-				.mockImplementation((text: string) => text.replaceAll("\n", "<br>")),
+			getNewLine: vi.fn().mockReturnValue("<br>"),
 		});
 		const deps = createMockTemplateDeps({
 			loadTemplateText: vi.fn().mockResolvedValue("line1\nline2\nline3"),
 			createFormatter: vi.fn().mockReturnValue(formatter),
 		});
 		await new TemplateCommand(deps).execute();
-		expect(formatter.formatRawText).toHaveBeenCalledWith("line1\nline2\nline3");
 		expect(deps.paste).toHaveBeenCalledWith(
 			"line1<br>line2<br>line3",
 			"styled",
