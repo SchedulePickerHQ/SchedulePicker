@@ -14,7 +14,7 @@ import {
 } from "../schedule/businessDay";
 import { getUserEvents } from "../schedule/events";
 import { createBrowserApi } from "../utils/browser";
-import { dateTime, getDayOfWeek } from "../utils/datetime";
+import { dateTime } from "../utils/datetime";
 import {
 	MESSAGE_CONTEXT,
 	type MessageContext,
@@ -93,7 +93,6 @@ contextMenuController.setCommand(
 		paste,
 		getNextBusinessDay,
 		getPreviousBusinessDay,
-		getDayOfWeek,
 	}),
 );
 contextMenuController.setCommand(

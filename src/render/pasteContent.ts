@@ -1,4 +1,4 @@
-import { escapeHtml } from "./escapeHtml";
+import { textToHtml } from "./escapeHtml";
 import type { DecorationType } from "./renderer";
 import { PlainRenderer } from "./renderers/plain";
 import { StyledRenderer } from "./renderers/styled";
@@ -25,6 +25,6 @@ export const buildPasteContent = (
 	const html =
 		decoration === "styled"
 			? new StyledRenderer(hostname).render(segments)
-			: escapeHtml(plainText).replaceAll("\n", "<br>");
+			: textToHtml(plainText);
 	return { plainText, html };
 };

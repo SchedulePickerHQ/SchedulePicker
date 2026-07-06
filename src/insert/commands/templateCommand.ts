@@ -10,8 +10,11 @@ export class TemplateCommand implements Command {
 		try {
 			this.deps.env.setCursor("progress");
 
-			const templateText = await this.deps.loadTemplateText();
-			const decoration = await this.deps.loadDecorationSetting();
+			// 2 つの設定読み取りは独立した storage アクセスなので並列に行う
+			const [templateText, decoration] = await Promise.all([
+				this.deps.loadTemplateText(),
+				this.deps.loadDecorationSetting(),
+			]);
 			const segments = await parseTemplate(templateText, this.deps);
 
 			this.deps.paste(

@@ -5,10 +5,9 @@ import {
 	convertToEndOfDay,
 	convertToStartOfDay,
 	dateTime,
+	formatDateWithDayOfWeek,
 } from "../../utils/datetime";
 import type { TemplateDeps } from "./types";
-
-const DATE_FORMAT = "YYYY/MM/DD";
 
 type DateEntry = {
 	placeholder: string;
@@ -70,12 +69,14 @@ export const replaceDayPlaceholders = async (
 	text: string,
 	deps: TemplateDeps,
 ): Promise<string> => {
-	for (const { placeholder, getDate } of DAY_ENTRIES) {
-		if (text.includes(placeholder)) {
-			const date = await getDate(deps);
-			const title = `${date.format(DATE_FORMAT)} (${deps.getDayOfWeek(date)})`;
-			text = text.replaceAll(placeholder, title);
-		}
+	const replacements = await Promise.all(
+		DAY_ENTRIES.filter(({ placeholder }) => text.includes(placeholder)).map(
+			async ({ placeholder, getDate }) =>
+				[placeholder, formatDateWithDayOfWeek(await getDate(deps))] as const,
+		),
+	);
+	for (const [placeholder, replacement] of replacements) {
+		text = text.replaceAll(placeholder, replacement);
 	}
 	return text;
 };
@@ -84,70 +85,50 @@ const fetchEventsForPlaceholders = async (
 	text: string,
 	deps: TemplateDeps,
 ): Promise<Map<string, UserEvent[]>> => {
-	const eventsByPlaceholder = new Map<string, UserEvent[]>();
-
-	if (!EVENT_ENTRIES.some(({ placeholder }) => text.includes(placeholder))) {
-		return eventsByPlaceholder;
+	const matched = EVENT_ENTRIES.filter(({ placeholder }) =>
+		text.includes(placeholder),
+	);
+	if (matched.length === 0) {
+		return new Map();
 	}
 
 	const periodEventIncluded = await deps.loadPeriodEventSetting();
 
-	for (const { placeholder, getDate } of EVENT_ENTRIES) {
-		if (text.includes(placeholder)) {
+	// プレースホルダーごとのイベント取得は独立したネットワーク呼び出しなので並列に行う
+	const entries = await Promise.all(
+		matched.map(async ({ placeholder, getDate }) => {
 			const date = await getDate(deps);
-			const startTime = convertToStartOfDay(date);
-			const endTime = convertToEndOfDay(date);
 			const events = await deps.getUserEvents(deps.env.hostname, {
-				startTime,
-				endTime,
+				startTime: convertToStartOfDay(date),
+				endTime: convertToEndOfDay(date),
 				periodEventIncluded,
 			});
-			eventsByPlaceholder.set(placeholder, events);
-		}
-	}
-
-	return eventsByPlaceholder;
+			return [placeholder, events] as const;
+		}),
+	);
+	return new Map(entries);
 };
 
 const splitIntoSegments = (
 	text: string,
 	eventsByPlaceholder: Map<string, UserEvent[]>,
 ): Segment[] => {
-	const segments: Segment[] = [];
-	let rest = text;
-
-	while (rest !== "") {
-		const earliest = findEarliestPlaceholder(rest, eventsByPlaceholder);
-		if (earliest === null) {
-			segments.push({ type: "text", value: rest });
-			break;
-		}
-		if (earliest.index > 0) {
-			segments.push({ type: "text", value: rest.slice(0, earliest.index) });
-		}
-		segments.push({ type: "events", events: earliest.events });
-		rest = rest.slice(earliest.index + earliest.placeholder.length);
+	if (eventsByPlaceholder.size === 0) {
+		return text === "" ? [] : [{ type: "text", value: text }];
 	}
 
-	return segments;
-};
-
-const findEarliestPlaceholder = (
-	text: string,
-	eventsByPlaceholder: Map<string, UserEvent[]>,
-): { index: number; placeholder: string; events: UserEvent[] } | null => {
-	let earliest: {
-		index: number;
-		placeholder: string;
-		events: UserEvent[];
-	} | null = null;
-
-	for (const [placeholder, events] of eventsByPlaceholder) {
-		const index = text.indexOf(placeholder);
-		if (index !== -1 && (earliest === null || index < earliest.index)) {
-			earliest = { index, placeholder, events };
+	// キャプチャ付きで split するとプレースホルダー自身も結果に残るので、
+	// 1 回の走査でテキストとプレースホルダーの列が得られる
+	const pattern = new RegExp(
+		`(${[...eventsByPlaceholder.keys()]
+			.map((placeholder) => placeholder.replace(/[{}]/g, "\\$&"))
+			.join("|")})`,
+	);
+	return text.split(pattern).flatMap((part): Segment[] => {
+		const events = eventsByPlaceholder.get(part);
+		if (events !== undefined) {
+			return [{ type: "events", events }];
 		}
-	}
-
-	return earliest;
+		return part === "" ? [] : [{ type: "text", value: part }];
+	});
 };

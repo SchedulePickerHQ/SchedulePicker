@@ -1,6 +1,15 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { parseTemplate, replaceDayPlaceholders } from "./templateParser";
 import { createMockTemplateDeps } from "./testHelpers";
+
+// 日付プレースホルダーの展開は曜日名を chrome.i18n から引く
+vi.stubGlobal("chrome", {
+	i18n: {
+		getMessage: vi.fn((key: string) =>
+			key.startsWith("day_of_week_") ? "Mon" : key,
+		),
+	},
+});
 
 describe("replaceDayPlaceholders", () => {
 	it("replaces {%TODAY%} with formatted date", async () => {

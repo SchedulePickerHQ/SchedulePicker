@@ -42,7 +42,7 @@ export const paste = (content: PasteContent) => {
 	// ClipboardEvent が処理されなかった場合のフォールバック。
 	// 貼り付け先の種類に応じてどちらの表現を挿入するか選ぶ。
 	if (isTextareaElement(targetEl) || isInputElement(targetEl)) {
-		const plainText = content.plainText;
+		const { plainText } = content;
 		const selectionStart = targetEl.selectionStart ?? targetEl.value.length;
 		const selectionEnd = targetEl.selectionEnd ?? selectionStart;
 		const startText = targetEl.value.slice(0, selectionStart);

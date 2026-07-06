@@ -16,6 +16,9 @@ export function createMockBrowserApi(
 	};
 }
 
+const createMockBuildPasteContent = () =>
+	vi.fn().mockReturnValue({ plainText: "plain", html: "html" });
+
 export function createMockScheduleDeps(
 	overrides?: Partial<ScheduleDeps>,
 ): ScheduleDeps {
@@ -24,9 +27,7 @@ export function createMockScheduleDeps(
 		resolveDate: () => dayjs("2025-01-15"),
 		loadPeriodEventSetting: vi.fn().mockResolvedValue(false),
 		loadDecorationSetting: vi.fn().mockResolvedValue("styled"),
-		buildPasteContent: vi
-			.fn()
-			.mockReturnValue({ plainText: "plain", html: "html" }),
+		buildPasteContent: createMockBuildPasteContent(),
 		getUserEvents: vi.fn().mockResolvedValue([]),
 		paste: vi.fn(),
 		...overrides,
@@ -41,14 +42,11 @@ export function createMockTemplateDeps(
 		loadTemplateText: vi.fn().mockResolvedValue(""),
 		loadPeriodEventSetting: vi.fn().mockResolvedValue(false),
 		loadDecorationSetting: vi.fn().mockResolvedValue("styled"),
-		buildPasteContent: vi
-			.fn()
-			.mockReturnValue({ plainText: "plain", html: "html" }),
+		buildPasteContent: createMockBuildPasteContent(),
 		getUserEvents: vi.fn().mockResolvedValue([]),
 		paste: vi.fn(),
 		getNextBusinessDay: vi.fn().mockResolvedValue(dayjs("2025-01-16")),
 		getPreviousBusinessDay: vi.fn().mockResolvedValue(dayjs("2025-01-14")),
-		getDayOfWeek: vi.fn().mockReturnValue("Mon"),
 		...overrides,
 	};
 }

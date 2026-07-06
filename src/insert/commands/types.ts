@@ -47,7 +47,6 @@ export interface TemplateDeps {
 	paste: ScheduleDeps["paste"];
 	getNextBusinessDay: (hostname: string) => Promise<DateTime>;
 	getPreviousBusinessDay: (hostname: string) => Promise<DateTime>;
-	getDayOfWeek: (date: DateTime) => string;
 }
 
 export interface SettingsDeps {

@@ -29,6 +29,10 @@ export const getWeekIndex = (week: Week): ValueOf<typeof WEEK> => WEEK[week];
 export const getDayOfWeek = (arg: DateTime) =>
 	chrome.i18n.getMessage(`day_of_week_${arg.day()}`);
 
+// ユーザーに見せる日付の標準表記。テンプレートの展開とタイトル描画で共有し、表記の乖離を防ぐ
+export const formatDateWithDayOfWeek = (date: DateTime): string =>
+	`${date.format("YYYY/MM/DD")} (${getDayOfWeek(date)})`;
+
 export const convertToStartOfDay = (arg: DateTime): DateTime => {
 	return arg.startOf("day");
 };
