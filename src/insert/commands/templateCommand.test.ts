@@ -1,47 +1,36 @@
 import { describe, expect, it, vi } from "vitest";
 import { GetEventsError } from "../../schedule/events";
 import { TemplateCommand } from "./templateCommand";
-import { createMockFormatter, createMockTemplateDeps } from "./testHelpers";
-import type { DecorationType } from "./types";
+import { createMockTemplateDeps } from "./testHelpers";
 
 describe("TemplateCommand", () => {
-	it("loads template and inserts replaced result", async () => {
+	it("parses template into segments and pastes the built content", async () => {
 		const deps = createMockTemplateDeps({
-			loadTemplateText: vi.fn().mockResolvedValue("Hello {%TODAY%}"),
+			loadTemplateText: vi.fn().mockResolvedValue("Hello\nWorld"),
 		});
 		await new TemplateCommand(deps).execute();
-		expect(deps.loadTemplateText).toHaveBeenCalled();
-		expect(deps.paste).toHaveBeenCalledWith(
-			expect.stringContaining("Hello"),
-			expect.stringContaining("Hello"),
+		expect(deps.buildPasteContent).toHaveBeenCalledWith(
+			"styled",
+			[{ type: "text", value: "Hello\nWorld" }],
+			"example.cybozu.com",
 		);
-	});
-
-	it("converts template newlines per representation", async () => {
-		const deps = createMockTemplateDeps({
-			loadTemplateText: vi.fn().mockResolvedValue("line1\nline2\nline3"),
-			createFormatter: vi.fn((decoration: DecorationType) =>
-				decoration === "styled"
-					? createMockFormatter({
-							getNewLine: vi.fn().mockReturnValue("<br>"),
-						})
-					: createMockFormatter(),
-			),
+		expect(deps.paste).toHaveBeenCalledWith({
+			plainText: "plain",
+			html: "html",
 		});
-		await new TemplateCommand(deps).execute();
-		expect(deps.paste).toHaveBeenCalledWith(
-			"line1\nline2\nline3",
-			"line1<br>line2<br>line3",
-		);
 	});
 
-	it("omits styled html when decoration is plain", async () => {
+	it("passes the decoration setting to buildPasteContent", async () => {
 		const deps = createMockTemplateDeps({
-			loadTemplateText: vi.fn().mockResolvedValue("line1\nline2"),
+			loadTemplateText: vi.fn().mockResolvedValue("Hello"),
 			loadDecorationSetting: vi.fn().mockResolvedValue("plain"),
 		});
 		await new TemplateCommand(deps).execute();
-		expect(deps.paste).toHaveBeenCalledWith("line1\nline2", undefined);
+		expect(deps.buildPasteContent).toHaveBeenCalledWith(
+			"plain",
+			expect.anything(),
+			expect.any(String),
+		);
 	});
 
 	it("shows error and resets cursor on failure", async () => {

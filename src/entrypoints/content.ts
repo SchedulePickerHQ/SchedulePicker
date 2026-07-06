@@ -7,12 +7,12 @@ import type { ScheduleDeps } from "../insert/commands/types";
 import { paste } from "../insert/paste";
 import { CONTEXT_MENU_ID } from "../menu/builder";
 import { ContextMenuController } from "../menu/controller";
+import { buildPasteContent } from "../render/pasteContent";
 import {
 	getNextBusinessDay,
 	getPreviousBusinessDay,
 } from "../schedule/businessDay";
 import { getUserEvents } from "../schedule/events";
-import { createFormatter } from "../syntax/formatter";
 import { createBrowserApi } from "../utils/browser";
 import { dateTime, getDayOfWeek } from "../utils/datetime";
 import {
@@ -41,7 +41,7 @@ const makeScheduleDeps = (
 	resolveDate,
 	loadPeriodEventSetting,
 	loadDecorationSetting,
-	createFormatter,
+	buildPasteContent,
 	getUserEvents,
 	paste,
 });
@@ -76,7 +76,7 @@ contextMenuController.setCommand(
 		env,
 		loadPeriodEventSetting,
 		loadDecorationSetting,
-		createFormatter,
+		buildPasteContent,
 		getUserEvents,
 		paste,
 	}),
@@ -88,7 +88,7 @@ contextMenuController.setCommand(
 		loadTemplateText,
 		loadPeriodEventSetting,
 		loadDecorationSetting,
-		createFormatter,
+		buildPasteContent,
 		getUserEvents,
 		paste,
 		getNextBusinessDay,

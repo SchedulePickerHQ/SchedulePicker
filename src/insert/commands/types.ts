@@ -1,18 +1,24 @@
+import type { PasteContent } from "../../render/pasteContent";
+import type { DecorationType } from "../../render/renderer";
+import type { Segment } from "../../render/segment";
 import type { UserEvent } from "../../schedule/events";
-import type { Formatter } from "../../syntax/formatter";
 import type { BrowserApi } from "../../utils/browser";
 import type { DateTime } from "../../utils/datetime";
 
 export type DateResolver = () => Promise<DateTime> | DateTime;
 
-export type DecorationType = "styled" | "plain";
+export type { DecorationType };
 
 export interface ScheduleDeps {
 	env: BrowserApi;
 	resolveDate: DateResolver;
 	loadPeriodEventSetting: () => Promise<boolean>;
 	loadDecorationSetting: () => Promise<DecorationType>;
-	createFormatter: (decoration: DecorationType) => Formatter;
+	buildPasteContent: (
+		decoration: DecorationType,
+		segments: Segment[],
+		hostname: string,
+	) => PasteContent;
 	getUserEvents: (
 		hostname: string,
 		query: {
@@ -21,8 +27,7 @@ export interface ScheduleDeps {
 			periodEventIncluded: boolean;
 		},
 	) => Promise<UserEvent[]>;
-	// styledHtml を省略すると装飾なし（text/html にもプレーン版が積まれる）
-	paste: (plainText: string, styledHtml?: string) => void;
+	paste: (content: PasteContent) => void;
 }
 
 export type SpecifiedDayDeps = Omit<ScheduleDeps, "resolveDate">;
@@ -37,7 +42,7 @@ export interface TemplateDeps {
 	loadTemplateText: () => Promise<string>;
 	loadPeriodEventSetting: () => Promise<boolean>;
 	loadDecorationSetting: () => Promise<DecorationType>;
-	createFormatter: (decoration: DecorationType) => Formatter;
+	buildPasteContent: ScheduleDeps["buildPasteContent"];
 	getUserEvents: ScheduleDeps["getUserEvents"];
 	paste: ScheduleDeps["paste"];
 	getNextBusinessDay: (hostname: string) => Promise<DateTime>;

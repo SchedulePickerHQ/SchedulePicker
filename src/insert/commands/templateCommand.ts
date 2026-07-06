@@ -1,12 +1,6 @@
-import type { Formatter } from "../../syntax/formatter";
 import type { Command } from "../../types";
 import { handleCommandError } from "./handleCommandError";
-import {
-	convertNewLines,
-	fetchEventsForPlaceholders,
-	replaceDayPlaceholders,
-	replaceEventPlaceholders,
-} from "./templateReplacer";
+import { parseTemplate } from "./templateParser";
 import type { TemplateDeps } from "./types";
 
 export class TemplateCommand implements Command {
@@ -18,26 +12,15 @@ export class TemplateCommand implements Command {
 
 			const templateText = await this.deps.loadTemplateText();
 			const decoration = await this.deps.loadDecorationSetting();
-			const withDays = await replaceDayPlaceholders(templateText, this.deps);
-			const eventsByPlaceholder = await fetchEventsForPlaceholders(
-				withDays,
-				this.deps,
-			);
-			const buildText = (formatter: Formatter) =>
-				replaceEventPlaceholders(
-					convertNewLines(withDays, formatter.getNewLine()),
-					eventsByPlaceholder,
-					formatter,
+			const segments = await parseTemplate(templateText, this.deps);
+
+			this.deps.paste(
+				this.deps.buildPasteContent(
+					decoration,
+					segments,
 					this.deps.env.hostname,
-				);
-
-			const plainText = buildText(this.deps.createFormatter("plain"));
-			const styledHtml =
-				decoration === "styled"
-					? buildText(this.deps.createFormatter("styled"))
-					: undefined;
-
-			this.deps.paste(plainText, styledHtml);
+				),
+			);
 		} catch (e) {
 			handleCommandError(e, this.deps.env);
 		} finally {

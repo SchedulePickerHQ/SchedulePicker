@@ -2,8 +2,7 @@ import dayjs from "dayjs";
 import { describe, expect, it, vi } from "vitest";
 import { GetEventsError } from "../../schedule/events";
 import { ScheduleCommand } from "./scheduleCommand";
-import { createMockFormatter, createMockScheduleDeps } from "./testHelpers";
-import type { DecorationType } from "./types";
+import { createMockScheduleDeps } from "./testHelpers";
 
 describe("ScheduleCommand", () => {
 	it("fetches events for the resolved date", async () => {
@@ -25,33 +24,35 @@ describe("ScheduleCommand", () => {
 		expect(query.endTime.format("YYYY-MM-DD")).toBe("2025-06-01");
 	});
 
-	it("pastes plain and styled representations when decoration is styled", async () => {
+	it("builds title + newline + events segments and pastes the content", async () => {
 		const deps = createMockScheduleDeps({
-			createFormatter: vi.fn((decoration: DecorationType) =>
-				decoration === "styled"
-					? createMockFormatter({
-							createTitle: vi.fn().mockReturnValue("<span>[Title]</span>"),
-							createEvents: vi.fn().mockReturnValue("event1<br>event2"),
-							getNewLine: vi.fn().mockReturnValue("<br>"),
-						})
-					: createMockFormatter(),
-			),
+			resolveDate: () => dayjs("2025-01-15"),
 		});
 		await new ScheduleCommand(deps).execute();
-		expect(deps.paste).toHaveBeenCalledWith(
-			"[Title]\nevent1\nevent2",
-			"<span>[Title]</span><br>event1<br>event2",
+		expect(deps.buildPasteContent).toHaveBeenCalledWith(
+			"styled",
+			[
+				{ type: "title", date: expect.anything() },
+				{ type: "text", value: "\n" },
+				{ type: "events", events: [] },
+			],
+			"example.cybozu.com",
 		);
+		expect(deps.paste).toHaveBeenCalledWith({
+			plainText: "plain",
+			html: "html",
+		});
 	});
 
-	it("omits styled html when decoration is plain", async () => {
+	it("passes the decoration setting to buildPasteContent", async () => {
 		const deps = createMockScheduleDeps({
 			loadDecorationSetting: vi.fn().mockResolvedValue("plain"),
 		});
 		await new ScheduleCommand(deps).execute();
-		expect(deps.paste).toHaveBeenCalledWith(
-			"[Title]\nevent1\nevent2",
-			undefined,
+		expect(deps.buildPasteContent).toHaveBeenCalledWith(
+			"plain",
+			expect.anything(),
+			expect.any(String),
 		);
 	});
 
@@ -90,14 +91,6 @@ describe("ScheduleCommand", () => {
 			expect.any(String),
 			expect.objectContaining({ periodEventIncluded: true }),
 		);
-	});
-
-	it("uses decoration setting for formatter", async () => {
-		const deps = createMockScheduleDeps({
-			loadDecorationSetting: vi.fn().mockResolvedValue("plain"),
-		});
-		await new ScheduleCommand(deps).execute();
-		expect(deps.createFormatter).toHaveBeenCalledWith("plain");
 	});
 
 	it("works with async date resolvers", async () => {

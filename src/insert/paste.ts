@@ -1,21 +1,17 @@
 import DOMPurify from "dompurify";
+import type { PasteContent } from "../render/pasteContent";
 
 export class PasteError extends Error {
 	name = "PasteError";
 }
 
-// プレーンテキストを HTML のテキストノードとして忠実に表現するためのエスケープ。
-// セキュリティ目的ではない（それは sanitize が担う）。要素の中身にしか使わないので
-// 属性値用の " ' のエスケープは不要。& を最初に変換しないと二重エスケープになる。
-const escapeHtml = (text: string) =>
-	text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-
+// 組み立て済みの2表現を貼り付け先へ運ぶ。表現の組み立ては buildPasteContent の責務で、
+// ここでは変換しない。
+//
 // 本物のクリップボードは text/plain と text/html など複数の表現を同時に保持し、
 // どれを読むかは貼り付け先が選ぶ（同じコピーでもメモ帳に貼るとプレーン、Word に貼ると
 // 装飾付きになるのはこの仕組み）。ここでも DataTransfer に両方を積んで同じ挙動を再現する。
-// これにより装飾あり（styledHtml あり）は、リッチエディタでは装飾付き・textarea では
-// プレーンと、貼り付け先に応じて自動で切り替わる。
-export const paste = (plainText: string, styledHtml?: string) => {
+export const paste = (content: PasteContent) => {
 	const targetEl = document.activeElement;
 
 	if (!(targetEl instanceof HTMLElement)) {
@@ -23,18 +19,11 @@ export const paste = (plainText: string, styledHtml?: string) => {
 	}
 
 	// text/html に積むものは経路を問わず必ず sanitize を通す
-	const html = DOMPurify.sanitize(
-		// 装飾なし（styledHtml 省略時）でも text/html を積むのはリッチエディタ対策。
-		// リッチエディタは text/html を優先して読み、text/plain しか無いと、プレーンテキストを
-		// 自前の段落構造へ変換する過程で連続改行を 1 つの区切りに正規化してしまい、空行が消える。
-		// エスケープ + <br> 変換した HTML なら改行構造を明示でき、見た目はプレーンのまま
-		// 空行が保持される。
-		styledHtml ?? escapeHtml(plainText).replaceAll("\n", "<br>"),
-	);
+	const html = DOMPurify.sanitize(content.html);
 	const dataTransfer = new DataTransfer();
 	// text/plain も常に積む。textarea や、text/plain しか読まない貼り付けハンドラの
 	// ページでは text/html が読まれないため。
-	dataTransfer.setData("text/plain", plainText);
+	dataTransfer.setData("text/plain", content.plainText);
 	dataTransfer.setData("text/html", html);
 	const handled = !targetEl.dispatchEvent(
 		new ClipboardEvent("paste", {
@@ -53,6 +42,7 @@ export const paste = (plainText: string, styledHtml?: string) => {
 	// ClipboardEvent が処理されなかった場合のフォールバック。
 	// 貼り付け先の種類に応じてどちらの表現を挿入するか選ぶ。
 	if (isTextareaElement(targetEl) || isInputElement(targetEl)) {
+		const plainText = content.plainText;
 		const selectionStart = targetEl.selectionStart ?? targetEl.value.length;
 		const selectionEnd = targetEl.selectionEnd ?? selectionStart;
 		const startText = targetEl.value.slice(0, selectionStart);

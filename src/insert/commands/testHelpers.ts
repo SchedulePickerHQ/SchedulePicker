@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import { vi } from "vitest";
-import type { Formatter } from "../../syntax/formatter";
 import type { BrowserApi } from "../../utils/browser";
 import type { ScheduleDeps, TemplateDeps } from "./types";
 
@@ -17,15 +16,6 @@ export function createMockBrowserApi(
 	};
 }
 
-export function createMockFormatter(overrides?: Partial<Formatter>): Formatter {
-	return {
-		createTitle: vi.fn().mockReturnValue("[Title]"),
-		createEvents: vi.fn().mockReturnValue("event1\nevent2"),
-		getNewLine: vi.fn().mockReturnValue("\n"),
-		...overrides,
-	};
-}
-
 export function createMockScheduleDeps(
 	overrides?: Partial<ScheduleDeps>,
 ): ScheduleDeps {
@@ -34,7 +24,9 @@ export function createMockScheduleDeps(
 		resolveDate: () => dayjs("2025-01-15"),
 		loadPeriodEventSetting: vi.fn().mockResolvedValue(false),
 		loadDecorationSetting: vi.fn().mockResolvedValue("styled"),
-		createFormatter: vi.fn().mockReturnValue(createMockFormatter()),
+		buildPasteContent: vi
+			.fn()
+			.mockReturnValue({ plainText: "plain", html: "html" }),
 		getUserEvents: vi.fn().mockResolvedValue([]),
 		paste: vi.fn(),
 		...overrides,
@@ -49,7 +41,9 @@ export function createMockTemplateDeps(
 		loadTemplateText: vi.fn().mockResolvedValue(""),
 		loadPeriodEventSetting: vi.fn().mockResolvedValue(false),
 		loadDecorationSetting: vi.fn().mockResolvedValue("styled"),
-		createFormatter: vi.fn().mockReturnValue(createMockFormatter()),
+		buildPasteContent: vi
+			.fn()
+			.mockReturnValue({ plainText: "plain", html: "html" }),
 		getUserEvents: vi.fn().mockResolvedValue([]),
 		paste: vi.fn(),
 		getNextBusinessDay: vi.fn().mockResolvedValue(dayjs("2025-01-16")),

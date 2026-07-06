@@ -1,4 +1,4 @@
-import type { Formatter } from "../../syntax/formatter";
+import type { Segment } from "../../render/segment";
 import type { Command } from "../../types";
 import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
 import { handleCommandError } from "./handleCommandError";
@@ -23,18 +23,19 @@ export class ScheduleCommand implements Command {
 				periodEventIncluded,
 			});
 
-			const buildText = (formatter: Formatter) =>
-				formatter.createTitle(targetDate) +
-				formatter.getNewLine() +
-				formatter.createEvents(this.deps.env.hostname, events);
+			const segments: Segment[] = [
+				{ type: "title", date: targetDate },
+				{ type: "text", value: "\n" },
+				{ type: "events", events },
+			];
 
-			const plainText = buildText(this.deps.createFormatter("plain"));
-			const styledHtml =
-				decoration === "styled"
-					? buildText(this.deps.createFormatter("styled"))
-					: undefined;
-
-			this.deps.paste(plainText, styledHtml);
+			this.deps.paste(
+				this.deps.buildPasteContent(
+					decoration,
+					segments,
+					this.deps.env.hostname,
+				),
+			);
 		} catch (e) {
 			handleCommandError(e, this.deps.env);
 		} finally {
