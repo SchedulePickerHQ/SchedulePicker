@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 import { describe, expect, it, vi } from "vitest";
 import { GetEventsError } from "../../schedule/events";
 import { ScheduleCommand } from "./scheduleCommand";
-import { createMockScheduleDeps } from "./testHelpers";
+import { createMockFormatter, createMockScheduleDeps } from "./testHelpers";
+import type { DecorationType } from "./types";
 
 describe("ScheduleCommand", () => {
 	it("fetches events for the resolved date", async () => {
@@ -24,12 +25,33 @@ describe("ScheduleCommand", () => {
 		expect(query.endTime.format("YYYY-MM-DD")).toBe("2025-06-01");
 	});
 
-	it("formats output with title + newline + events", async () => {
-		const deps = createMockScheduleDeps();
+	it("pastes plain and styled representations when decoration is styled", async () => {
+		const deps = createMockScheduleDeps({
+			createFormatter: vi.fn((decoration: DecorationType) =>
+				decoration === "styled"
+					? createMockFormatter({
+							createTitle: vi.fn().mockReturnValue("<span>[Title]</span>"),
+							createEvents: vi.fn().mockReturnValue("event1<br>event2"),
+							getNewLine: vi.fn().mockReturnValue("<br>"),
+						})
+					: createMockFormatter(),
+			),
+		});
 		await new ScheduleCommand(deps).execute();
 		expect(deps.paste).toHaveBeenCalledWith(
 			"[Title]\nevent1\nevent2",
-			"styled",
+			"<span>[Title]</span><br>event1<br>event2",
+		);
+	});
+
+	it("omits styled html when decoration is plain", async () => {
+		const deps = createMockScheduleDeps({
+			loadDecorationSetting: vi.fn().mockResolvedValue("plain"),
+		});
+		await new ScheduleCommand(deps).execute();
+		expect(deps.paste).toHaveBeenCalledWith(
+			"[Title]\nevent1\nevent2",
+			undefined,
 		);
 	});
 

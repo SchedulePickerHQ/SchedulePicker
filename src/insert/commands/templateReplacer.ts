@@ -1,3 +1,4 @@
+import type { UserEvent } from "../../schedule/events";
 import type { Formatter } from "../../syntax/formatter";
 import type { DateTime } from "../../utils/datetime";
 import {
@@ -71,13 +72,15 @@ export const replaceDayPlaceholders = async (
 	return text;
 };
 
-export const replaceEventPlaceholders = async (
+// イベント取得と整形を分離し、プレーン版・装飾版の両方を組むときも取得は1回で済むようにする
+export const fetchEventsForPlaceholders = async (
 	text: string,
 	deps: TemplateDeps,
-	formatter: Formatter,
-): Promise<string> => {
+): Promise<Map<string, UserEvent[]>> => {
+	const eventsByPlaceholder = new Map<string, UserEvent[]>();
+
 	if (!EVENT_ENTRIES.some(({ placeholder }) => text.includes(placeholder))) {
-		return text;
+		return eventsByPlaceholder;
 	}
 
 	const periodEventIncluded = await deps.loadPeriodEventSetting();
@@ -92,12 +95,24 @@ export const replaceEventPlaceholders = async (
 				endTime,
 				periodEventIncluded,
 			});
-			text = text.replaceAll(
-				placeholder,
-				formatter.createEvents(deps.env.hostname, events),
-			);
+			eventsByPlaceholder.set(placeholder, events);
 		}
 	}
 
+	return eventsByPlaceholder;
+};
+
+export const replaceEventPlaceholders = (
+	text: string,
+	eventsByPlaceholder: Map<string, UserEvent[]>,
+	formatter: Formatter,
+	hostname: string,
+): string => {
+	for (const [placeholder, events] of eventsByPlaceholder) {
+		text = text.replaceAll(
+			placeholder,
+			formatter.createEvents(hostname, events),
+		);
+	}
 	return text;
 };

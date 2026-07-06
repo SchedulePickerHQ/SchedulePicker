@@ -1,3 +1,4 @@
+import type { Formatter } from "../../syntax/formatter";
 import type { Command } from "../../types";
 import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
 import { handleCommandError } from "./handleCommandError";
@@ -12,7 +13,6 @@ export class ScheduleCommand implements Command {
 		const endTime = convertToEndOfDay(targetDate);
 		const periodEventIncluded = await this.deps.loadPeriodEventSetting();
 		const decoration = await this.deps.loadDecorationSetting();
-		const formatter = this.deps.createFormatter(decoration);
 
 		try {
 			this.deps.env.setCursor("progress");
@@ -23,12 +23,18 @@ export class ScheduleCommand implements Command {
 				periodEventIncluded,
 			});
 
-			const text =
+			const buildText = (formatter: Formatter) =>
 				formatter.createTitle(targetDate) +
 				formatter.getNewLine() +
 				formatter.createEvents(this.deps.env.hostname, events);
 
-			this.deps.paste(text, decoration);
+			const plainText = buildText(this.deps.createFormatter("plain"));
+			const styledHtml =
+				decoration === "styled"
+					? buildText(this.deps.createFormatter("styled"))
+					: undefined;
+
+			this.deps.paste(plainText, styledHtml);
 		} catch (e) {
 			handleCommandError(e, this.deps.env);
 		} finally {

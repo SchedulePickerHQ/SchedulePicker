@@ -2,12 +2,12 @@ import type { DecorationType } from "../../insert/commands/types";
 import { buildContextMenu } from "../../menu/builder";
 import {
 	loadContextMenuDisplaySettings,
-	loadPeriodEventSetting,
 	loadDecorationSetting,
+	loadPeriodEventSetting,
 	loadTemplateText,
 	saveContextMenuDisplaySettings,
-	savePeriodEventSetting,
 	saveDecorationSetting,
+	savePeriodEventSetting,
 	saveTemplateText,
 } from "../../utils/storage";
 

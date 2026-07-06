@@ -1,7 +1,7 @@
+import { DecorationCommand } from "../insert/commands/decorationCommand";
 import { ScheduleCommand } from "../insert/commands/scheduleCommand";
 import { SettingsCommand } from "../insert/commands/settingsCommand";
 import { SpecifiedDayCommand } from "../insert/commands/specifiedDayCommand";
-import { DecorationCommand } from "../insert/commands/decorationCommand";
 import { TemplateCommand } from "../insert/commands/templateCommand";
 import type { ScheduleDeps } from "../insert/commands/types";
 import { paste } from "../insert/paste";
@@ -22,8 +22,8 @@ import {
 	sendOpenSettingsPage,
 } from "../utils/messaging";
 import {
-	loadPeriodEventSetting,
 	loadDecorationSetting,
+	loadPeriodEventSetting,
 	loadTemplateText,
 	saveDecorationSetting,
 } from "../utils/storage";
@@ -98,11 +98,17 @@ contextMenuController.setCommand(
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.STYLED,
-	new DecorationCommand("styled", { saveDecorationSetting, sendBuildContextMenu }),
+	new DecorationCommand("styled", {
+		saveDecorationSetting,
+		sendBuildContextMenu,
+	}),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.PLAIN,
-	new DecorationCommand("plain", { saveDecorationSetting, sendBuildContextMenu }),
+	new DecorationCommand("plain", {
+		saveDecorationSetting,
+		sendBuildContextMenu,
+	}),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.SETTINGS,

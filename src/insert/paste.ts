@@ -1,21 +1,29 @@
 import DOMPurify from "dompurify";
-import type { DecorationType } from "./commands/types";
 
 export class PasteError extends Error {
 	name = "PasteError";
 }
 
-export const paste = (text: string, decoration: DecorationType) => {
+const escapeHtml = (text: string) =>
+	text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+// 本物のクリップボードと同様に text/plain と text/html の両方を積み、
+// どちらを読むかは貼り付け先に選ばせる。styledHtml を省略すると装飾なし扱いで、
+// text/html にもプレーン版（エスケープ + <br> 変換）を積む。
+export const paste = (plainText: string, styledHtml?: string) => {
 	const targetEl = document.activeElement;
 
 	if (!(targetEl instanceof HTMLElement)) {
 		throw new PasteError();
 	}
 
-	const sanitized = DOMPurify.sanitize(text);
-	const mimeType = decoration === "plain" ? "text/plain" : "text/html";
+	// text/html に積むものは経路を問わず必ず sanitize を通す
+	const html = DOMPurify.sanitize(
+		styledHtml ?? escapeHtml(plainText).replaceAll("\n", "<br>"),
+	);
 	const dataTransfer = new DataTransfer();
-	dataTransfer.setData(mimeType, sanitized);
+	dataTransfer.setData("text/plain", plainText);
+	dataTransfer.setData("text/html", html);
 	const handled = !targetEl.dispatchEvent(
 		new ClipboardEvent("paste", {
 			clipboardData: dataTransfer,
@@ -30,16 +38,17 @@ export const paste = (text: string, decoration: DecorationType) => {
 		return;
 	}
 
-	// ClipboardEvent が処理されなかった場合のフォールバック
+	// ClipboardEvent が処理されなかった場合のフォールバック。
+	// 貼り付け先の種類に応じてどちらの表現を挿入するか選ぶ。
 	if (isTextareaElement(targetEl) || isInputElement(targetEl)) {
 		const selectionStart = targetEl.selectionStart ?? targetEl.value.length;
 		const selectionEnd = targetEl.selectionEnd ?? selectionStart;
 		const startText = targetEl.value.slice(0, selectionStart);
 		const endText = targetEl.value.slice(selectionEnd);
-		targetEl.value = startText + text + endText;
+		targetEl.value = startText + plainText + endText;
 
 		targetEl.focus();
-		const cursorPos = selectionStart + text.length;
+		const cursorPos = selectionStart + plainText.length;
 		targetEl.selectionStart = cursorPos;
 		targetEl.selectionEnd = cursorPos;
 
@@ -49,12 +58,14 @@ export const paste = (text: string, decoration: DecorationType) => {
 		targetEl.dispatchEvent(new window.Event("change", { bubbles: true }));
 	} else if (targetEl.isContentEditable) {
 		const selection = document.getSelection();
+		if (selection === null) {
+			return;
+		}
 		const range = selection.getRangeAt(0);
 		range.deleteContents();
 
 		const node = document.createElement("span");
-		node.style.whiteSpace = "pre";
-		node.innerHTML = sanitized;
+		node.innerHTML = html;
 		range.insertNode(node);
 
 		targetEl.focus();

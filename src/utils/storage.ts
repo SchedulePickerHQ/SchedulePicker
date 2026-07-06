@@ -58,11 +58,15 @@ const CONTEXT_MENU_DISPLAYED_KEYS: (keyof StorageValue["CONTEXT_MENU_DISPLAYED"]
 
 // 装飾の設定
 
-export const saveDecorationSetting = async (decoration: StorageValue["DECORATION"]) => {
+export const saveDecorationSetting = async (
+	decoration: StorageValue["DECORATION"],
+) => {
 	await chrome.storage.sync.set({ [STORAGE_KEY.DECORATION]: decoration });
 };
 
-export const loadDecorationSetting = async (): Promise<StorageValue["DECORATION"]> => {
+export const loadDecorationSetting = async (): Promise<
+	StorageValue["DECORATION"]
+> => {
 	const item = await chrome.storage.sync.get(STORAGE_KEY.DECORATION);
 	if (Object.keys(item).length === 0) {
 		return STORAGE_INIT_VALUE.DECORATION;

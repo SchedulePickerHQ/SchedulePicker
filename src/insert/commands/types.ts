@@ -21,7 +21,8 @@ export interface ScheduleDeps {
 			periodEventIncluded: boolean;
 		},
 	) => Promise<UserEvent[]>;
-	paste: (text: string, decoration: DecorationType) => void;
+	// styledHtml を省略すると装飾なし（text/html にもプレーン版が積まれる）
+	paste: (plainText: string, styledHtml?: string) => void;
 }
 
 export type SpecifiedDayDeps = Omit<ScheduleDeps, "resolveDate">;
@@ -38,7 +39,7 @@ export interface TemplateDeps {
 	loadDecorationSetting: () => Promise<DecorationType>;
 	createFormatter: (decoration: DecorationType) => Formatter;
 	getUserEvents: ScheduleDeps["getUserEvents"];
-	paste: (text: string, decoration: DecorationType) => void;
+	paste: ScheduleDeps["paste"];
 	getNextBusinessDay: (hostname: string) => Promise<DateTime>;
 	getPreviousBusinessDay: (hostname: string) => Promise<DateTime>;
 	getDayOfWeek: (date: DateTime) => string;

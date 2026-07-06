@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
 	convertNewLines,
+	fetchEventsForPlaceholders,
 	replaceDayPlaceholders,
 	replaceEventPlaceholders,
 } from "./templateReplacer";
@@ -56,37 +57,50 @@ describe("replaceDayPlaceholders", () => {
 	});
 });
 
-describe("replaceEventPlaceholders", () => {
-	it("replaces {%TODAY_EVENTS%} with formatted events", async () => {
+describe("fetchEventsForPlaceholders", () => {
+	it("fetches events once per placeholder in the text", async () => {
 		const deps = createMockTemplateDeps();
-		const result = await replaceEventPlaceholders(
-			"Events: {%TODAY_EVENTS%}",
+		const result = await fetchEventsForPlaceholders(
+			"{%TODAY_EVENTS%}\n---\n{%TOMORROW_EVENTS%}",
 			deps,
-			createMockFormatter(),
 		);
-		expect(result).toBe("Events: event1\nevent2");
-		expect(deps.getUserEvents).toHaveBeenCalled();
+		expect([...result.keys()]).toEqual([
+			"{%TODAY_EVENTS%}",
+			"{%TOMORROW_EVENTS%}",
+		]);
+		expect(deps.getUserEvents).toHaveBeenCalledTimes(2);
 	});
 
 	it("skips fetching when no event placeholders", async () => {
 		const deps = createMockTemplateDeps();
-		await replaceEventPlaceholders(
-			"no placeholders",
-			deps,
-			createMockFormatter(),
-		);
+		const result = await fetchEventsForPlaceholders("no placeholders", deps);
+		expect(result.size).toBe(0);
 		expect(deps.getUserEvents).not.toHaveBeenCalled();
 		expect(deps.loadPeriodEventSetting).not.toHaveBeenCalled();
 	});
+});
 
-	it("replaces multiple event placeholders", async () => {
-		const deps = createMockTemplateDeps();
-		const result = await replaceEventPlaceholders(
-			"{%TODAY_EVENTS%}\n---\n{%TOMORROW_EVENTS%}",
-			deps,
+describe("replaceEventPlaceholders", () => {
+	it("replaces {%TODAY_EVENTS%} with formatted events", () => {
+		const result = replaceEventPlaceholders(
+			"Events: {%TODAY_EVENTS%}",
+			new Map([["{%TODAY_EVENTS%}", []]]),
 			createMockFormatter(),
+			"example.cybozu.com",
+		);
+		expect(result).toBe("Events: event1\nevent2");
+	});
+
+	it("replaces multiple event placeholders", () => {
+		const result = replaceEventPlaceholders(
+			"{%TODAY_EVENTS%}\n---\n{%TOMORROW_EVENTS%}",
+			new Map([
+				["{%TODAY_EVENTS%}", []],
+				["{%TOMORROW_EVENTS%}", []],
+			]),
+			createMockFormatter(),
+			"example.cybozu.com",
 		);
 		expect(result).toBe("event1\nevent2\n---\nevent1\nevent2");
-		expect(deps.getUserEvents).toHaveBeenCalledTimes(2);
 	});
 });
