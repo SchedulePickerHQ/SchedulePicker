@@ -3,7 +3,7 @@ import {
 	replaceDayPlaceholders,
 	replaceEventPlaceholders,
 } from "./templateReplacer";
-import { createMockTemplateDeps } from "./testHelpers";
+import { createMockFormatter, createMockTemplateDeps } from "./testHelpers";
 
 describe("replaceDayPlaceholders", () => {
 	it("replaces {%TODAY%} with formatted date", async () => {
@@ -45,6 +45,7 @@ describe("replaceEventPlaceholders", () => {
 		const result = await replaceEventPlaceholders(
 			"Events: {%TODAY_EVENTS%}",
 			deps,
+			createMockFormatter(),
 		);
 		expect(result).toBe("Events: event1\nevent2");
 		expect(deps.getUserEvents).toHaveBeenCalled();
@@ -52,7 +53,11 @@ describe("replaceEventPlaceholders", () => {
 
 	it("skips fetching when no event placeholders", async () => {
 		const deps = createMockTemplateDeps();
-		await replaceEventPlaceholders("no placeholders", deps);
+		await replaceEventPlaceholders(
+			"no placeholders",
+			deps,
+			createMockFormatter(),
+		);
 		expect(deps.getUserEvents).not.toHaveBeenCalled();
 		expect(deps.loadPeriodEventSetting).not.toHaveBeenCalled();
 	});
@@ -62,6 +67,7 @@ describe("replaceEventPlaceholders", () => {
 		const result = await replaceEventPlaceholders(
 			"{%TODAY_EVENTS%}\n---\n{%TOMORROW_EVENTS%}",
 			deps,
+			createMockFormatter(),
 		);
 		expect(result).toBe("event1\nevent2\n---\nevent1\nevent2");
 		expect(deps.getUserEvents).toHaveBeenCalledTimes(2);

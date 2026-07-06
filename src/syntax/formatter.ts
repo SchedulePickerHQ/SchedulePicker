@@ -8,6 +8,8 @@ export interface Formatter {
 	createTitle(dateTime: DateTime): string;
 	createEvents(hostname: string, events: UserEvent[]): string;
 	getNewLine(): string;
+	/** ユーザーが入力した生テキストをこのフォーマットの表現に変換する */
+	formatRawText(text: string): string;
 }
 
 export function createFormatter(decoration: DecorationType): Formatter {

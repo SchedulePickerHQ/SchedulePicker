@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { GetEventsError } from "../../schedule/events";
 import { TemplateCommand } from "./templateCommand";
-import { createMockTemplateDeps } from "./testHelpers";
+import { createMockFormatter, createMockTemplateDeps } from "./testHelpers";
 
 describe("TemplateCommand", () => {
 	it("loads template and inserts replaced result", async () => {
@@ -16,16 +16,18 @@ describe("TemplateCommand", () => {
 		);
 	});
 
-	it("converts template newlines to the formatter's newline", async () => {
+	it("converts template text via the formatter before pasting", async () => {
+		const formatter = createMockFormatter({
+			formatRawText: vi
+				.fn()
+				.mockImplementation((text: string) => text.replaceAll("\n", "<br>")),
+		});
 		const deps = createMockTemplateDeps({
 			loadTemplateText: vi.fn().mockResolvedValue("line1\nline2\nline3"),
-			createFormatter: vi.fn().mockReturnValue({
-				createTitle: vi.fn(),
-				createEvents: vi.fn(),
-				getNewLine: vi.fn().mockReturnValue("<br>"),
-			}),
+			createFormatter: vi.fn().mockReturnValue(formatter),
 		});
 		await new TemplateCommand(deps).execute();
+		expect(formatter.formatRawText).toHaveBeenCalledWith("line1\nline2\nline3");
 		expect(deps.paste).toHaveBeenCalledWith(
 			"line1<br>line2<br>line3",
 			"styled",

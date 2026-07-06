@@ -24,6 +24,11 @@ export class StyledFormatter implements Formatter {
 		return "<br>";
 	}
 
+	// text/html として貼り付けられるため、生の改行は空白に潰れてしまう
+	formatRawText(text: string) {
+		return text.replaceAll("\n", this.getNewLine());
+	}
+
 	private createEvent(hostname: string, event: UserEvent) {
 		const timeRange = this.createTimeRange(event);
 		const subject = this.createSubject(hostname, event.id, event.subject);

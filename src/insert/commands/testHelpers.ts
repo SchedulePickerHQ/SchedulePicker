@@ -17,11 +17,13 @@ export function createMockBrowserApi(
 	};
 }
 
-function createMockFormatter(): Formatter {
+export function createMockFormatter(overrides?: Partial<Formatter>): Formatter {
 	return {
 		createTitle: vi.fn().mockReturnValue("[Title]"),
 		createEvents: vi.fn().mockReturnValue("event1\nevent2"),
 		getNewLine: vi.fn().mockReturnValue("\n"),
+		formatRawText: vi.fn().mockImplementation((text: string) => text),
+		...overrides,
 	};
 }
 

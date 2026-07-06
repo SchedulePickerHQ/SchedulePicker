@@ -1,3 +1,4 @@
+import type { Formatter } from "../../syntax/formatter";
 import type { DateTime } from "../../utils/datetime";
 import {
 	convertToEndOfDay,
@@ -67,14 +68,13 @@ export const replaceDayPlaceholders = async (
 export const replaceEventPlaceholders = async (
 	text: string,
 	deps: TemplateDeps,
+	formatter: Formatter,
 ): Promise<string> => {
 	if (!EVENT_ENTRIES.some(({ placeholder }) => text.includes(placeholder))) {
 		return text;
 	}
 
 	const periodEventIncluded = await deps.loadPeriodEventSetting();
-	const decoration = await deps.loadDecorationSetting();
-	const formatter = deps.createFormatter(decoration);
 
 	for (const { placeholder, getDate } of EVENT_ENTRIES) {
 		if (text.includes(placeholder)) {

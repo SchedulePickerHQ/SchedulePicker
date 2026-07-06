@@ -27,7 +27,10 @@ describe("ScheduleCommand", () => {
 	it("formats output with title + newline + events", async () => {
 		const deps = createMockScheduleDeps();
 		await new ScheduleCommand(deps).execute();
-		expect(deps.paste).toHaveBeenCalledWith("[Title]\nevent1\nevent2", "styled");
+		expect(deps.paste).toHaveBeenCalledWith(
+			"[Title]\nevent1\nevent2",
+			"styled",
+		);
 	});
 
 	it("sets cursor to progress then auto", async () => {
