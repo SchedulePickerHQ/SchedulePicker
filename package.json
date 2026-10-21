@@ -4,7 +4,7 @@
   "author": "kuroppe1819",
   "homepage": "https://github.com/SchedulePickerHQ/SchedulePicker",
   "type": "module",
-  "packageManager": "pnpm@11.2.2",
+  "packageManager": "pnpm@12.13.0",
   "scripts": {
     "build": "node --no-warnings=ExperimentalWarning --experimental-strip-types scripts/build.ts",
     "test": "vitest run",
