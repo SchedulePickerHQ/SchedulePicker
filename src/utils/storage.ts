@@ -45,6 +45,9 @@ const VALID_DECORATION_VALUES: StorageValue["DECORATION"][] = [
 	"plain",
 ];
 
+const isDecorationType = (value: unknown): value is DecorationType =>
+	VALID_DECORATION_VALUES.some((decoration) => decoration === value);
+
 const CONTEXT_MENU_DISPLAYED_KEYS: (keyof StorageValue["CONTEXT_MENU_DISPLAYED"])[] =
 	[
 		"today",
@@ -72,7 +75,7 @@ export const loadDecorationSetting = async (): Promise<
 		return STORAGE_INIT_VALUE.DECORATION;
 	}
 	const raw = item[STORAGE_KEY.DECORATION];
-	if (!VALID_DECORATION_VALUES.includes(raw)) {
+	if (!isDecorationType(raw)) {
 		return STORAGE_INIT_VALUE.DECORATION;
 	}
 	return raw;
@@ -101,7 +104,9 @@ export const loadContextMenuDisplaySettings = async (): Promise<
 	if (
 		typeof raw !== "object" ||
 		raw === null ||
-		!CONTEXT_MENU_DISPLAYED_KEYS.every((key) => typeof raw[key] === "boolean")
+		!CONTEXT_MENU_DISPLAYED_KEYS.every(
+			(key) => typeof (raw as Record<string, unknown>)[key] === "boolean",
+		)
 	) {
 		return STORAGE_INIT_VALUE.CONTEXT_MENU_DISPLAYED;
 	}

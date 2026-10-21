@@ -9,7 +9,8 @@
     "resolveJsonModule": true,
     "strict": true,
     "skipLibCheck": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+		"types": ["chrome", "node"]
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
