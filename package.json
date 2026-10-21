@@ -9,6 +9,7 @@
     "build": "node --no-warnings=ExperimentalWarning --experimental-strip-types scripts/build.ts",
     "test": "vitest run",
     "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
     "check": "biome check .",
     "check:fix": "biome check --fix ."
   },
