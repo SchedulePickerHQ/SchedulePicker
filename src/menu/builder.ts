@@ -11,7 +11,7 @@ type ContextMenuItem = {
 	type: "normal" | "radio" | "separator";
 	checked?: boolean;
 	parentId?: string;
-	contexts: "editable"[];
+	contexts: ["editable"];
 };
 
 export type ContextMenuId = ValueOf<typeof CONTEXT_MENU_ID>;
