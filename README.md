@@ -5,7 +5,6 @@ A browser extension that lets you insert Garoon schedule events into text areas.
 ```bash
 pnpm install
 pnpm build
-pnpm test
 ```
 
 ## Disclaimer
