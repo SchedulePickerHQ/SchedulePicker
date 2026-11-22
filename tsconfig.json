@@ -4,13 +4,10 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "noEmit": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
     "strict": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
-		"types": ["chrome"]
+    "types": ["chrome"]
   },
   "include": ["src/**/*.ts"]
 }
