@@ -1,8 +1,17 @@
 strictDepBuilds: true
 allowBuilds:
-  esbuild: true
+  # esbuild の postinstall は、bin の JS の中継を実バイナリに差し替える最適化だけで、
+  # 止めても OS 別パッケージのバイナリで動く。インストール時に実行されるコードを無くすため拒否する
+  esbuild: false
 minimumReleaseAge: 10080
+# 公開日時の分からない版を、待ち期間の確認を飛ばして入れないようにする
+minimumReleaseAgeIgnoreMissingTime: false
 trustPolicy: no-downgrade
 blockExoticSubdeps: true
+lockfile:
+  # 圧縮前の tar のハッシュを記録する。pnpm audit signatures で npm の署名と照合できる
+  integrityTarget: tar
+  # 解決に関わる設定を lockfile に記録し、設定が食い違ったまま --frozen-lockfile で入れるのを防ぐ
+  includeResolutionSettings: true
 verifyDepsBeforeRun: install
 saveExact: true
