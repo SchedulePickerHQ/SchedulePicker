@@ -1,5 +1,5 @@
 import type { UserEvent } from "../../schedule/events";
-import { formatDateWithDayOfWeek, formatTime } from "../../utils/datetime";
+import { formatDateWithDayOfWeek, formatTime } from "../../utils/dateFormat";
 import type { Renderer } from "../renderer";
 import type { Segment } from "../segment";
 

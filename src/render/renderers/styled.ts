@@ -1,5 +1,5 @@
 import type { UserEvent } from "../../schedule/events";
-import { formatDateWithDayOfWeek, formatTime } from "../../utils/datetime";
+import { formatDateWithDayOfWeek, formatTime } from "../../utils/dateFormat";
 import { escapeHtml, textToHtml } from "../escapeHtml";
 import { getEventMenuColor } from "../eventMenuColor";
 import type { Renderer } from "../renderer";

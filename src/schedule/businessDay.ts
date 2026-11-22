@@ -1,12 +1,10 @@
-import { isWeekend, today } from "../utils/datetime";
-
 import { getCalendarEvents } from "./api/garoon";
 
 export const getNextBusinessDay = async (
 	hostname: string,
 ): Promise<Temporal.PlainDate> => {
 	const publicHolidays = await getPublicHolidays(hostname);
-	let nextDate = today().add({ days: 1 });
+	let nextDate = Temporal.Now.plainDateISO().add({ days: 1 });
 
 	while (isPublicHoliday(nextDate, publicHolidays) || isWeekend(nextDate)) {
 		nextDate = nextDate.add({ days: 1 });
@@ -19,7 +17,7 @@ export const getPreviousBusinessDay = async (
 	hostname: string,
 ): Promise<Temporal.PlainDate> => {
 	const publicHolidays = await getPublicHolidays(hostname);
-	let prevDate = today().subtract({ days: 1 });
+	let prevDate = Temporal.Now.plainDateISO().subtract({ days: 1 });
 
 	while (isPublicHoliday(prevDate, publicHolidays) || isWeekend(prevDate)) {
 		prevDate = prevDate.subtract({ days: 1 });
@@ -43,3 +41,7 @@ const isPublicHoliday = (
 	date: Temporal.PlainDate,
 	publicHolidays: Temporal.PlainDate[],
 ): boolean => publicHolidays.some((holiday) => holiday.equals(date));
+
+// dayOfWeek は月曜 1 〜日曜 7
+const isWeekend = (date: Temporal.PlainDate): boolean =>
+	date.dayOfWeek === 6 || date.dayOfWeek === 7;

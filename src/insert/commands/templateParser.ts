@@ -1,6 +1,6 @@
 import type { Segment } from "../../render/segment";
 import type { UserEvent } from "../../schedule/events";
-import { formatDateWithDayOfWeek, today } from "../../utils/datetime";
+import { formatDateWithDayOfWeek } from "../../utils/dateFormat";
 import type { TemplateDeps } from "./types";
 
 type DateEntry = {
@@ -11,11 +11,14 @@ type DateEntry = {
 };
 
 const DAY_ENTRIES: DateEntry[] = [
-	{ placeholder: "{%TODAY%}", getDate: () => today() },
-	{ placeholder: "{%TOMORROW%}", getDate: () => today().add({ days: 1 }) },
+	{ placeholder: "{%TODAY%}", getDate: () => Temporal.Now.plainDateISO() },
+	{
+		placeholder: "{%TOMORROW%}",
+		getDate: () => Temporal.Now.plainDateISO().add({ days: 1 }),
+	},
 	{
 		placeholder: "{%YESTERDAY%}",
-		getDate: () => today().subtract({ days: 1 }),
+		getDate: () => Temporal.Now.plainDateISO().subtract({ days: 1 }),
 	},
 	{
 		placeholder: "{%NEXT_BUSINESS_DAY%}",
@@ -28,14 +31,17 @@ const DAY_ENTRIES: DateEntry[] = [
 ];
 
 const EVENT_ENTRIES: DateEntry[] = [
-	{ placeholder: "{%TODAY_EVENTS%}", getDate: () => today() },
+	{
+		placeholder: "{%TODAY_EVENTS%}",
+		getDate: () => Temporal.Now.plainDateISO(),
+	},
 	{
 		placeholder: "{%TOMORROW_EVENTS%}",
-		getDate: () => today().add({ days: 1 }),
+		getDate: () => Temporal.Now.plainDateISO().add({ days: 1 }),
 	},
 	{
 		placeholder: "{%YESTERDAY_EVENTS%}",
-		getDate: () => today().subtract({ days: 1 }),
+		getDate: () => Temporal.Now.plainDateISO().subtract({ days: 1 }),
 	},
 	{
 		placeholder: "{%NEXT_BUSINESS_DAY_EVENTS%}",

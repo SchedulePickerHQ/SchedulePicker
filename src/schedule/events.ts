@@ -4,6 +4,8 @@ export class GetEventsError extends Error {
 	name = "GetEventsError";
 }
 
+// 日付は Temporal.PlainDate、予定の開始・終了は Temporal.ZonedDateTime で扱う。
+// 日付に時刻を持たせないことで、日付同士の比較に時刻が紛れ込まないようにする
 export type UserEventsQuery = {
 	date: Temporal.PlainDate;
 	periodEventIncluded: boolean;
@@ -23,7 +25,7 @@ export type UserEvent = {
 	isContinuingToTomorrow: boolean;
 };
 
-// 対象日の 0:00:00.000 から 23:59:59.999 まで（実行環境の既定タイムゾーン）
+// 対象日の 0:00:00.000 から 23:59:59.999 まで（実行環境の既定タイムゾーン。Chrome では OS の設定）
 type DayRange = {
 	date: Temporal.PlainDate;
 	timeZone: string;
