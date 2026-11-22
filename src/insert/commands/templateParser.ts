@@ -65,7 +65,7 @@ export const parseTemplate = async (
 };
 
 // 日付プレースホルダーはどの表現でも同じ文字列になるので、パース前にテキストとして解決する
-export const replaceDayPlaceholders = async (
+const replaceDayPlaceholders = async (
 	text: string,
 	deps: TemplateDeps,
 ): Promise<string> => {
