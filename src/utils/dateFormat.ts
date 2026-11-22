@@ -1,9 +1,8 @@
 const pad2 = (value: number) => String(value).padStart(2, "0");
 
-// Temporal の dayOfWeek は月曜 1 〜日曜 7。_locales の day_of_week_N は
-// Date#getDay と同じ日曜 0 〜土曜 6 なので、日曜の 7 だけ 0 に寄せる
+// _locales の day_of_week_N の番号は、Temporal の dayOfWeek（月曜 1 〜日曜 7）に合わせてある
 const getDayOfWeek = (date: Temporal.PlainDate) =>
-	chrome.i18n.getMessage(`day_of_week_${date.dayOfWeek % 7}`);
+	chrome.i18n.getMessage(`day_of_week_${date.dayOfWeek}`);
 
 // toLocaleString を使わないのは、表記がブラウザや OS の言語設定で変わりうるため
 export const formatDate = (date: Temporal.PlainDate): string =>
