@@ -1,8 +1,5 @@
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import type { ValueOf } from "../types";
-
-dayjs.extend(utc);
 
 export type DateTime = dayjs.Dayjs;
 
