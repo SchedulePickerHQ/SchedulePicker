@@ -1,25 +1,21 @@
 import type { Segment } from "../../render/segment";
 import type { UserEvent } from "../../schedule/events";
-import type { DateTime } from "../../utils/datetime";
-import {
-	convertToEndOfDay,
-	convertToStartOfDay,
-	dateTime,
-	formatDateWithDayOfWeek,
-} from "../../utils/datetime";
+import { formatDateWithDayOfWeek, today } from "../../utils/datetime";
 import type { TemplateDeps } from "./types";
 
 type DateEntry = {
 	placeholder: string;
-	getDate: (deps: TemplateDeps) => Promise<DateTime> | DateTime;
+	getDate: (
+		deps: TemplateDeps,
+	) => Promise<Temporal.PlainDate> | Temporal.PlainDate;
 };
 
 const DAY_ENTRIES: DateEntry[] = [
-	{ placeholder: "{%TODAY%}", getDate: () => dateTime() },
-	{ placeholder: "{%TOMORROW%}", getDate: () => dateTime().add(1, "day") },
+	{ placeholder: "{%TODAY%}", getDate: () => today() },
+	{ placeholder: "{%TOMORROW%}", getDate: () => today().add({ days: 1 }) },
 	{
 		placeholder: "{%YESTERDAY%}",
-		getDate: () => dateTime().subtract(1, "day"),
+		getDate: () => today().subtract({ days: 1 }),
 	},
 	{
 		placeholder: "{%NEXT_BUSINESS_DAY%}",
@@ -32,14 +28,14 @@ const DAY_ENTRIES: DateEntry[] = [
 ];
 
 const EVENT_ENTRIES: DateEntry[] = [
-	{ placeholder: "{%TODAY_EVENTS%}", getDate: () => dateTime() },
+	{ placeholder: "{%TODAY_EVENTS%}", getDate: () => today() },
 	{
 		placeholder: "{%TOMORROW_EVENTS%}",
-		getDate: () => dateTime().add(1, "day"),
+		getDate: () => today().add({ days: 1 }),
 	},
 	{
 		placeholder: "{%YESTERDAY_EVENTS%}",
-		getDate: () => dateTime().subtract(1, "day"),
+		getDate: () => today().subtract({ days: 1 }),
 	},
 	{
 		placeholder: "{%NEXT_BUSINESS_DAY_EVENTS%}",
@@ -99,8 +95,7 @@ const fetchEventsForPlaceholders = async (
 		matched.map(async ({ placeholder, getDate }) => {
 			const date = await getDate(deps);
 			const events = await deps.getUserEvents(deps.env.hostname, {
-				startTime: convertToStartOfDay(date),
-				endTime: convertToEndOfDay(date),
+				date,
 				periodEventIncluded,
 			});
 			return [placeholder, events] as const;

@@ -14,7 +14,7 @@ import {
 } from "../schedule/businessDay";
 import { getUserEvents } from "../schedule/events";
 import { createBrowserApi } from "../utils/browser";
-import { dateTime } from "../utils/datetime";
+import { today } from "../utils/datetime";
 import {
 	MESSAGE_CONTEXT,
 	type MessageContext,
@@ -50,15 +50,15 @@ const contextMenuController = new ContextMenuController();
 
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.TODAY,
-	new ScheduleCommand(makeScheduleDeps(() => dateTime())),
+	new ScheduleCommand(makeScheduleDeps(() => today())),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.TOMORROW,
-	new ScheduleCommand(makeScheduleDeps(() => dateTime().add(1, "day"))),
+	new ScheduleCommand(makeScheduleDeps(() => today().add({ days: 1 }))),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.YESTERDAY,
-	new ScheduleCommand(makeScheduleDeps(() => dateTime().subtract(1, "day"))),
+	new ScheduleCommand(makeScheduleDeps(() => today().subtract({ days: 1 }))),
 );
 contextMenuController.setCommand(
 	CONTEXT_MENU_ID.NEXT_BUSINESS_DAY,

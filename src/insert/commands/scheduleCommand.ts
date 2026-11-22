@@ -1,6 +1,5 @@
 import type { Segment } from "../../render/segment";
 import type { Command } from "../../types";
-import { convertToEndOfDay, convertToStartOfDay } from "../../utils/datetime";
 import { handleCommandError } from "./handleCommandError";
 import type { ScheduleDeps } from "./types";
 
@@ -9,8 +8,6 @@ export class ScheduleCommand implements Command {
 
 	async execute(): Promise<void> {
 		const targetDate = await this.deps.resolveDate();
-		const startTime = convertToStartOfDay(targetDate);
-		const endTime = convertToEndOfDay(targetDate);
 		const periodEventIncluded = await this.deps.loadPeriodEventSetting();
 		const decoration = await this.deps.loadDecorationSetting();
 
@@ -18,8 +15,7 @@ export class ScheduleCommand implements Command {
 			this.deps.env.setCursor("progress");
 
 			const events = await this.deps.getUserEvents(this.deps.env.hostname, {
-				startTime,
-				endTime,
+				date: targetDate,
 				periodEventIncluded,
 			});
 

@@ -1,6 +1,5 @@
 import type { UserEvent } from "../../schedule/events";
-import type { DateTime } from "../../utils/datetime";
-import { formatDateWithDayOfWeek } from "../../utils/datetime";
+import { formatDateWithDayOfWeek, formatTime } from "../../utils/datetime";
 import type { Renderer } from "../renderer";
 import type { Segment } from "../segment";
 
@@ -22,7 +21,7 @@ export class PlainRenderer implements Renderer {
 		}
 	}
 
-	private renderTitle(date: DateTime) {
+	private renderTitle(date: Temporal.PlainDate) {
 		return `[ ${chrome.i18n.getMessage("event_title", formatDateWithDayOfWeek(date))} ]`;
 	}
 
@@ -42,10 +41,10 @@ export class PlainRenderer implements Renderer {
 
 		const start = event.isContinuingFromYesterday
 			? "--------"
-			: event.startTime.format("HH:mm");
+			: formatTime(event.startTime);
 		const end = event.isContinuingToTomorrow
 			? "--------"
-			: event.endTime.format("HH:mm");
+			: formatTime(event.endTime);
 		return `${start}-${end}`;
 	}
 

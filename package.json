@@ -12,7 +12,6 @@
     "check:fix": "biome check --fix ."
   },
   "dependencies": {
-    "dayjs": "1.11.23",
     "dompurify": "3.4.17"
   },
   "devDependencies": {

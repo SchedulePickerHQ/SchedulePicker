@@ -166,9 +166,6 @@ importers:
 
   .:
     dependencies:
-      dayjs:
-        specifier: 1.11.23
-        version: 1.11.23
       dompurify:
         specifier: 3.4.17
         version: 3.4.17
@@ -536,9 +533,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  dayjs@1.11.23:
-    resolution: {integrity: sha512-QDTCU0M0MxR3hQfnlDJfwekQiaanm1ubOD231u73WBckQ/fsamwRLiE2GBz6D3a/xF1NgfiDLJjXBa1hYOYTtQ==}
-
   dompurify@3.4.17:
     resolution: {integrity: sha512-B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==}
 
@@ -742,8 +736,6 @@ snapshots:
 
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
-
-  dayjs@1.11.23: {}
 
   dompurify@3.4.17:
     optionalDependencies:
