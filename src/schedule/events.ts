@@ -82,28 +82,23 @@ const convertToUserEvent = (
 	scheduleEvent: ScheduleEvent,
 	range: DayRange,
 ): UserEvent => {
-	const scheduleEventStartTime = parseGaroonDateTime(
+	const eventStart = parseGaroonDateTime(
 		scheduleEvent.start.dateTime,
 		range.timeZone,
 	);
 	const isContinuingFromYesterday =
-		Temporal.PlainDate.compare(
-			scheduleEventStartTime.toPlainDate(),
-			range.date,
-		) < 0;
-	const startTime = isContinuingFromYesterday
-		? range.start
-		: scheduleEventStartTime;
+		Temporal.PlainDate.compare(eventStart.toPlainDate(), range.date) < 0;
+	const startTime = isContinuingFromYesterday ? range.start : eventStart;
 
-	const scheduleEventEndTime =
+	const eventEnd =
 		!scheduleEvent.isStartOnly && "end" in scheduleEvent
 			? parseGaroonDateTime(scheduleEvent.end.dateTime, range.timeZone)
 			: null;
+	// 終了時刻が登録されていない予定は、翌日へ続くものとして扱う
 	const isContinuingToTomorrow =
-		scheduleEventEndTime === null ||
-		Temporal.PlainDate.compare(scheduleEventEndTime.toPlainDate(), range.date) >
-			0;
-	const endTime = isContinuingToTomorrow ? range.end : scheduleEventEndTime;
+		eventEnd === null ||
+		Temporal.PlainDate.compare(eventEnd.toPlainDate(), range.date) > 0;
+	const endTime = isContinuingToTomorrow ? range.end : eventEnd;
 
 	const isPrivateEvent = scheduleEvent.visibilityType === "PRIVATE";
 	const subject = isPrivateEvent ? "非公開予定" : scheduleEvent.subject;
