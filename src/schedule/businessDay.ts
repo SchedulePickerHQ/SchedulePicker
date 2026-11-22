@@ -1,19 +1,13 @@
-import { type DateTime, dateTime, getWeekIndex } from "../utils/datetime";
-
 import { getCalendarEvents } from "./api/garoon";
 
 export const getNextBusinessDay = async (
 	hostname: string,
-): Promise<DateTime> => {
+): Promise<Temporal.PlainDate> => {
 	const publicHolidays = await getPublicHolidays(hostname);
-	let nextDate = dateTime().add(1, "day");
+	let nextDate = Temporal.Now.plainDateISO().add({ days: 1 });
 
-	while (
-		isPublicHoliday(nextDate, publicHolidays) ||
-		nextDate.day() === getWeekIndex("Sat") ||
-		nextDate.day() === getWeekIndex("Sun")
-	) {
-		nextDate = nextDate.add(1, "day");
+	while (isPublicHoliday(nextDate, publicHolidays) || isWeekend(nextDate)) {
+		nextDate = nextDate.add({ days: 1 });
 	}
 
 	return nextDate;
@@ -21,66 +15,33 @@ export const getNextBusinessDay = async (
 
 export const getPreviousBusinessDay = async (
 	hostname: string,
-): Promise<DateTime> => {
+): Promise<Temporal.PlainDate> => {
 	const publicHolidays = await getPublicHolidays(hostname);
-	let prevDate = dateTime().subtract(1, "day");
+	let prevDate = Temporal.Now.plainDateISO().subtract({ days: 1 });
 
-	while (
-		isPublicHoliday(prevDate, publicHolidays) ||
-		prevDate.day() === getWeekIndex("Sat") ||
-		prevDate.day() === getWeekIndex("Sun")
-	) {
-		prevDate = prevDate.subtract(1, "day");
+	while (isPublicHoliday(prevDate, publicHolidays) || isWeekend(prevDate)) {
+		prevDate = prevDate.subtract({ days: 1 });
 	}
 
 	return prevDate;
 };
 
-const getPublicHolidays = async (hostname: string): Promise<DateTime[]> => {
+// Garoon のカレンダーイベントの date は YYYY-MM-DD 形式
+// https://cybozu.dev/ja/garoon/docs/soap-api/base/get-calendar-events/
+const getPublicHolidays = async (
+	hostname: string,
+): Promise<Temporal.PlainDate[]> => {
 	const calendarEvents = await getCalendarEvents(hostname);
-	const publicHolidays = calendarEvents
+	return calendarEvents
 		.filter((event) => event.type === "public_holiday")
-		.map((holidayEvent) => dateTime(holidayEvent.date));
-	return insertionSort(publicHolidays); // 一部のデータが昇順で並んでいないため、挿入ソートする
-};
-
-const insertionSort = (publicHolidays: DateTime[]) => {
-	for (let i = 1; i < publicHolidays.length; i++) {
-		let j = i;
-
-		while (j > 0 && publicHolidays[j - 1].isAfter(publicHolidays[j])) {
-			const tmp = publicHolidays[j - 1];
-			publicHolidays[j - 1] = publicHolidays[j];
-			publicHolidays[j] = tmp;
-			j--;
-		}
-	}
-
-	return publicHolidays;
+		.map((holidayEvent) => Temporal.PlainDate.from(holidayEvent.date));
 };
 
 const isPublicHoliday = (
-	dateTime: DateTime,
-	publicHolidays: DateTime[],
-): boolean => {
-	let low = 0;
-	let high = publicHolidays.length - 1;
-	let middle: number;
+	date: Temporal.PlainDate,
+	publicHolidays: Temporal.PlainDate[],
+): boolean => publicHolidays.some((holiday) => holiday.equals(date));
 
-	while (low <= high) {
-		middle = Math.floor((high + low) / 2);
-		const holiday = publicHolidays[middle];
-
-		if (holiday.isSame(dateTime)) {
-			return true;
-		}
-
-		if (dateTime.isAfter(holiday)) {
-			low = middle + 1;
-		} else {
-			high = middle - 1;
-		}
-	}
-
-	return false;
-};
+// dayOfWeek は月曜 1 〜日曜 7
+const isWeekend = (date: Temporal.PlainDate): boolean =>
+	date.dayOfWeek === 6 || date.dayOfWeek === 7;

@@ -1,6 +1,5 @@
 import type { UserEvent } from "../../schedule/events";
-import type { DateTime } from "../../utils/datetime";
-import { formatDateWithDayOfWeek } from "../../utils/datetime";
+import { formatDateWithDayOfWeek, formatTime } from "../../utils/dateFormat";
 import { escapeHtml, textToHtml } from "../escapeHtml";
 import { getEventMenuColor } from "../eventMenuColor";
 import type { Renderer } from "../renderer";
@@ -26,7 +25,7 @@ export class StyledRenderer implements Renderer {
 		}
 	}
 
-	private renderTitle(date: DateTime) {
+	private renderTitle(date: Temporal.PlainDate) {
 		return `<span>[ ${chrome.i18n.getMessage("event_title", formatDateWithDayOfWeek(date))} ]</span>`;
 	}
 
@@ -47,10 +46,10 @@ export class StyledRenderer implements Renderer {
 
 		const start = event.isContinuingFromYesterday
 			? "--------"
-			: event.startTime.format("HH:mm");
+			: formatTime(event.startTime);
 		const end = event.isContinuingToTomorrow
 			? "--------"
-			: event.endTime.format("HH:mm");
+			: formatTime(event.endTime);
 		return `<span>${start}-${end}</span>`;
 	}
 

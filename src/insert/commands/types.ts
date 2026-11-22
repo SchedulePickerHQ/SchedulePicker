@@ -1,11 +1,12 @@
 import type { PasteContent } from "../../render/pasteContent";
 import type { DecorationType } from "../../render/renderer";
 import type { Segment } from "../../render/segment";
-import type { UserEvent } from "../../schedule/events";
+import type { UserEvent, UserEventsQuery } from "../../schedule/events";
 import type { BrowserApi } from "../../utils/browser";
-import type { DateTime } from "../../utils/datetime";
 
-export type DateResolver = () => Promise<DateTime> | DateTime;
+export type DateResolver = () =>
+	| Promise<Temporal.PlainDate>
+	| Temporal.PlainDate;
 
 export type { DecorationType };
 
@@ -21,11 +22,7 @@ export interface ScheduleDeps {
 	) => PasteContent;
 	getUserEvents: (
 		hostname: string,
-		query: {
-			startTime: DateTime;
-			endTime: DateTime;
-			periodEventIncluded: boolean;
-		},
+		query: UserEventsQuery,
 	) => Promise<UserEvent[]>;
 	paste: (content: PasteContent) => void;
 }
@@ -45,8 +42,8 @@ export interface TemplateDeps {
 	buildPasteContent: ScheduleDeps["buildPasteContent"];
 	getUserEvents: ScheduleDeps["getUserEvents"];
 	paste: ScheduleDeps["paste"];
-	getNextBusinessDay: (hostname: string) => Promise<DateTime>;
-	getPreviousBusinessDay: (hostname: string) => Promise<DateTime>;
+	getNextBusinessDay: (hostname: string) => Promise<Temporal.PlainDate>;
+	getPreviousBusinessDay: (hostname: string) => Promise<Temporal.PlainDate>;
 }
 
 export interface SettingsDeps {

@@ -21,9 +21,8 @@ await build({
 	format: "iife",
 	// Node の組み込みモジュールを import するとビルドエラーにする。拡張機能の中では動かないため
 	platform: "browser",
-	// vite 8 の既定値（baseline-widely-available）に含まれる Chrome のバージョンに揃えている。
-	// manifest.json に minimum_chrome_version は無く、この値に拡張側の根拠は無い
-	target: "chrome111",
+	// manifest.json の minimum_chrome_version と揃える。Temporal が使える最初の版
+	target: "chrome144",
 	minify: true,
 	logLevel: "warning",
 });
